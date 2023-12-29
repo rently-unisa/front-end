@@ -1,0 +1,134 @@
+@font-face {
+  font-family: 'Fredoka One';
+  font-style: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fredokaone/v14/k3kUo8kEI-tA1RRcTZGmTlHGCac.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Fredoka';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: normal;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/fredoka/v14/X7nP4b87HvSqjb_WIi2yDCRwoQ_k7367_B-i2yQag0-mac3O8SL8EemK.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.navbar {
+    width: 100%;
+    height: 5rem;
+    background: #17643B;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .logo-container {
+    background: #17643B;
+    display: flex;
+    justify-content: flex-start;
+    width: 10.875rem;
+    align-items: center;
+    gap: 0.125rem;
+  }
+  
+  .logo {
+    display: flex;
+    width: 4rem;
+    justify-content: center;
+    align-items: center;
+    background: #FFFDF8;
+    border-radius: 4rem;
+  }
+  
+  .logo img {
+    width: 3rem;
+    height: 4.14314rem;
+  }
+  
+  .brand-name {
+    color: #FFFDF8;
+    font-size: 32px;
+    font-family: 'Fredoka One';
+    font-weight: bold;
+    line-height: 36px;
+    word-wrap: break-word;
+  }
+  
+  .menu {
+    display: flex;
+    padding: 0.9375rem 0.4375rem;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  
+  .search-bar {
+    display: flex;
+    width: 12.5rem;
+    padding: 0.5rem;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #528F5F;
+    overflow: hidden;
+  }
+  
+  .search-bar input {
+    color: #FFFDF8;
+    font-size: 1rem;
+    font-family: 'Fredoka';
+    font-weight: 400;
+    line-height: 1.25rem; 
+    word-wrap: break-word;
+    border: none;
+    background: none;
+    outline: none;
+  }
+
+  .search-bar ::placeholder {
+    color: rgba(255, 253, 248, 0.70);
+    font-size: 1rem;
+    font-family: 'Fredoka';
+    font-weight: 400;
+    line-height: 1.25rem; 
+    word-wrap: break-word;
+    border: none;
+    background: none;
+    outline: none;
+  }
+
+  .search-bar img {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  
+  .menu-item {
+    color: #FFFDF8;
+    font-family: 'Fredoka';
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5rem;
+  }
+
+  .menu-item a, .home{
+    text-decoration: none;
+    color: #FFFDF8;
+  }
+
+  .menu-item::after {
+    content: '';
+    width: 0%;
+    height: 2px;
+    background: #FFFDF8;
+    display: block;
+    transition: 0.5s;
+  }
+  
+  .menu-item:hover::after {
+    width: 100%;
+  }

@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fontsource/fredoka": "^5.0.8",
+    "@fontsource/fredoka-one": "^5.0.5",
     "@fontsource/opendyslexic": "^5.0.7",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

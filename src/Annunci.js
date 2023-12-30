@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Annunci = () => {
   return (
@@ -7,6 +7,6 @@ const Annunci = () => {
       <p>Contenuto della pagina Annunci...</p>
     </div>
   );
-}
+};
 
 export default Annunci;

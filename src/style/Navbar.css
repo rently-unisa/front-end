@@ -1,14 +1,15 @@
 .navbar {
   width: 100%;
   height: 5rem;
-  background: #17643b;
+  background: var(--scuro);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 }
 
 .logo-container {
-  background: #17643b;
+  background: var(--scuro);
   display: flex;
   justify-content: flex-start;
   width: 10.875rem;
@@ -55,15 +56,15 @@
   align-items: center;
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #528f5f;
+  background: var(--verde);
   overflow: hidden;
 }
 
 .search-bar input,
 .search-bar ::placeholder {
   color: #fffdf8;
-  font-size: 1rem;
-  font-family: "Fredoka", sans-serif;
+  font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
   line-height: 1.25rem;
   word-wrap: break-word;
   border: none;
@@ -83,7 +84,6 @@
 
 .menu-item {
   color: #fffdf8;
-  font-family: "Fredoka", sans-serif;
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;

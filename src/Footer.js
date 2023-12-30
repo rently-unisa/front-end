@@ -2,9 +2,15 @@ import React from "react";
 import logo from "./image/Logo.png";
 import insta from "./image/Instagram.png";
 import "./style/Footer.css";
+import "./style/App.css";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  const handleFontChange = () => {
+    const body = document.body;
+    body.classList.toggle("openDyslexic");
+  };
+
   return (
     <div className="footer">
       <div className="info-box">
@@ -42,17 +48,14 @@ const Footer = () => {
       </div>
       <div className="info-box">
         <div className="info-header">Accessibilità</div>
-        <div className="accessibility-item">
-          <button
-            style={{ fontFamily: "OpenDyslexic" }}
-            className="accessibility-link"
-          >
-            Cambia font
-          </button>
-        </div>
-        <div className="accessibility-item">
-          <button className="accessibility-link">Cambia palette</button>
-        </div>
+        <button
+          style={{ fontFamily: "OpenDyslexic" }}
+          onClick={handleFontChange}
+          className="accessibility-link"
+        >
+          Cambia font
+        </button>
+        <button className="accessibility-link">Cambia palette</button>
       </div>
     </div>
   );

@@ -5,8 +5,8 @@
   justify-content: space-between;
   align-items: flex-start;
   align-content: center;
-  flex-wrap: wrap;
-  background: #17643b;
+  background: var(--scuro);
+  z-index: 1;
 }
 
 .social,
@@ -19,7 +19,7 @@
 
 .info-box {
   align-content: center;
-  padding: 0.8125rem 1rem;
+  padding: 0.8125rem 5rem;
   flex-direction: column;
   gap: 1.375rem;
 }
@@ -34,8 +34,7 @@
   justify-content: center;
   color: #fffdf8;
   text-align: center;
-  font-family: "Fredoka", sans-serif;
-  font-size: 1rem;
+  font-size: var(--font-size);
   font-style: normal;
   font-weight: 400;
   line-height: 1.75rem;
@@ -54,20 +53,23 @@
   height: 3.75rem;
 }
 
-.accessibility-item {
-  display: flex;
+.accessibility-link {
   width: 8.4375rem;
   height: 3.625rem;
   padding-left: 0.0625rem;
-  justify-content: center;
   align-items: center;
-  flex-shrink: 0;
   border-radius: 0.625rem;
-  background: #528f5f;
+  background: var(--medio) !important;
+  font-family: var(--font);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
 .accessibility-link {
   background: none;
   border: none;
+}
+
+.accessibility-link:hover {
+  background-color: #fffdf8 !important;
+  color: var(--medio);
 }

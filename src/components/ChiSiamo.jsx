@@ -1,10 +1,10 @@
 import React from "react";
-import "./style/ChiSiamo.css";
-import onda1 from "./image/onda1.svg";
-import onda2 from "./image/onda2.svg";
-import persone from "./image/persone1.svg";
-import citta from "./image/citta1.svg";
-import frecce from "./image/frecce1.svg";
+import "../style/ChiSiamo.css";
+import onda1 from "../image/onda1.svg";
+import onda2 from "../image/onda2.svg";
+import persone from "../image/persone1.svg";
+import citta from "../image/citta1.svg";
+import frecce from "../image/frecce1.svg";
 
 const ChiSiamo = () => {
   return (

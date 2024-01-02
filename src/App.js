@@ -5,11 +5,11 @@ import "@fontsource/fredokaone";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import Home from "./Home";
-import Annunci from "./Annunci";
-import ChiSiamo from "./ChiSiamo";
-import Segnalazione from "./Segnalazione";
-import Login from "./Login";
+import Home from "./components/Home";
+import Annunci from "./components/Annunci";
+import ChiSiamo from "./components/ChiSiamo";
+import Segnalazione from "./components/Segnalazione";
+import Login from "./components/Login";
 import "./style/App.css";
 
 const App = () => {

@@ -3,8 +3,32 @@ import logo from "./image/Logo.png";
 import search from "./image/search.svg";
 import "./style/Navbar.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const { isLoggedIn, username, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
+
+  const userMenu = isLoggedIn ? (
+    <div className="user-menu">
+      <div className="menu-switch">{username}</div>
+      <div className="dropdown-content">
+        <Link to="/profilo">Il mio Profilo</Link>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+    </div>
+  ) : (
+    <div className="menu-item">
+      <Link to="/login">Login</Link>
+    </div>
+  );
+
   return (
     <div className="navbar">
       <Link className="home" to="/">
@@ -28,9 +52,7 @@ const Navbar = () => {
         <div className="menu-item">
           <Link to="/segnalazione">Assistenza</Link>
         </div>
-        <div className="menu-item">
-          <Link to="/login">Login</Link>
-        </div>
+        {userMenu}
         <div className="search-bar">
           <input type="text" placeholder="Cerca nel sito" />
           <img src={search} alt="Search" />

@@ -1,9 +1,9 @@
 import React from "react";
-import logo from "./image/Logo.png";
-import search from "./image/search.svg";
-import "./style/Navbar.css";
+import logo from "../image/Logo.png";
+import search from "../image/search.svg";
+import "../style/Navbar.css";
 import { Link } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -25,7 +25,7 @@ const Navbar = () => {
     </div>
   ) : (
     <div className="menu-item">
-      <Link to="/login">Login</Link>
+      <Link to="/login">Accedi</Link>
     </div>
   );
 
@@ -50,7 +50,7 @@ const Navbar = () => {
           <Link to="/chi-siamo">Chi Siamo</Link>
         </div>
         <div className="menu-item">
-          <Link to="/segnalazione">Assistenza</Link>
+          <Link to="/assistenza">Assistenza</Link>
         </div>
         {userMenu}
         <div className="search-bar">

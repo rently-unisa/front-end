@@ -9,9 +9,7 @@ import frecce from "../image/frecce1.svg";
 const ChiSiamo = () => {
   return (
     <div className="Page">
-      <div className="top-right">
-        <img src={onda2} alt="Immagine decortiva" />
-      </div>
+      <img className="top-right" src={onda2} alt="Immagine decortiva" />
 
       <div className="container">
         <h1 className="titolo">Chi Siamo</h1>
@@ -56,9 +54,7 @@ const ChiSiamo = () => {
         </div>
       </div>
 
-      <div className="bottom-left">
-        <img src={onda1} alt="Immagine decortiva" />
-      </div>
+      <img className="bottom-left" src={onda1} alt="Immagine decortiva" />
     </div>
   );
 };

@@ -1,14 +1,19 @@
 import React from "react";
-import logo from "./image/Logo.png";
-import insta from "./image/Instagram.png";
-import "./style/Footer.css";
-import "./style/App.css";
+import logo from "../image/Logo.png";
+import insta from "../image/Instagram.png";
+import "../style/Footer.css";
+import "../style/App.css";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
   const handleFontChange = () => {
     const body = document.body;
     body.classList.toggle("openDyslexic");
+  };
+
+  const handleColorChange = () => {
+    const body = document.body;
+    body.classList.toggle("blue");
   };
 
   return (
@@ -49,13 +54,15 @@ const Footer = () => {
       <div className="info-box">
         <div className="info-header">Accessibilità</div>
         <button
-          style={{ fontFamily: "OpenDyslexic" }}
+          style={{ fontFamily: "OpenDyslexic", fontSize: "0.725rem" }}
           onClick={handleFontChange}
           className="accessibility-link"
         >
           Cambia font
         </button>
-        <button className="accessibility-link">Cambia palette</button>
+        <button onClick={handleColorChange} className="accessibility-link">
+          Cambia palette
+        </button>
       </div>
     </div>
   );

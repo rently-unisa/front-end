@@ -22,7 +22,7 @@
   width: 4rem;
   justify-content: center;
   align-items: center;
-  background: #fffdf8;
+  background: var(--bianco);
   border-radius: 4rem;
 }
 
@@ -32,7 +32,7 @@
 }
 
 .brand-name {
-  color: #fffdf8;
+  color: var(--bianco);
   font-size: 32px;
   font-family: "Fredoka One", sans-serif;
   font-weight: bold;
@@ -62,7 +62,7 @@
 
 .search-bar input,
 .search-bar ::placeholder {
-  color: #fffdf8;
+  color: var(--bianco);
   font-size: var(--font-size);
   font-family: var(--font), sans-serif;
   line-height: 1.25rem;
@@ -83,8 +83,8 @@
 }
 
 .menu-item {
-  color: #fffdf8;
-  font-size: 1.125rem;
+  color: var(--bianco);
+  font-size: calc(var(--font-size2) * 1.25rem);
   font-style: normal;
   font-weight: 400;
   line-height: 1.5rem;
@@ -94,7 +94,7 @@
 .info-link a,
 .home {
   text-decoration: none;
-  color: #fffdf8;
+  color: var(--bianco);
 }
 
 .menu-item::after,
@@ -102,7 +102,7 @@
   content: "";
   width: 0%;
   height: 2px;
-  background: #fffdf8;
+  background: var(--bianco);
   display: block;
   transition: 0.5s;
 }

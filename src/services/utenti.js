@@ -39,9 +39,14 @@ const getUserById = (id) => {
   return usersData.find((user) => user.id === id);
 };
 
+const getUserByUsername = (username) => {
+  return usersData.find((user) => user.username === username);
+};
+
 export {
   getAllUsers,
   getUserByUsernameAndPassword,
   getUserByEmailAndPassword,
   getUserById,
+  getUserByUsername,
 };

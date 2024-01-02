@@ -5,10 +5,13 @@ import onda2 from "../image/onda2.svg";
 import persone from "../image/persone1.svg";
 import citta from "../image/citta1.svg";
 import frecce from "../image/frecce1.svg";
+import Navbar from "./Navbar";
+import Footer from "./Footer";
 
 const ChiSiamo = () => {
   return (
     <div className="Page">
+      <Navbar />
       <img className="top-right" src={onda2} alt="Immagine decortiva" />
 
       <div className="container">
@@ -55,6 +58,7 @@ const ChiSiamo = () => {
       </div>
 
       <img className="bottom-left" src={onda1} alt="Immagine decortiva" />
+      <Footer />
     </div>
   );
 };

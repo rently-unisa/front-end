@@ -10,14 +10,14 @@
 .bottom-left {
   position: absolute;
   left: 0rem;
-  bottom: -13rem;
+  bottom: 14rem;
   z-index: 0;
 }
 
 .top-right {
   position: absolute;
   right: 0;
-  top: -13rem;
+  top: 0rem;
   z-index: 0;
 }
 

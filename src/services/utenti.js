@@ -43,10 +43,33 @@ const getUserByUsername = (username) => {
   return usersData.find((user) => user.username === username);
 };
 
+const addUser = (newUserData) => {
+  const userExists = usersData.some(
+    (user) =>
+      user.email === newUserData.email || user.username === newUserData.username
+  );
+
+  if (!userExists) {
+    const newUserId = usersData.length + 1;
+
+    const newUser = {
+      id: newUserId,
+      ...newUserData,
+    };
+
+    usersData.push(newUser);
+
+    return newUser;
+  } else {
+    return null;
+  }
+};
+
 export {
   getAllUsers,
   getUserByUsernameAndPassword,
   getUserByEmailAndPassword,
   getUserById,
   getUserByUsername,
+  addUser,
 };

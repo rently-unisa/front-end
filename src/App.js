@@ -8,6 +8,7 @@ import Annunci from "./components/Annunci";
 import ChiSiamo from "./components/ChiSiamo";
 import Assistenza from "./components/Assistenza";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 import "./style/App.css";
 
 const App = () => {
@@ -20,6 +21,7 @@ const App = () => {
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/assistenza" element={<Assistenza />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
       </Router>
     </div>

@@ -18,7 +18,6 @@ const Login = () => {
 
   const handleLogin = () => {
     var user = getUserByUsernameAndPassword(username, password);
-    debugger;
     if (user) {
       login(user);
       navigate("/");

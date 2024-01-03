@@ -26,10 +26,10 @@ const ChiSiamo = () => {
               guadagno) sono i principi su cui si fonda Rently.
             </div>
           </div>
-          <img src={persone} alt="Immagine decortiva" />
+          <img src={persone} alt="Immagine decorativa" />
         </div>
         <div className="divisione2">
-          <img src={frecce} alt="Immagine decortiva" />
+          <img src={frecce} alt="Immagine decorativa" />
           <div className="container-pinfo2">
             <div className="pinfo2">
               Su Rently:
@@ -53,11 +53,11 @@ const ChiSiamo = () => {
               nuovi oggetti.
             </div>
           </div>
-          <img src={citta} alt="Immagine decortiva" />
+          <img src={citta} alt="Immagine decorativa" />
         </div>
       </div>
 
-      <img className="bottom-left" src={onda1} alt="Immagine decortiva" />
+      <img className="bottom-left" src={onda1} alt="Immagine decorativa" />
       <Footer />
     </div>
   );

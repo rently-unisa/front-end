@@ -3,7 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { addUser } from "../services/utenti";
 import logo from "../image/Logo.png";
-import "../style/Login.css";
+import image1 from "../image/ondina1.svg";
+import image2 from "../image/onda3.svg";
+import image3 from "../image/onda4.svg";
+import "../style/Signup.css";
 
 const Signup = () => {
   const [nome, setNome] = useState("");
@@ -39,8 +42,10 @@ const Signup = () => {
 
   return (
     <div style={{ justifyContent: "center" }} className="Page">
-      <div className="box">
-        <div className="image-box">
+      <img className="topr" src={image3} alt="Immagine decorativa" />
+      <div className="box1">
+        <div className="image-box1">
+          <img src={image1} alt="Immagine decorativa" />
           <div className="titolo">Registrati a </div>
           <div className="Logo-box">
             <div className="logo">
@@ -48,60 +53,74 @@ const Signup = () => {
             </div>
             <div className="brand-name">ently</div>
           </div>
-        </div>
-        <div className="parametro">
-          Nome
-          <input
-            type="text"
-            value={nome}
-            placeholder="Inserisci il tuo nome"
-            onChange={(e) => setNome(e.target.value)}
+          <img
+            style={{ transform: "scaleX(-1)" }}
+            src={image1}
+            alt="Immagine decorativa"
           />
         </div>
-        <div className="parametro">
-          Cognome
-          <input
-            type="text"
-            value={cognome}
-            placeholder="Inserisci il tuo cognome"
-            onChange={(e) => setCognome(e.target.value)}
-          />
+        <div className="par">
+          <p>
+            Inizia subito a dare valore agli oggetti, risparmia e sii
+            sostenibile con Rently:
+          </p>{" "}
+          <p>noleggio intelligente, guadagno costante.</p>
         </div>
-        <div className="parametro">
-          Username
-          <input
-            type="text"
-            value={username}
-            placeholder="Inserisci il tuo username"
-            onChange={(e) => setUsername(e.target.value)}
-          />
-        </div>
-        <div className="parametro">
-          Email
-          <input
-            type="email"
-            value={email}
-            placeholder="Inserisci la tua email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
-        <div className="parametro">
-          Password
-          <input
-            type="password"
-            value={password}
-            placeholder="Inserisci la tua password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
-        <div className="parametro">
-          Conferma Password
-          <input
-            type="password"
-            value={confPassword}
-            placeholder="Conferma la tua password"
-            onChange={(e) => setConfPassword(e.target.value)}
-          />
+        <div className="parametri">
+          <div className="parametro1">
+            Nome
+            <input
+              type="text"
+              value={nome}
+              placeholder="Inserisci il tuo nome"
+              onChange={(e) => setNome(e.target.value)}
+            />
+          </div>
+          <div className="parametro1">
+            Cognome
+            <input
+              type="text"
+              value={cognome}
+              placeholder="Inserisci il tuo cognome"
+              onChange={(e) => setCognome(e.target.value)}
+            />
+          </div>
+          <div className="parametro1">
+            Username
+            <input
+              type="text"
+              value={username}
+              placeholder="Inserisci il tuo username"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="parametro1">
+            Email
+            <input
+              type="email"
+              value={email}
+              placeholder="Inserisci la tua email"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div className="parametro1">
+            Password
+            <input
+              type="password"
+              value={password}
+              placeholder="Inserisci la tua password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="parametro1">
+            Conferma Password
+            <input
+              type="password"
+              value={confPassword}
+              placeholder="Conferma la tua password"
+              onChange={(e) => setConfPassword(e.target.value)}
+            />
+          </div>
         </div>
         <button className="pulsante" onClick={handleSignup}>
           Registrati
@@ -115,6 +134,7 @@ const Signup = () => {
           </p>
         </div>
       </div>
+      <img className="bottom" src={image2} alt="Immagine decorativa" />
     </div>
   );
 };

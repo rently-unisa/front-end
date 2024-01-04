@@ -1,6 +1,22 @@
 .sezioneh {
-  height: 100%;
-  padding: 2rem 0 2rem 0;
+  position: relative;
+  width: 100%;
+  min-height: 85.2vh;
+  padding: 2.5rem 0 2.5rem 0;
+}
+
+.imageb {
+  position: absolute;
+  left: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+}
+
+.imaget {
+  position: absolute;
+  right: 0rem;
+  top: 0%;
+  z-index: 0;
 }
 
 .intestazione {
@@ -77,7 +93,21 @@
   justify-content: center;
   align-items: center;
   width: 68.4375rem;
-  height: 6.375rem;
+  height: 5.375rem;
+}
+
+.imager {
+  position: absolute;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+}
+
+.imagel {
+  position: absolute;
+  left: 0rem;
+  top: 0%;
+  z-index: 0;
 }
 
 .cerca-button {
@@ -114,26 +144,11 @@
   line-height: 2.25rem;
 }
 
-.scopri {
-  width: 18.1875rem;
-  padding: 1.125rem 3.6875rem;
-  border-radius: 0.625rem;
-  background-color: var(--medio);
-  border: 1px solid var(--medio);
-  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
-  text-decoration: none;
-  color: var(--bianco);
-}
-
-.scopri:hover {
-  background-color: var(--bianco);
-  color: var(--medio);
-}
-
 .slider {
   width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
 }
 
 .slider button {
@@ -201,4 +216,21 @@
 .card:not(.primo, .secondo, .terzo) {
   position: absolute;
   visibility: hidden;
+}
+
+.scopri {
+  width: 18.1875rem;
+  padding: 1.125rem 3.6875rem;
+  border-radius: 0.625rem;
+  background-color: var(--medio);
+  border: 1px solid var(--medio);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+  color: var(--bianco);
+  z-index: 1;
+}
+
+.scopri:hover {
+  background-color: var(--bianco);
+  color: var(--medio);
 }

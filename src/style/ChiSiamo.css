@@ -1,5 +1,7 @@
 .sezionec {
-  height: 100%;
+  position: relative;
+  width: 100%;
+  min-height: 85.2vh;
   padding: 4rem 0 8rem 0;
 }
 
@@ -15,14 +17,14 @@
 .bottom-left {
   position: absolute;
   left: 0rem;
-  bottom: 14rem;
+  bottom: -4.8rem;
   z-index: 0;
 }
 
 .top-right {
   position: absolute;
   right: 0;
-  top: 0rem;
+  top: -5rem;
   z-index: 0;
 }
 

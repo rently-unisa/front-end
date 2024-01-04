@@ -5,6 +5,10 @@ import { Link } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
 /*import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";*/
+import image1 from "../image/ondinaprova1.svg";
+import image2 from "../image/ondinaprova2.svg";
+import image3 from "../image/onda2nuovo1.svg";
+import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 
 const Home = () => {
@@ -35,6 +39,7 @@ const Home = () => {
     <div className="Page">
       <Navbar />
       <div className="sezioneh">
+        <img className="imaget" src={image4} alt="Immagine decorativa" />
         <div className="intestazione">
           <h2>Home</h2>
           <div className="descrizione">
@@ -54,6 +59,8 @@ const Home = () => {
             <h4>Cerca il tuo prossimo noleggio</h4>
             <input type="text" placeholder="Cerca un articolo" />
             <div className="imagebox">
+              <img className="imager" src={image1} alt="Immagine decorativa" />
+              <img className="imagel" src={image2} alt="Immagine decorativa" />
               <button className="cerca-button">Cerca</button>
             </div>
           </div>
@@ -88,6 +95,7 @@ const Home = () => {
             Scopri altri annunci
           </Link>
         </div>
+        <img className="imageb" src={image3} alt="Immagine decorativa" />
       </div>
       <Footer />
     </div>

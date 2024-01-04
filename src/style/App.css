@@ -6,12 +6,13 @@
   --nero: #282a28;
   --font: "Fredoka";
   --font-size: 1rem;
+  --font-size2: 1.25rem;
 }
 
 body.openDyslexic {
   --font: "OpenDyslexic";
   --font-size: 0.755rem;
-  --font-size2: 0.94375rem;
+  --font-size: 0.94375rem;
 }
 
 body.blue {
@@ -33,6 +34,11 @@ body.blue {
   justify-content: space-between;
 }
 
+.App button,
+.App a {
+  cursor: pointer;
+}
+
 .Page {
   position: relative;
   width: 100%;
@@ -42,7 +48,7 @@ body.blue {
   justify-content: space-between;
   align-items: center;
   z-index: 0;
-  gap: 8rem;
+
   flex: 1;
 }
 

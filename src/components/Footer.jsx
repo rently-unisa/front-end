@@ -4,8 +4,21 @@ import insta from "../image/Instagram.png";
 import "../style/Footer.css";
 import "../style/App.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 const Footer = () => {
+  const { isLoggedIn } = useAuth();
+
+  const userLink = isLoggedIn ? (
+    <Link to="/profilo">
+      <div className="info-link">Area Personale</div>
+    </Link>
+  ) : (
+    <Link to="/login">
+      <div className="info-link">Area Personale</div>
+    </Link>
+  );
+
   const handleFontChange = () => {
     const body = document.body;
     body.classList.toggle("openDyslexic");
@@ -46,10 +59,16 @@ const Footer = () => {
       </div>
       <div className="info-box">
         <div className="info-header">Servizi</div>
-        <div className="info-link">Profilo utente</div>
-        <div className="info-link">Assistenza</div>
-        <div className="info-link">Catalogo</div>
-        <div className="info-link">Home</div>
+        {userLink}
+        <Link to="/assistenza">
+          <div className="info-link">Assistenza</div>
+        </Link>
+        <Link to="/catalogo">
+          <div className="info-link">Catalogo</div>
+        </Link>
+        <Link to="/">
+          <div className="info-link">Home</div>
+        </Link>
       </div>
       <div className="info-box">
         <div className="info-header">Accessibilità</div>

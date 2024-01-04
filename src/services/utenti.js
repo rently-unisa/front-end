@@ -23,6 +23,10 @@ const getAllUsers = () => {
   return usersData;
 };
 
+const getPremiumUsers = () => {
+  return usersData.filter((user) => user.premium === true);
+};
+
 const getUserByUsernameAndPassword = (username, password) => {
   return usersData.find(
     (user) => user.username === username && user.password === password
@@ -67,6 +71,7 @@ const addUser = (newUserData) => {
 
 export {
   getAllUsers,
+  getPremiumUsers,
   getUserByUsernameAndPassword,
   getUserByEmailAndPassword,
   getUserById,

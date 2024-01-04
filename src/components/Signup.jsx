@@ -134,7 +134,7 @@ const Signup = () => {
           </p>
         </div>
       </div>
-      <img className="bottom" src={image2} alt="Immagine decorativa" />
+      <img className="bottoml" src={image2} alt="Immagine decorativa" />
     </div>
   );
 };

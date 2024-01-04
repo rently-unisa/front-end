@@ -34,7 +34,7 @@ const Login = () => {
 
   return (
     <div style={{ justifyContent: "center" }} className="Page">
-      <img className="topr" src={image4} alt="Immagine decorativa" />
+      <img className="top" src={image4} alt="Immagine decorativa" />
       <div className="box">
         <div className="image-box">
           <img className="right" src={image1} alt="Immagine decorativa" />

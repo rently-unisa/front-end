@@ -17,10 +17,17 @@ const Navbar = () => {
 
   const userMenu = isLoggedIn ? (
     <div className="user-menu">
-      <div className="menu-switch">{username}</div>
+      <div className="menu-switch">
+        <p className="menu-item">{username}</p>
+      </div>
       <div className="dropdown-content">
-        <Link to="/profilo">Il mio Profilo</Link>
-        <button onClick={handleLogout}>Logout</button>
+        <div className="dropdown-style">
+          <Link to="/profilo">Area Personale</Link>
+          <Link to="/richieste">Le mie richieste</Link>
+          <Link to="/annunci">I miei Annunci</Link>
+          <Link to="/noleggi">I miei Noleggi</Link>
+          <button onClick={handleLogout}>Logout</button>
+        </div>
       </div>
     </div>
   ) : (
@@ -44,7 +51,7 @@ const Navbar = () => {
           <Link to="/">Home</Link>
         </div>
         <div className="menu-item">
-          <Link to="/annunci">Annunci</Link>
+          <Link to="/catalogo">Annunci</Link>
         </div>
         <div className="menu-item">
           <Link to="/chi-siamo">Chi Siamo</Link>

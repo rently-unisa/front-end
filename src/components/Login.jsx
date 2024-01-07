@@ -19,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    const user = getUserByUsernameAndPassword(username, password);
+    let user = getUserByUsernameAndPassword(username, password);
     if (user) {
       login(user);
       navigate("/");

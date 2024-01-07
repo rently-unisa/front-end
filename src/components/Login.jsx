@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import { getUserByUsernameAndPassword } from "../services/utenti";
-import { getUserByEmailAndPassword } from "../services/utenti";
+import {
+  getUserByUsernameAndPassword,
+  getUserByEmailAndPassword,
+} from "../services/utenti";
 import logo from "../image/Logo.png";
 import "../style/Login.css";
 import image1 from "../image/ondinaprova1.svg";
@@ -17,7 +19,7 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    var user = getUserByUsernameAndPassword(username, password);
+    const user = getUserByUsernameAndPassword(username, password);
     if (user) {
       login(user);
       navigate("/");
@@ -48,7 +50,7 @@ const Login = () => {
         </div>
         <div className="titolo">Accedi</div>
         <div className="parametro">
-          Email / Username
+          <p>Email / Username</p>
           <input
             type="text"
             value={username}
@@ -57,7 +59,7 @@ const Login = () => {
           />
         </div>
         <div className="parametro">
-          Password
+          <p>Password</p>
           <input
             type="password"
             value={password}

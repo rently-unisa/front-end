@@ -2,9 +2,8 @@ import React from "react";
 import logo from "../image/Logo.png";
 import search from "../image/search.svg";
 import "../style/Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const { isLoggedIn, username, logout } = useAuth();

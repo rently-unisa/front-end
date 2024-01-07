@@ -68,7 +68,7 @@ const Signup = () => {
         </div>
         <div className="parametri">
           <div className="parametro1">
-            Nome
+            <p>Nome</p>
             <input
               type="text"
               value={nome}
@@ -77,7 +77,7 @@ const Signup = () => {
             />
           </div>
           <div className="parametro1">
-            Cognome
+            <p>Cognome</p>
             <input
               type="text"
               value={cognome}
@@ -86,7 +86,7 @@ const Signup = () => {
             />
           </div>
           <div className="parametro1">
-            Username
+            <p>Username</p>
             <input
               type="text"
               value={username}
@@ -95,7 +95,7 @@ const Signup = () => {
             />
           </div>
           <div className="parametro1">
-            Email
+            <p>Email</p>
             <input
               type="email"
               value={email}
@@ -104,7 +104,7 @@ const Signup = () => {
             />
           </div>
           <div className="parametro1">
-            Password
+            <p>Password</p>
             <input
               type="password"
               value={password}
@@ -113,7 +113,7 @@ const Signup = () => {
             />
           </div>
           <div className="parametro1">
-            Conferma Password
+            <p>Conferma Password</p>
             <input
               type="password"
               value={confPassword}

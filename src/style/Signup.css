@@ -62,6 +62,10 @@
   gap: 0.25rem;
 }
 
+.parametro1 p {
+  margin: 0rem;
+}
+
 .parametro1 input,
 .parametro1 ::placeholder {
   overflow: hidden;

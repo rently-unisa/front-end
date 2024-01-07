@@ -20,11 +20,13 @@ const ChiSiamo = () => {
           <div className="divisione1">
             <div className="container-pinfo">
               <div className="pinfo">
-                L'attenzione all'
-                <span style={{ color: "var(--verde)" }}>ambiente</span> e
-                l'opportunità di{" "}
-                <span style={{ color: "var(--verde)" }}>risparmio</span> (e
-                guadagno) sono i principi su cui si fonda Rently.
+                <p>
+                  L'attenzione all'{""}
+                  <span style={{ color: "var(--medio)" }}>ambiente</span> e
+                  l'opportunità di{" "}
+                  <span style={{ color: "var(--medio)" }}>risparmio</span> (e
+                  guadagno) sono i principi su cui si fonda Rently.
+                </p>
               </div>
             </div>
             <img src={persone} alt="Immagine decorativa" />

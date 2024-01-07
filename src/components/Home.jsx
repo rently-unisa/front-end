@@ -12,7 +12,7 @@ import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 
 const Home = () => {
-  const [annunci] = useState(getPremiumAds());
+  const [annunci, setAnnunci] = useState(getPremiumAds());
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);

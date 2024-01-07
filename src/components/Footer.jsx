@@ -1,10 +1,34 @@
 import React from "react";
-import logo from "./image/Logo.png";
-import insta from "./image/Instagram.png";
-import "./style/Footer.css";
+import logo from "../image/Logo.png";
+import insta from "../image/Instagram.png";
+import "../style/Footer.css";
+import "../style/App.css";
 import { Link } from "react-router-dom";
+import { useAuth } from "../AuthContext";
 
 const Footer = () => {
+  const { isLoggedIn } = useAuth();
+
+  const userLink = isLoggedIn ? (
+    <Link to="/profilo">
+      <div className="info-link">Area Personale</div>
+    </Link>
+  ) : (
+    <Link to="/login">
+      <div className="info-link">Area Personale</div>
+    </Link>
+  );
+
+  const handleFontChange = () => {
+    const body = document.body;
+    body.classList.toggle("openDyslexic");
+  };
+
+  const handleColorChange = () => {
+    const body = document.body;
+    body.classList.toggle("blue");
+  };
+
   return (
     <div className="footer">
       <div className="info-box">
@@ -35,24 +59,29 @@ const Footer = () => {
       </div>
       <div className="info-box">
         <div className="info-header">Servizi</div>
-        <div className="info-link">Profilo utente</div>
-        <div className="info-link">Assistenza</div>
-        <div className="info-link">Catalogo</div>
-        <div className="info-link">Home</div>
+        {userLink}
+        <Link to="/assistenza">
+          <div className="info-link">Assistenza</div>
+        </Link>
+        <Link to="/catalogo">
+          <div className="info-link">Catalogo</div>
+        </Link>
+        <Link to="/">
+          <div className="info-link">Home</div>
+        </Link>
       </div>
       <div className="info-box">
         <div className="info-header">Accessibilità</div>
-        <div className="accessibility-item">
-          <button
-            style={{ fontFamily: "OpenDyslexic" }}
-            className="accessibility-link"
-          >
-            Cambia font
-          </button>
-        </div>
-        <div className="accessibility-item">
-          <button className="accessibility-link">Cambia palette</button>
-        </div>
+        <button
+          style={{ fontFamily: "OpenDyslexic", fontSize: "0.725rem" }}
+          onClick={handleFontChange}
+          className="accessibility-link"
+        >
+          Cambia font
+        </button>
+        <button onClick={handleColorChange} className="accessibility-link">
+          Cambia palette
+        </button>
       </div>
     </div>
   );

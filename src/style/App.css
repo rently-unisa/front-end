@@ -1,8 +1,71 @@
+:root {
+  --scuro: #17643b;
+  --medio: #528f5f;
+  --chiaro: #8cb38c;
+  --bianco: #fffdf8;
+  --nero: #282a28;
+  --font: "Fredoka";
+  --font-size: 1rem;
+  --font-size2: 1.25rem;
+}
+
+body.openDyslexic {
+  --font: "OpenDyslexic";
+  --font-size: 0.755rem;
+  --font-size: 0.94375rem;
+}
+
+body.blue {
+  --scuro: #175363;
+  --medio: #51808f;
+  --chiaro: #84a9ba;
+  --bianco: #f7f0ec;
+}
+
 .App {
+  background-color: var(--bianco);
   text-align: center;
-  background-color: #FFFDF8;
+  color: var(--nero);
+  font-family: var(--font), sans-serif;
+  font-size: var(--font-size);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+}
+
+.App button,
+.App a {
+  cursor: pointer;
+}
+
+.Page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 0;
+
+  flex: 1;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+  background-color: var(--bianco);
+}
+
+::-webkit-scrollbar:hover {
+  background-color: var(--bianco);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--medio);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--chiaro);
 }

@@ -1,14 +1,15 @@
 .navbar {
   width: 100%;
   height: 5rem;
-  background: #17643b;
+  background: var(--scuro);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 1;
 }
 
 .logo-container {
-  background: #17643b;
+  background: var(--scuro);
   display: flex;
   justify-content: flex-start;
   width: 10.875rem;
@@ -21,7 +22,7 @@
   width: 4rem;
   justify-content: center;
   align-items: center;
-  background: #fffdf8;
+  background: var(--bianco);
   border-radius: 4rem;
 }
 
@@ -31,7 +32,7 @@
 }
 
 .brand-name {
-  color: #fffdf8;
+  color: var(--bianco);
   font-size: 32px;
   font-family: "Fredoka One", sans-serif;
   font-weight: bold;
@@ -55,15 +56,15 @@
   align-items: center;
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #528f5f;
+  background: var(--medio);
   overflow: hidden;
 }
 
 .search-bar input,
 .search-bar ::placeholder {
-  color: #fffdf8;
-  font-size: 1rem;
-  font-family: "Fredoka", sans-serif;
+  color: var(--bianco);
+  font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
   line-height: 1.25rem;
   word-wrap: break-word;
   border: none;
@@ -82,8 +83,7 @@
 }
 
 .menu-item {
-  color: #fffdf8;
-  font-family: "Fredoka", sans-serif;
+  color: var(--bianco);
   font-size: 1.125rem;
   font-style: normal;
   font-weight: 400;
@@ -94,20 +94,81 @@
 .info-link a,
 .home {
   text-decoration: none;
-  color: #fffdf8;
+  color: var(--bianco);
 }
 
-.menu-item::after,
+.menu-item::after:not(p),
 .info-link::after {
   content: "";
   width: 0%;
   height: 2px;
-  background: #fffdf8;
+  background: var(--bianco);
   display: block;
   transition: 0.5s;
 }
 
-.menu-item:hover::after,
+.menu-item:hover::after:not(p),
 .info-link:hover::after {
   width: 100%;
+}
+
+.user-menu {
+  position: relative;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: -2rem;
+  background-color: var(--scuro);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+  border-radius: 0.625rem;
+}
+
+.dropdown-style {
+  display: flex;
+  width: 21.375rem;
+  padding: 1.375rem 1.5rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.0625rem;
+  border-radius: 0.625rem;
+  border-top: 2px solid #528f5f;
+  border-left: 2px solid #528f5f;
+  background: #17643b;
+}
+
+.dropdown-content a,
+.dropdown-content button {
+  display: block;
+  text-decoration: none;
+  color: var(--bianco);
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  text-align: left;
+  border: none;
+  padding: 0;
+  font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
+}
+
+.dropdown-content a::after,
+.dropdown-content button::after {
+  content: "";
+  width: 0%;
+  height: 2px;
+  background: var(--bianco);
+  display: block;
+  transition: 0.5s;
+}
+
+.dropdown-content a:hover::after,
+.dropdown-content button:hover::after {
+  width: 100%;
+}
+
+.user-menu:hover .dropdown-content {
+  display: block;
 }

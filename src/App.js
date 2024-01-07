@@ -3,30 +3,26 @@ import "@fontsource/opendyslexic";
 import "@fontsource/fredoka";
 import "@fontsource/fredokaone";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./Navbar";
-import Footer from "./Footer";
-import Home from "./Home";
-import Annunci from "./Annunci";
-import ChiSiamo from "./ChiSiamo";
-import Segnalazione from "./Segnalazione";
-import Login from "./Login";
+import Home from "./components/Home";
+import Annunci from "./components/Annunci";
+import ChiSiamo from "./components/ChiSiamo";
+import Assistenza from "./components/Assistenza";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
 import "./style/App.css";
 
 const App = () => {
   return (
     <div className="App">
       <Router>
-        <Navbar />
-
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/annunci" element={<Annunci />} />
+          <Route path="/catalogo" element={<Annunci />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
-          <Route path="/segnalazione" element={<Segnalazione />} />
+          <Route path="/assistenza" element={<Assistenza />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
         </Routes>
-
-        <Footer />
       </Router>
     </div>
   );

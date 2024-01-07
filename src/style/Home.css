@@ -1,0 +1,236 @@
+.sezioneh {
+  position: relative;
+  width: 100%;
+  min-height: 85.2vh;
+  padding: 2.5rem 0 2.5rem 0;
+}
+
+.imageb {
+  position: absolute;
+  left: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+}
+
+.imaget {
+  position: absolute;
+  right: 0rem;
+  top: 0%;
+  z-index: 0;
+}
+
+.intestazione {
+  display: inline-flex;
+  height: 30.1875rem;
+  padding: 1rem 0rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.intestazione h2 {
+  font-size: 2rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+  margin: 0;
+}
+
+.descrizione {
+  width: 58.9375rem;
+  height: 6.6875rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.3125rem 4.75rem;
+  border-radius: 0.625rem;
+  background: var(--medio);
+  color: var(--bianco);
+}
+
+.descrizione p {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 2.25rem;
+}
+
+.ricerca {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1.25rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--medio);
+}
+
+.ricerca p {
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.ricerca input {
+  width: 22.5rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.ricerca input,
+.ricerca::placeholder {
+  height: 1.25rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.25rem;
+}
+
+.imagebox {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 68.4375rem;
+  height: 5.375rem;
+}
+
+.imager {
+  position: absolute;
+  right: 0rem;
+  bottom: 0rem;
+  z-index: 0;
+}
+
+.imagel {
+  position: absolute;
+  left: 0rem;
+  top: 0%;
+  z-index: 0;
+}
+
+.cerca-button {
+  border: 1px solid var(--scuro);
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  background: var(--scuro);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  color: var(--bianco);
+  font-family: var(--font), sans-serif;
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.cerca-button:hover {
+  background-color: var(--bianco);
+  color: var(--scuro);
+}
+
+.annunciHome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1.125rem;
+  flex-shrink: 0;
+}
+
+.annunciHome h2 {
+  margin-bottom: 0;
+  font-weight: 400;
+  line-height: 2.25rem;
+}
+
+.slider {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.slider button {
+  border: none;
+  background-color: rgb(0, 0, 0, 0);
+}
+
+.listaAnnunciHome {
+  position: relative;
+  display: flex;
+  overflow: hidden;
+  width: 68.75rem;
+  height: 28.75rem;
+  padding: 1.25rem 0rem;
+  align-items: center;
+  align-content: center;
+  gap: 0.625rem 2.5rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  width: 20.375rem;
+  height: 26.25rem;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 0.625rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card img {
+  width: 14.75rem;
+  height: 19.75rem;
+}
+
+.card-description {
+  display: flex;
+  padding: 0.75rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+  align-self: stretch;
+  background: var(--chiaro);
+}
+
+.primo {
+  position: absolute;
+  left: 0.8125rem;
+  bottom: 2.53125rem;
+}
+
+.secondo {
+  position: absolute;
+  left: 23.75rem;
+  bottom: 2.53125rem;
+}
+
+.terzo {
+  position: absolute;
+  right: 1.6875rem;
+  bottom: 2.53125rem;
+}
+
+.card:not(.primo, .secondo, .terzo) {
+  position: absolute;
+  visibility: hidden;
+}
+
+.scopri {
+  width: 18.1875rem;
+  padding: 1.125rem 3.6875rem;
+  border-radius: 0.625rem;
+  background-color: var(--medio);
+  border: 1px solid var(--medio);
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  text-decoration: none;
+  color: var(--bianco);
+  z-index: 1;
+}
+
+.scopri:hover {
+  background-color: var(--bianco);
+  color: var(--medio);
+}

@@ -12,7 +12,7 @@
 body.openDyslexic {
   --font: "OpenDyslexic";
   --font-size: 0.755rem;
-  --font-size: 0.94375rem;
+  --font-size2: 0.94375rem;
 }
 
 body.blue {
@@ -41,7 +41,7 @@ body.blue {
 
 .Page {
   position: relative;
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;

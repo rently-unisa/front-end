@@ -1,7 +1,7 @@
 import React from "react";
 import "@fontsource/opendyslexic";
 import "@fontsource/fredoka";
-import "@fontsource/fredokaone";
+import "@fontsource/fredoka-one";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Catalogo from "./components/Catalogo";

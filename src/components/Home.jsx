@@ -3,8 +3,8 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
-/*import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";*/
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import image1 from "../image/ondinaprova1.svg";
 import image2 from "../image/ondinaprova2.svg";
 import image3 from "../image/onda2nuovo1.svg";
@@ -69,7 +69,7 @@ const Home = () => {
           <p>Annunci</p>
           <div className="slider">
             <button onClick={prevSlide}>
-              Previus{/*<ArrowBackIosIcon />*/}
+              <ArrowBackIosIcon />
             </button>
             <div className="listaAnnunciHome">
               {annunci.map((ad, index) => (
@@ -94,7 +94,7 @@ const Home = () => {
               ))}
             </div>
             <button onClick={nextSlide}>
-              Next{/*<ArrowForwardIosIcon />*/}
+              <ArrowForwardIosIcon />
             </button>
           </div>
           <Link className="scopri" to="/catalogo">

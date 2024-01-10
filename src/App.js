@@ -9,6 +9,7 @@ import ChiSiamo from "./components/ChiSiamo";
 import Assistenza from "./components/Assistenza";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
+import AreaPersonale from "./components/AreaPersonale";
 import "./style/App.css";
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
           <Route path="/assistenza" element={<Assistenza />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/profilo" element={<AreaPersonale />} />
         </Routes>
       </Router>
     </div>

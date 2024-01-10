@@ -7,12 +7,14 @@
   --font: "Fredoka";
   --font-size: 1rem;
   --font-size2: 1.25rem;
+  --font-size3: 1.5rem;
+  --font-size4: 2rem;
 }
 
 body.openDyslexic {
   --font: "OpenDyslexic";
   --font-size: 0.755rem;
-  --font-size: 0.94375rem;
+  --font-size2: 0.94375rem;
 }
 
 body.blue {
@@ -41,7 +43,7 @@ body.blue {
 
 .Page {
   position: relative;
-  width: 100%;
+  width: 100vw;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -68,4 +70,90 @@ body.blue {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--chiaro);
+}
+
+.divider {
+  width: 15.625rem;
+  height: 0.0625rem;
+  background: var(--scuro);
+}
+
+h1 {
+  font-size: var(--font-size4);
+  color: var(--nero);
+  text-align: center;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.75rem;
+}
+
+h2 {
+  font-size: var(--font-size3);
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+h3 {
+  font-size: var(--font-size2);
+  text-align: center;
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.25rem;
+}
+
+p {
+  font-size: var(--font-size);
+  margin: 0rem;
+}
+
+.pulsante {
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.pulsante:hover {
+  color: var(--nero);
+  background-color: var(--bianco);
+}
+
+.link {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-shrink: 0;
+  text-align: center;
+  font-size: var(--font-size);
+  font-style: normal;
+  font-weight: normal;
+  line-height: 1.25rem;
+  text-decoration: none;
+  color: var(--nero);
+}
+
+.link a {
+  text-decoration: none;
+  color: var(--nero);
+}
+
+.link::after:not(p) {
+  content: "";
+  width: 0%;
+  height: 1px;
+  background: var(--nero);
+  display: block;
+  transition: 0.5s;
+}
+
+.link:hover::after:not(p) {
+  width: 100%;
 }

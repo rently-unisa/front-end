@@ -69,6 +69,31 @@ const addUser = (newUserData) => {
   }
 };
 
+const deleteUserById = (idDeleteUser) => {
+  const indexToDelete = usersData.findIndex((user) => user.id === idDeleteUser);
+  if (indexToDelete !== -1) {
+    usersData.splice(indexToDelete, 1);
+  }
+};
+
+const modifyUser = (newUserData) => {
+  const duplicateUsers = usersData.filter(
+    (user) =>
+      user.id !== newUserData.id &&
+      (user.email === newUserData.email ||
+        user.username === newUserData.username)
+  );
+
+  if (duplicateUsers.length === 0) {
+    deleteUserById(newUserData.id);
+
+    usersData.push(newUserData);
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export {
   getAllUsers,
   getPremiumUsers,
@@ -77,4 +102,6 @@ export {
   getUserById,
   getUserByUsername,
   addUser,
+  deleteUserById,
+  modifyUser,
 };

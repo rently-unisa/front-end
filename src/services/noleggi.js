@@ -12,8 +12,8 @@ const rentalsData = [
   },
   {
     id: 2,
-    dataInizio: "2023-02-05",
-    dataFine: "2023-02-10",
+    dataInizio: "2024-02-05",
+    dataFine: "2024-02-10",
     dataRichiesta: "2023-01-25",
     noleggiante: 1,
     noleggiatore: 2,

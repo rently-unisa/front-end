@@ -1,10 +1,10 @@
 import React from "react";
 import "@fontsource/opendyslexic";
 import "@fontsource/fredoka";
-import "@fontsource/fredokaone";
+import "@fontsource/fredoka-one";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
-import Annunci from "./components/Annunci";
+import Catalogo from "./components/Catalogo";
 import ChiSiamo from "./components/ChiSiamo";
 import Assistenza from "./components/Assistenza";
 import Login from "./components/Login";
@@ -20,7 +20,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/catalogo" element={<Annunci />} />
+          <Route path="/catalogo" element={<Catalogo />} />
           <Route path="/chi-siamo" element={<ChiSiamo />} />
           <Route path="/assistenza" element={<Assistenza />} />
           <Route path="/login" element={<Login />} />

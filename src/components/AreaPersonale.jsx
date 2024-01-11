@@ -1,7 +1,7 @@
 /*
 import image3 from "../image/onda2nuovo1.svg";
 import image4 from "../image/onda2nuovo2.svg";*/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useAuth } from "../AuthContext";
@@ -13,13 +13,26 @@ const AreaPersonale = () => {
   const { username } = useAuth();
   const user = getUserByUsername(username);
 
-  const id = user.id;
-  const [premium, setPremium] = useState(user.premium);
-  const [actPassword, setActPassword] = useState(user.password);
-  const [nome, setNome] = useState(user.nome);
-  const [cognome, setCognome] = useState(user.cognome);
-  const [email, setEmail] = useState(user.email);
-  const [userUsername, setUsername] = useState(user.username);
+  useEffect(() => {
+    if (user) {
+      const { id, premium, password, nome, cognome, email, username } = user;
+      setId(id);
+      setPremium(premium);
+      setActPassword(password);
+      setNome(nome);
+      setCognome(cognome);
+      setEmail(email);
+      setUsername(username);
+    }
+  }, [user]);
+
+  const [id, setId] = useState("");
+  const [premium, setPremium] = useState("");
+  const [actPassword, setActPassword] = useState("");
+  const [nome, setNome] = useState("");
+  const [cognome, setCognome] = useState("");
+  const [email, setEmail] = useState("");
+  const [userUsername, setUsername] = useState("");
   const [newPassword, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
   let result = null;

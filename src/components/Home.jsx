@@ -3,8 +3,8 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
-/*import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";*/
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import image1 from "../image/ondinaprova1.svg";
 import image2 from "../image/ondinaprova2.svg";
 import image3 from "../image/onda2nuovo1.svg";
@@ -12,7 +12,7 @@ import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 
 const Home = () => {
-  const [annunci, setAnnunci] = useState(getPremiumAds());
+  const annunci = getPremiumAds();
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
@@ -69,7 +69,7 @@ const Home = () => {
           <p>Annunci</p>
           <div className="slider">
             <button onClick={prevSlide}>
-              Previus{/*<ArrowBackIosIcon />*/}
+              <ArrowBackIosIcon />
             </button>
             <div className="listaAnnunciHome">
               {annunci.map((ad, index) => (
@@ -77,18 +77,24 @@ const Home = () => {
                   key={index}
                   className={`card ${index === currentSlide1 ? "primo" : ""} ${
                     index === currentSlide2 ? "secondo" : ""
-                  } ${index === currentSlide3 ? "terzo" : ""}`}
+                  } ${index === currentSlide3 ? "terzo" : ""} ${
+                    index !== currentSlide1 &&
+                    index !== currentSlide2 &&
+                    index !== currentSlide3
+                      ? "inactive"
+                      : ""
+                  }`}
                 >
                   <img src={ad.immagine} alt="Immgagine annuncio" />
                   <div className="card-description">
                     <p>{ad.titolo}</p>
-                    <p>€ {ad.prezzo}/giorno</p>
+                    <h6>€ {ad.prezzo}/giorno</h6>
                   </div>
                 </div>
               ))}
             </div>
             <button onClick={nextSlide}>
-              Next{/*<ArrowForwardIosIcon />*/}
+              <ArrowForwardIosIcon />
             </button>
           </div>
           <Link className="scopri" to="/catalogo">

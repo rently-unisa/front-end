@@ -1,0 +1,49 @@
+.listPageContainer {
+  width: 87%;
+}
+
+.switchDescriptionContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.switchContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rentalList {
+  display: flex;
+  flex-direction: column;
+  gap: 3.15rem;
+}
+
+.rental {
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: center;
+  border-radius: 0.625rem;
+  border: 1px solid var(--scuro);
+  background: var(--chiaro);
+}
+
+.rentalItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2.125rem;
+  align-items: center;
+  width: 100%;
+}
+
+.rentalTitleContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+  margin-bottom: 4%;
+  gap: 0.25rem;
+}

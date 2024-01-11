@@ -10,7 +10,7 @@
 .titolo {
   color: var(--nero);
   text-align: center;
-  font-family: Fredoka;
+  font-family: var(--font), sans-serif;
   font-size: 2rem;
   font-style: normal;
   font-weight: 400;
@@ -89,7 +89,7 @@
 
 .titolo2 {
   text-align: center;
-  font-family: Fredoka;
+  font-family: var(--font), sans-serif;
   font-size: 1.5rem;
   font-style: normal;
   line-height: 1.75rem; /* 116.667% */
@@ -106,7 +106,7 @@
 
 .titolo4 {
   text-align: center;
-  font-family: Fredoka;
+  font-family: var(--font), sans-serif;
   font-size: 1.25rem;
   font-style: normal;
   line-height: 1.75rem; /* 140% */

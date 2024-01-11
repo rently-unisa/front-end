@@ -25,8 +25,8 @@ const Catalogo = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState();
-  const [start, setStart] = useState();
-  const [end, setEnd] = useState();
+  const [start, setStart] = useState(null);
+  const [end, setEnd] = useState(null);
 
   const categories = [
     "Elettronica",
@@ -225,12 +225,12 @@ const Catalogo = () => {
   const isRatingSelected = (ad) => {
     const adRatings = getValutazioniOggettoByAnnuncioId(ad.id);
 
-    if (adRatings.length === 0) {
-      return false;
-    }
-
     if (selectedRating.length === 0) {
       return true;
+    }
+
+    if (adRatings.length === 0) {
+      return false;
     }
 
     const averageRating =
@@ -309,28 +309,6 @@ const Catalogo = () => {
     }
   };
 
-  const handleStartChange = (newValue) => {
-    if (
-      dayjs(newValue).isBefore(dayjs(), "day") ||
-      (end && dayjs(newValue).isAfter(dayjs(end), "day"))
-    ) {
-      return;
-    }
-
-    setStart(newValue);
-  };
-
-  const handleEndChange = (newValue) => {
-    if (
-      dayjs(newValue).isBefore(dayjs(), "day") ||
-      (start && dayjs(newValue).isBefore(dayjs(start), "day"))
-    ) {
-      return;
-    }
-
-    setEnd(newValue);
-  };
-
   const Datebox = isDateOpen ? (
     <div className="CheckboxContainer">
       <button onClick={handleDate}>
@@ -349,7 +327,16 @@ const Catalogo = () => {
             <DatePicker
               label="Data Inizio"
               value={start}
-              onChange={(newValue) => handleStartChange(newValue)}
+              onChange={(newValue) => {
+                if (
+                  dayjs(newValue).isBefore(dayjs(), "day") ||
+                  (end && dayjs(newValue).isAfter(dayjs(end), "day"))
+                ) {
+                  setStart(null);
+                } else {
+                  setStart(newValue);
+                }
+              }}
             />
           </DemoContainer>
         </LocalizationProvider>
@@ -358,7 +345,16 @@ const Catalogo = () => {
             <DatePicker
               label="Data Fine"
               value={end}
-              onChange={(newValue) => handleEndChange(newValue)}
+              onChange={(newValue) => {
+                if (
+                  dayjs(newValue).isBefore(dayjs(), "day") ||
+                  (start && dayjs(newValue).isBefore(dayjs(start), "day"))
+                ) {
+                  setEnd(null);
+                } else {
+                  setEnd(newValue);
+                }
+              }}
             />
           </DemoContainer>
         </LocalizationProvider>
@@ -375,23 +371,20 @@ const Catalogo = () => {
 
   const isDateSelected = (ad) => {
     const adDate = getRentalsByAnnuncioId(ad.id);
-
     if (adDate.length === 0 || (start === null && end === null)) {
       return true;
     }
 
     if (
-      dayjs(start).isBefore(dayjs(), "day") ||
       dayjs(end).isBefore(dayjs(start), "day") ||
       adDate.some(
         (noleggio) =>
-          noleggio.stato !== "in attesa" &&
-          ((dayjs(start).isAfter(dayjs(noleggio.dataInizio), "day") &&
+          (dayjs(start).isAfter(dayjs(noleggio.dataInizio), "day") &&
             dayjs(start).isBefore(dayjs(noleggio.dataFine), "day")) ||
-            (dayjs(end).isAfter(dayjs(noleggio.dataInizio), "day") &&
-              dayjs(end).isBefore(dayjs(noleggio.dataFine), "day")) ||
-            (dayjs(start).isBefore(dayjs(noleggio.dataInizio), "day") &&
-              dayjs(end).isAfter(dayjs(noleggio.dataInizio), "day")))
+          (dayjs(end).isAfter(dayjs(noleggio.dataInizio), "day") &&
+            dayjs(end).isBefore(dayjs(noleggio.dataFine), "day")) ||
+          (dayjs(start).isBefore(dayjs(noleggio.dataInizio), "day") &&
+            dayjs(end).isAfter(dayjs(noleggio.dataInizio), "day"))
       )
     ) {
       return false;

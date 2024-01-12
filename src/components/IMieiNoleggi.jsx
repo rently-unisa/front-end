@@ -44,7 +44,6 @@ const IMieiNoleggi = () => {
     const noleggio = getRentalById(id);
     noleggio.stato = stato;
     modifyRental(noleggio);
-    console.log(noleggio.stato);
     setNoleggianteRentals(getRentalsByNoleggiante(idUser));
     setNoleggiatoreRentals(getRentalsByNoleggiatore(idUser));
   };

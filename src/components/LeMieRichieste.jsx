@@ -58,7 +58,6 @@ const LeMieRichieste = () => {
   };
 
   const handleDelete = (id) => {
-    console.log(id);
     deleteRentalById(id);
     setNoleggianteRentalsRequest(getRentalsRequestsByNoleggiante(idUser));
   };

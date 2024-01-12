@@ -8,7 +8,6 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
 
-  // Verifica la presenza di un cookie di autenticazione al caricamento della pagina
   useEffect(() => {
     const savedUsername = Cookies.get("username");
     if (savedUsername) {
@@ -20,8 +19,7 @@ export const AuthProvider = ({ children }) => {
   const login = (user) => {
     setIsLoggedIn(true);
     setUsername(user.username);
-
-    // Salva il nome utente nel cookie di autenticazione
+    console.log(user);
     Cookies.set("username", user.username);
   };
 
@@ -29,7 +27,6 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
     setUsername("");
 
-    // Rimuovi il cookie di autenticazione al logout
     Cookies.remove("username");
   };
 

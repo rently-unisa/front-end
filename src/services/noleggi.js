@@ -141,6 +141,23 @@ const getRentalById = (rentalId) => {
   return rentalsData.find((rental) => rental.id === rentalId);
 };
 
+/*const getRentalById = async (rentalId) => {
+  try {
+    const response = await fetch(`http://localhost:8080/------qualcosa------?id=${id}`);
+
+    if (response.ok) {
+      const rental = await response.json();
+      return rental;
+    } else {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Errore sconosciuto durante il recupero del profilo utente');
+    }
+  } catch (error) {
+    console.error('Errore durante la richiesta del profilo utente:', error.message);
+    return null;
+  }
+}; */
+
 const addRental = (newRental) => {
   rentalsData.push(newRental);
 };

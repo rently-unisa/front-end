@@ -28,13 +28,27 @@ const Signup = () => {
         password,
         premium: false,
       };
-      const user = addUser(newUser);
-      if (user) {
-        login(user);
-        navigate("/");
-      } else {
-        alert("Credenziali non valide");
-      }
+      addUser(newUser).then((response) => {
+        try {
+          if (response.ok) {
+            response.json().then((newUser) => {
+              if (newUser) {
+                login(newUser);
+                navigate("/");
+              } else {
+                alert("Credenziali non valide");
+              }
+            });
+          } else {
+            const errorMessage = response.text();
+            throw new Error(
+              errorMessage || "Errore sconosciuto durante la registrazione"
+            );
+          }
+        } catch (error) {
+          alert("Errore durante la richiesta di registrazione", error.message);
+        }
+      });
     } else {
       alert("Password non coincidenti");
     }

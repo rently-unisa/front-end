@@ -87,21 +87,62 @@ const getUserByUsernameAndPassword = (username, password) => {
   );
 };
 
-const getUserByEmailAndPassword = (email, password) => {
+/*const getUserByEmailAndPassword = (email, password) => {
   return usersData.find(
     (user) => user.email === email && user.password === password
   );
+};*/
+
+const getUserByEmailAndPassword = async (email, password) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/autenticazione/login?email=${email}&password=${password}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di login");
+    return "Credenziali non valide";
+  }
 };
 
-const getUserById = (id) => {
+/*const getUserById = (id) => {
   return usersData.find((user) => user.id === id);
+};*/
+
+const getUserById = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/area-personale/profilo-utente?id=${id}`
+    );
+
+    if (response.ok) {
+      const utente = await response.json();
+      return utente;
+    } else {
+      const errorMessage = await response.text();
+      throw new Error(
+        errorMessage ||
+          "Errore sconosciuto durante il recupero del profilo utente"
+      );
+    }
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta del profilo utente:",
+      error.message
+    );
+    return null;
+  }
 };
 
 const getUserByUsername = (username) => {
   return usersData.find((user) => user.username === username);
 };
 
-const addUser = (newUserData) => {
+/*const addUser = (newUserData) => {
   const userExists = usersData.some(
     (user) =>
       user.email === newUserData.email || user.username === newUserData.username
@@ -120,6 +161,29 @@ const addUser = (newUserData) => {
     return newUser;
   } else {
     return null;
+  }
+};*/
+
+const addUser = async (newUserData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:8080/api/autenticazione/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUserData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di registrazione:",
+      error.message
+    );
+    return "Credenziali non valide";
   }
 };
 
@@ -147,6 +211,31 @@ const modifyUser = (newUserData) => {
     return false;
   }
 };
+
+/*const modifyUser = async (newUserData) => {
+  try {
+    const duplicateUsersResponse = await fetch('http://localhost:8080/gestione-area-personale/modifica-dati-utente', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUserData),
+    });
+
+    if (duplicateUsersResponse.ok) {
+      const successMessage = await duplicateUsersResponse.text();
+      console.log(successMessage); // Puoi gestire il messaggio di successo come preferisci
+      return true;
+    } else {
+      const errorMessage = await duplicateUsersResponse.text();
+      console.error(errorMessage || 'Errore sconosciuto durante la modifica dell\'utente');
+      return false;
+    }
+  } catch (error) {
+    console.error('Errore durante la richiesta di modifica dell\'utente:', error.message);
+    return false;
+  }
+}; */
 
 export {
   getAllUsers,

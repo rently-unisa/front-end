@@ -174,10 +174,40 @@ const getAllAds = () => {
   return adsData;
 };
 
+/*const getAllAds = async () => {
+  try {
+    const response = await fetch(`http://localhost:8080/ricerca/all`);
+
+    if (response.ok) {
+      const ads = await response.json();
+      return ads;
+    } else {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Errore durante il recupero degli annunci');
+    }
+  } catch (error) {
+    return null;
+  } */
+
 const getPremiumAds = () => {
   const users = getPremiumUsers();
   return adsData.filter((ad) => users.some((user) => user.id === ad.idUtente));
 };
+
+/*const getPremiumAds = async () => {
+  try {
+    const response = await fetch(`http://localhost:8080/ricerca/premium`);
+
+    if (response.ok) {
+      const premiumAds = await response.json();
+      return premiumAds;
+    } else {
+      const errorMessage = await response.text();
+      throw new Error(errorMessage || 'Errore durante il recupero degli annunci');
+    }
+  } catch (error) {
+    return null;
+  } */
 
 const getAdById = (id) => {
   return adsData.find((ad) => ad.id === id);
@@ -205,25 +235,45 @@ const deleteAdById = (id) => {
 
   if (indexToDelete !== -1) {
     adsData.splice(indexToDelete, 1);
-    return true; // Indica che l'eliminazione è avvenuta con successo
+    return true;
   }
 
-  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+  return false;
 };
+
+/*const addAdd = (newAdData) => {
+try {
+  const response = await fetch('http://localhost:8080/gestione-annuncio/add', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newAdData),
+  });
+
+  if (response.ok) {
+    const newAdd = await response.json();
+    return newAdd;
+  } else {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage || 'Errore sconosciuto durante la registrazione');
+  }
+} catch (error) {
+  console.error('Errore durante la richiesta di registrazione:', error.message);
+  return null;
+}
+};*/
 
 const modifyAd = (modifiedAd) => {
   const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
 
   if (indexToModify !== -1) {
-    // Elimina l'annuncio esistente
     deleteAdById(modifiedAd.id);
-
-    // Aggiungi il nuovo annuncio
     adsData.push(modifiedAd);
-    return true; // Indica che la modifica è avvenuta con successo
+    return true;
   }
 
-  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+  return false;
 };
 
 export {

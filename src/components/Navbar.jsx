@@ -4,9 +4,11 @@ import search from "../image/search.svg";
 import "../style/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
-  const { isLoggedIn, username, logout } = useAuth();
+  const { isLoggedIn, logout } = useAuth();
+  const username = Cookies.get("username");
   const navigate = useNavigate();
 
   const handleLogout = () => {

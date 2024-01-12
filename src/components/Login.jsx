@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import {
-  getUserByUsernameAndPassword,
-  getUserByEmailAndPassword,
-} from "../services/utenti";
+import { getUserByEmailAndPassword } from "../services/utenti";
 import logo from "../image/Logo.png";
 import "../style/Login.css";
 import image1 from "../image/ondinaprova1.svg";
@@ -19,19 +16,27 @@ const Login = () => {
   const navigate = useNavigate();
 
   const handleLogin = () => {
-    let user = getUserByUsernameAndPassword(username, password);
-    if (user) {
-      login(user);
-      navigate("/");
-    } else {
-      user = getUserByEmailAndPassword(username, password);
-      if (user) {
-        login(user);
-        navigate("/");
-      } else {
-        alert("Credenziali non valide");
+    getUserByEmailAndPassword(username, password).then((response) => {
+      try {
+        if (response.ok) {
+          response.json().then((newUser) => {
+            if (newUser) {
+              login(newUser);
+              navigate("/");
+            } else {
+              alert("Errore durante la richiesta del profilo utente");
+            }
+          });
+        } else {
+          const errorMessage = response.text();
+          throw new Error(
+            errorMessage || "Errore sconosciuto durante il login"
+          );
+        }
+      } catch (error) {
+        alert("Errore durante la richiesta di login:", error.message);
       }
-    }
+    });
   };
 
   return (

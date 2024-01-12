@@ -200,4 +200,38 @@ const addAd = (newAdData) => {
   return newAd;
 };
 
-export { getAllAds, getPremiumAds, getAdById, getAdsByUserId, addAd };
+const deleteAdById = (id) => {
+  const indexToDelete = adsData.findIndex((ad) => ad.id === id);
+
+  if (indexToDelete !== -1) {
+    adsData.splice(indexToDelete, 1);
+    return true; // Indica che l'eliminazione è avvenuta con successo
+  }
+
+  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+};
+
+const modifyAd = (modifiedAd) => {
+  const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
+
+  if (indexToModify !== -1) {
+    // Elimina l'annuncio esistente
+    deleteAdById(modifiedAd.id);
+
+    // Aggiungi il nuovo annuncio
+    adsData.push(modifiedAd);
+    return true; // Indica che la modifica è avvenuta con successo
+  }
+
+  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+};
+
+export {
+  getAllAds,
+  getPremiumAds,
+  getAdById,
+  getAdsByUserId,
+  addAd,
+  deleteAdById,
+  modifyAd,
+};

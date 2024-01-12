@@ -205,7 +205,6 @@ const getRentalsRequestsByNoleggiatore = (noleggiatoreId) => {
 const modifyRental = (modifiedRental) => {
   deleteRentalById(modifiedRental.id);
   rentalsData.push(modifiedRental);
-  console.log(modifiedRental);
 };
 
 export {

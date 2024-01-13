@@ -24,10 +24,7 @@ const AreaPersonale = () => {
         );
       }
     } catch (error) {
-      console.error(
-        "Errore durante la richiesta del profilo utente:",
-        error.message
-      );
+      alert("Errore durante la richiesta del profilo utente:", error.message);
     }
   });
 

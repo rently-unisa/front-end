@@ -81,12 +81,6 @@ const getPremiumUsers = () => {
   return usersData.filter((user) => user.premium === true);
 };
 
-const getUserByUsernameAndPassword = (username, password) => {
-  return usersData.find(
-    (user) => user.username === username && user.password === password
-  );
-};
-
 /*const getUserByEmailAndPassword = (email, password) => {
   return usersData.find(
     (user) => user.email === email && user.password === password
@@ -96,9 +90,13 @@ const getUserByUsernameAndPassword = (username, password) => {
 const getUserByEmailAndPassword = async (email, password) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/autenticazione/login?email=${email}&password=${password}`,
+      "http://localhost:8080/api/autenticazione/login",
       {
-        method: "GET",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
       }
     );
 
@@ -231,7 +229,6 @@ const modifyUser = (newUserData) => {
 export {
   getAllUsers,
   getPremiumUsers,
-  getUserByUsernameAndPassword,
   getUserByEmailAndPassword,
   getUserById,
   getUserByUsername,

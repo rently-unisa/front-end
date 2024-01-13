@@ -176,7 +176,7 @@ const getAllAds = () => {
 
 /*const getAllAds = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/ricerca/all`);
+    const response = await fetch(`http://localhost:8080/api/ricerca/all`);
 
     if (response.ok) {
       const ads = await response.json();
@@ -196,7 +196,7 @@ const getPremiumAds = () => {
 
 /*const getPremiumAds = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/ricerca/premium`);
+    const response = await fetch(`http://localhost:8080/api/ricerca/premium`);
 
     if (response.ok) {
       const premiumAds = await response.json();
@@ -213,9 +213,49 @@ const getAdById = (id) => {
   return adsData.find((ad) => ad.id === id);
 };
 
+/*const getAdById = async (id) => {
+  try {
+    const response = await fetch(
+      {
+        "http://localhost:8080/api/gestione-annuncio/visualliza-annuncio",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di login");
+    return "Credenziali non valide";
+  }
+}; */
+
 const getAdsByUserId = (userId) => {
   return adsData.filter((ad) => ad.idUtente === userId);
 };
+
+/*const getAdById = async (id) => {
+  try {
+    const response = await fetch(
+      {
+        "http://localhost:8080/api/gestione-annuncio/visualliza-annunci-utente",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di login");
+    return "Credenziali non valide";
+  }
+}; */
 
 const addAd = (newAdData) => {
   const newAdId = adsData.length + 1;
@@ -230,6 +270,29 @@ const addAd = (newAdData) => {
   return newAd;
 };
 
+/*const addAd = (newAdData) => {
+try {
+  const response = await fetch('http://localhost:8080/api/gestione-annuncio/aggiungi-annuncio', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newAdData),
+  });
+
+  if (response.ok) {
+    const newAd = await response.json();
+    return newAd;
+  } else {
+    const errorMessage = await response.text();
+    throw new Error(errorMessage || 'Errore sconosciuto durante la registrazione');
+  }
+} catch (error) {
+  console.error('Errore durante la richiesta di registrazione:', error.message);
+  return null;
+}
+};*/
+
 const deleteAdById = (id) => {
   const indexToDelete = adsData.findIndex((ad) => ad.id === id);
 
@@ -240,29 +303,6 @@ const deleteAdById = (id) => {
 
   return false;
 };
-
-/*const addAdd = (newAdData) => {
-try {
-  const response = await fetch('http://localhost:8080/gestione-annuncio/add', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newAdData),
-  });
-
-  if (response.ok) {
-    const newAdd = await response.json();
-    return newAdd;
-  } else {
-    const errorMessage = await response.text();
-    throw new Error(errorMessage || 'Errore sconosciuto durante la registrazione');
-  }
-} catch (error) {
-  console.error('Errore durante la richiesta di registrazione:', error.message);
-  return null;
-}
-};*/
 
 const modifyAd = (modifiedAd) => {
   const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
@@ -275,6 +315,31 @@ const modifyAd = (modifiedAd) => {
 
   return false;
 };
+
+/*const modifyAd = async (modifiedAd) => {
+  try {
+    const duplicateUsersResponse = await fetch('http://localhost:8080/api/gestione-annuncio/modifica-annuncio', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(modifiedAd),
+    });
+
+    if (duplicateUsersResponse.ok) {
+      const successMessage = await duplicateUsersResponse.text();
+      console.log(successMessage); // Puoi gestire il messaggio di successo come preferisci
+      return true;
+    } else {
+      const errorMessage = await duplicateUsersResponse.text();
+      console.error(errorMessage || 'Errore sconosciuto durante la modifica dell\'utente');
+      return false;
+    }
+  } catch (error) {
+    console.error('Errore durante la richiesta di modifica dell\'utente:', error.message);
+    return false;
+  }
+}; */
 
 export {
   getAllAds,

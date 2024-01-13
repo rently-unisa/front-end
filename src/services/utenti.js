@@ -119,16 +119,7 @@ const getUserById = async (id) => {
       `http://localhost:8080/api/area-personale/profilo-utente?id=${id}`
     );
 
-    if (response.ok) {
-      const utente = await response.json();
-      return utente;
-    } else {
-      const errorMessage = await response.text();
-      throw new Error(
-        errorMessage ||
-          "Errore sconosciuto durante il recupero del profilo utente"
-      );
-    }
+    return response;
   } catch (error) {
     console.error(
       "Errore durante la richiesta del profilo utente:",

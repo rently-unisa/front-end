@@ -5,13 +5,31 @@ import React, { useState, useEffect } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useAuth } from "../AuthContext";
-import { getUserByUsername, modifyUser } from "../services/utenti";
+import { getUserById, modifyUser } from "../services/utenti";
 import { Link } from "react-router-dom";
 import "../style/AreaPersonale.css";
 
 const AreaPersonale = () => {
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
+  const { idUsername } = useAuth();
+  const [user, setUser] = useState();
+  getUserById(idUsername).then((response) => {
+    try {
+      if (response.ok) {
+        response.json().then((utente) => setUser(utente));
+      } else {
+        const errorMessage = response.text();
+        throw new Error(
+          errorMessage ||
+            "Errore sconosciuto durante il recupero del profilo utente"
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Errore durante la richiesta del profilo utente:",
+        error.message
+      );
+    }
+  });
 
   useEffect(() => {
     if (user) {
@@ -35,7 +53,6 @@ const AreaPersonale = () => {
   const [userUsername, setUsername] = useState("");
   const [newPassword, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  let result = null;
 
   const handleModify = (subscribe) => {
     let password = "";
@@ -57,7 +74,7 @@ const AreaPersonale = () => {
       password,
       premium: subscribe,
     };
-    result = modifyUser(newUserData);
+    modifyUser(newUserData);
 
     setPassword("");
     setConfPassword("");

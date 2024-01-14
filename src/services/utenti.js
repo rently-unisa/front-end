@@ -101,6 +101,10 @@ const getUserByUsername = (username) => {
   return usersData.find((user) => user.username === username);
 };
 
+const getUserByEmail = (email) => {
+  return usersData.find((user) => user.email === email);
+};
+
 const addUser = (newUserData) => {
   const userExists = usersData.some(
     (user) =>
@@ -155,6 +159,7 @@ export {
   getUserByEmailAndPassword,
   getUserById,
   getUserByUsername,
+  getUserByEmail,
   addUser,
   deleteUserById,
   modifyUser,

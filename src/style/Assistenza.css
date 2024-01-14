@@ -1,0 +1,120 @@
+.onde {
+    height: 1.25rem;
+}
+
+.ondaSX {
+    position: absolute;
+    left: 0rem;
+    top: 6%;
+    z-index: 0;
+}
+
+.ondaDX {
+    position: absolute;
+    right: 0rem;
+    top: 6%;
+    z-index: 0;
+}
+
+.assistenzaContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 1.1875rem 1.8125rem;
+    align-items: center;
+    gap: 1.1875rem;
+    z-index: 0;
+}
+
+.assistenzaImg {
+    flex: 1;
+}
+
+.boxForm {
+    flex: 1;
+    height: 36.75rem;
+    width: 38rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.6875rem;
+    border-radius: 1.875rem;
+    background: var(--chiaro);
+    z-index: 2;
+    padding: 4rem;
+    margin: 5rem;
+}
+
+.title {
+    color: --nero;
+    text-align: center;
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 3rem; /* 120% */
+    display: flex;
+    width: 32.5rem;
+    height: 4rem;
+    flex-direction: column;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.description {
+    width: 32.5rem;
+    color: --nero;
+    text-align: center;
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.5rem; /* 120% */
+}
+
+.fields {
+    display: flex;
+    font-size: 1.25rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 0.25rem;
+    flex-shrink: 0;
+}
+
+.textBox {
+    display: flex;
+    white-space: nowrap;
+    width: 37.5rem;
+    padding: 0.5rem 0.75rem;
+    align-items: center;
+    font-family: var(--font), sans-serif;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(0, 0, 0, 0.10);
+    background: #FFF;
+}
+
+.radioButton {
+    accent-color: var(--nero);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.radioButton label {
+    margin-right: 5rem;
+}
+
+
+.button {
+    width: 10rem;
+    padding: 0.75rem;
+    border-radius: 0.625rem;
+    border: 3px solid var(--nero);
+    background: var(--nero);
+    color: var(--bianco);
+    font-family: var(--font);
+    font-size: var(--font-size);
+    font-weight: 500;
+    line-height: 1.5rem;
+}

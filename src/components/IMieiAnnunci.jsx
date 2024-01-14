@@ -25,7 +25,7 @@ const IMieiAnnunci = () => {
         <div className="rentalTitleContainer">
           <h1>I miei annunci</h1>
           <div className="pulsante">
-            <Link to="/">Crea un annuncio</Link>
+            <Link to="/creaUnAnnuncio">Crea un annuncio</Link>
           </div>
         </div>
         <div className="rentalList">

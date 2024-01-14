@@ -3,6 +3,8 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Loader from "./Loader";
+import { useAuth } from "../AuthContext";
+import RichiestaNoleggio from "./RichiestaNoleggio";
 import { getAdById } from "../services/annunciNoleggio";
 import { getUserById } from "../services/utenti";
 import { getValutazioniOggettoByAnnuncioId } from "../services/valutazioneOggetto";
@@ -13,15 +15,17 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../style/Dettagli.css";
 
 const Dettagli = () => {
-  const idAnnuncio = useParams();
+  const idAnnuncio = parseInt(useParams().id, 10);
   const [Annuncio, setAnnuncio] = useState();
   const [adUser, setAdUser] = useState();
   const [ratings, setRatings] = useState();
   const [usernames, setUsernames] = useState();
+  const { isLoggedIn } = useAuth();
+  const [popupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
     const fetchAd = async () => {
-      const adData = await getAdById(parseInt(idAnnuncio.id, 10));
+      const adData = await getAdById(idAnnuncio);
       await new Promise((resolve) => setTimeout(resolve, 2000)); //non serve
       setAnnuncio(adData);
       fetchUser(adData.idUtente);
@@ -65,7 +69,15 @@ const Dettagli = () => {
                 <div className="adDescription">{Annuncio.descrizione}</div>
                 <div className="actionButtons">
                   <div className="requestButton">
-                    <button>Richiedi il noleggio</button>
+                    <button
+                      onClick={() =>
+                        isLoggedIn
+                          ? setPopupVisible(true)
+                          : alert("Fare l'accesso per poter fare una richiesta")
+                      }
+                    >
+                      Richiedi il noleggio
+                    </button>
                   </div>
                   <div className="contact">
                     <AccountCircleIcon />
@@ -248,6 +260,15 @@ const Dettagli = () => {
               </div>
             </div>
           </div>
+          {popupVisible && (
+            <RichiestaNoleggio
+              idAnnuncio={idAnnuncio}
+              idCreatore={Annuncio.idUtente}
+              prezzoAnnuncio={Annuncio.prezzo}
+              dataFinale={Annuncio.dataFine}
+              onClose={() => setPopupVisible(false)}
+            />
+          )}
         </>
       ) : (
         <div className="Loading">

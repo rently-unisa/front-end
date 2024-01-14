@@ -1,0 +1,106 @@
+.popupContainer {
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupContent {
+  display: flex;
+  width: 19rem;
+  height: 17.875rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  overflow: hidden;
+  border-radius: 1.25rem;
+  background: var(--chiaro);
+}
+
+.popupHeader {
+  position: relative;
+  display: flex;
+  width: 90%;
+  height: 20%;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupTitle {
+  text-align: center;
+  color: var(--nero);
+  font-size: var(--font-size2);
+  font-family: var(--font), sans-serif;
+  font-weight: 400;
+  line-height: 1.75rem;
+  word-wrap: break-word;
+}
+
+.closeButton {
+  width: 1.5625rem;
+  height: 1.5625rem;
+  position: absolute;
+  top: 5px;
+  left: 3px;
+  border-radius: 10rem;
+  background-color: var(--nero);
+  border: none;
+}
+
+.closeIcon {
+  position: absolute;
+  top: 3px;
+  left: 2.5px;
+  color: var(--bianco);
+}
+
+.closeButton:hover {
+  background-color: var(--bianco);
+}
+
+.closeIcon:hover {
+  color: var(--nero);
+}
+
+.popupBody {
+  width: 10.9375rem;
+  height: 10.8125rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9375rem;
+}
+
+.popupText {
+  font-weight: 400;
+  line-height: 24px;
+  word-wrap: break-word;
+}
+
+.popupButton {
+  height: 48px;
+  padding: 12px;
+  background: #282a28;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupButton button {
+  color: #fffdf8;
+  font-size: 16px;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+  line-height: 24px;
+  word-wrap: break-word;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

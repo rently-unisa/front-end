@@ -33,7 +33,7 @@ const adsData = [
   },
   {
     id: 3,
-    idUtente: 1,
+    idUtente: 3,
     titolo: "Annuncio 3",
     strada: "Via Nuova 3",
     civico: "789",
@@ -48,7 +48,7 @@ const adsData = [
   },
   {
     id: 4,
-    idUtente: 2,
+    idUtente: 5,
     titolo: "Annuncio 4",
     strada: "Via Vecchia 7",
     civico: "101",
@@ -63,7 +63,7 @@ const adsData = [
   },
   {
     id: 5,
-    idUtente: 2,
+    idUtente: 5,
     titolo: "Annuncio 5",
     strada: "Via Nuova 5",
     civico: "999",
@@ -78,7 +78,7 @@ const adsData = [
   },
   {
     id: 6,
-    idUtente: 2,
+    idUtente: 6,
     titolo: "Annuncio 6",
     strada: "Via Antica 10",
     civico: "777",
@@ -105,6 +105,68 @@ const adsData = [
     categoria: "Libri",
     dataFine: "2024-04-10",
     condizioni: "Ricondizionato",
+  },
+  {
+    id: 8,
+    idUtente: 4,
+    titolo: "Smartphone Samsung Galaxy S21",
+    strada: "Via Tecnologica 42",
+    civico: "789",
+    città: "Città1",
+    cap: "98765",
+    descrizione: "Vendo smartphone Samsung Galaxy S21 in ottime condizioni.",
+    immagine: "/images/ad8.jpg",
+    prezzo: 599.99,
+    categoria: "Elettronica",
+    dataFine: "2024-02-15",
+    condizioni: "Usato",
+  },
+  {
+    id: 9,
+    idUtente: 7,
+    titolo: "Tavolo da Pranzo Moderno",
+    strada: "Via Arredamento 13",
+    civico: "222",
+    città: "Città1",
+    cap: "13579",
+    descrizione:
+      "Vendo un elegante tavolo da pranzo moderno, perfetto per la tua casa.",
+    immagine: "/images/ad9.jpg",
+    prezzo: 349.99,
+    categoria: "Mobili",
+    dataFine: "2024-03-01",
+    condizioni: "Nuovo",
+  },
+  {
+    id: 10,
+    idUtente: 2,
+    titolo: "Giacca in Pelle da Uomo",
+    strada: "Via Fashion 7",
+    civico: "777",
+    città: "Città2",
+    cap: "24680",
+    descrizione: "Giacca in pelle da uomo, taglia M, colore nero.",
+    immagine: "/images/ad10.jpg",
+    prezzo: 89.99,
+    categoria: "Abbigliamento",
+    dataFine: "2024-04-05",
+    condizioni: "Ricondizionato",
+  },
+  {
+    id: 11,
+    idUtente: 1,
+    titolo: "Libro: Il Signore degli Anelli",
+    strada: "Via Libreria 8",
+    civico: "888",
+    città: "Città1",
+    cap: "54321",
+    descrizione:
+      "Vendo il classico libro 'Il Signore degli Anelli' in edizione deluxe.",
+    immagine: "/images/ad11.jpg",
+    prezzo: 29.99,
+    categoria: "Libri",
+    dataFine: "2024-05-20",
+    condizioni: "Nuovo",
   },
 ];
 
@@ -138,4 +200,38 @@ const addAd = (newAdData) => {
   return newAd;
 };
 
-export { getAllAds, getPremiumAds, getAdById, getAdsByUserId, addAd };
+const deleteAdById = (id) => {
+  const indexToDelete = adsData.findIndex((ad) => ad.id === id);
+
+  if (indexToDelete !== -1) {
+    adsData.splice(indexToDelete, 1);
+    return true; // Indica che l'eliminazione è avvenuta con successo
+  }
+
+  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+};
+
+const modifyAd = (modifiedAd) => {
+  const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
+
+  if (indexToModify !== -1) {
+    // Elimina l'annuncio esistente
+    deleteAdById(modifiedAd.id);
+
+    // Aggiungi il nuovo annuncio
+    adsData.push(modifiedAd);
+    return true; // Indica che la modifica è avvenuta con successo
+  }
+
+  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+};
+
+export {
+  getAllAds,
+  getPremiumAds,
+  getAdById,
+  getAdsByUserId,
+  addAd,
+  deleteAdById,
+  modifyAd,
+};

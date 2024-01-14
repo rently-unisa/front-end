@@ -6,7 +6,6 @@
   top: 0;
   left: 0;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
   z-index: 1000;
@@ -15,7 +14,12 @@
 .sfondo h1 {
   color: var(--bianco);
   position: absolute;
-  top: 2%;
+  top: -0.5rem;
+}
+
+.hamsterContainer {
+  position: absolute;
+  bottom: -3rem;
 }
 
 .wheel-and-hamster {

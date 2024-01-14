@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -27,6 +27,11 @@ const Catalogo = () => {
   const [selectedOrder, setSelectedOrder] = useState();
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
+  const termineRicerca = useParams().search;
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm1, setSearchTerm1] = useState(
+    termineRicerca ? termineRicerca : ""
+  );
 
   const categories = [
     "Elettronica",
@@ -61,7 +66,8 @@ const Catalogo = () => {
 
     fetchPremiumAds();
     fetchAllAds();
-  }, []);
+    if (termineRicerca) console.log(termineRicerca);
+  }, [termineRicerca]);
 
   const catalogItems = [
     ...premiumAds,
@@ -69,6 +75,14 @@ const Catalogo = () => {
       (ad) => !premiumAds.some((premiumAd) => premiumAd.id === ad.id)
     ),
   ];
+
+  const autocompleteItems = catalogItems
+    .filter((ad) => ad.titolo.toLowerCase().includes(searchTerm.toLowerCase()))
+    .map((ad) => (
+      <div key={ad.id} onClick={() => setSearchTerm(ad.titolo)}>
+        {ad.titolo}
+      </div>
+    ));
 
   const handleCategoria = () => {
     isCategoriaOpen ? setIsCategoriaOpen(false) : setIsCategoriaOpen(true);
@@ -393,6 +407,12 @@ const Catalogo = () => {
     }
   };
 
+  const filteredCatalogItems = orderedCatalogItems().filter((ad) => {
+    const title = ad.titolo.toLowerCase();
+    const searchTermLower = searchTerm1.toLowerCase();
+    return title.includes(searchTermLower);
+  });
+
   return (
     <div className="Page">
       <Navbar />
@@ -401,9 +421,37 @@ const Catalogo = () => {
         className="orizontal"
       >
         <div className="cercaFiltra">
-          <div className="Ricerca">
-            <input type="text" placeholder="Cerca un articolo" />
-            <button>Cerca</button>
+          <div style={{ position: "relative" }} className="Ricerca">
+            <input
+              type="text"
+              placeholder="Cerca un articolo"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <button onClick={() => setSearchTerm1(searchTerm)}>Cerca</button>
+            {autocompleteItems.length > 0 &&
+              searchTerm !== "" &&
+              !(
+                autocompleteItems.length === 1 &&
+                autocompleteItems.map((item) => {
+                  return item.props.children === searchTerm;
+                })
+              ) && (
+                <div className="dropdown-content">
+                  <div className="dropdown-style">
+                    <div className="Autocomplete">
+                      {autocompleteItems.map((item) => (
+                        <button
+                          key={item.key}
+                          onClick={() => setSearchTerm(item.props.children)}
+                        >
+                          {item.props.children}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
           </div>
           <div className="Filtra">
             {Categoriabox}
@@ -416,7 +464,7 @@ const Catalogo = () => {
           style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} // va nei CSS
           className="listaAnnunciCatalogo"
         >
-          {orderedCatalogItems().map((ad) => (
+          {filteredCatalogItems.map((ad) => (
             <Link to={`/dettagli/${ad.id}`} key={ad.id}>
               <div
                 className={`card ${isCategorySelected(ad) ? "" : "inactive"} ${

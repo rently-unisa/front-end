@@ -265,7 +265,7 @@ const Dettagli = () => {
                 </div>
                 <div className="userReviews">
                   {ratings.map((rating) => (
-                    <div className="containerUserReviews">
+                    <div key={rating.id} className="containerUserReviews">
                       <div className="usernameUserReviews">
                         {
                           usernames.find(

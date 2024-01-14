@@ -169,6 +169,7 @@
   width: 100%;
 }
 
-.user-menu:hover .dropdown-content {
+.user-menu:hover .dropdown-content,
+.Ricerca .dropdown-content {
   display: block;
 }

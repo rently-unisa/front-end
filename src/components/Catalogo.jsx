@@ -112,18 +112,11 @@ const Catalogo = () => {
 
   const Categoriabox = isCategoriaOpen ? (
     <div className="CheckboxContainer">
-      <button onClick={handleCategoria}>
+      <button className="checkboxButton" onClick={handleCategoria}>
         Categoria
         <KeyboardArrowDownIcon />
       </button>
-      <div
-        style={{
-          //riportare in CSS
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="checkboxContent">
         {categories.map((item) => (
           <div key={item}>
             <input
@@ -139,7 +132,7 @@ const Catalogo = () => {
     </div>
   ) : (
     <div className="CheckboxContainer">
-      <button onClick={handleCategoria}>
+      <button className="checkboxButton" onClick={handleCategoria}>
         Categoria
         <KeyboardArrowRightIcon />
       </button>
@@ -163,18 +156,11 @@ const Catalogo = () => {
 
   const Ratingbox = isRatingOpen ? (
     <div className="CheckboxContainer">
-      <button onClick={handleRating}>
+      <button className="checkboxButton" onClick={handleRating}>
         Rating
         <KeyboardArrowDownIcon />
       </button>
-      <div
-        style={{
-          //riportare in CSS
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="checkboxContent">
         <div>
           <input
             type="checkbox"
@@ -229,7 +215,7 @@ const Catalogo = () => {
     </div>
   ) : (
     <div className="CheckboxContainer">
-      <button onClick={handleRating}>
+      <button className="checkboxButton" onClick={handleRating}>
         Rating
         <KeyboardArrowRightIcon />
       </button>
@@ -263,17 +249,11 @@ const Catalogo = () => {
 
   const Orderbox = isOrderOpen ? (
     <div className="CheckboxContainer">
-      <button onClick={handleOrder}>
+      <button className="checkboxButton" onClick={handleOrder}>
         Ordina
         <KeyboardArrowDownIcon />
       </button>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="checkboxContent">
         {orderOptions.map((option) => (
           <div key={option}>
             <input
@@ -289,7 +269,7 @@ const Catalogo = () => {
     </div>
   ) : (
     <div className="CheckboxContainer">
-      <button onClick={handleOrder}>
+      <button className="checkboxButton" onClick={handleOrder}>
         Ordina
         <KeyboardArrowRightIcon />
       </button>
@@ -325,17 +305,11 @@ const Catalogo = () => {
 
   const Datebox = isDateOpen ? (
     <div className="CheckboxContainer">
-      <button onClick={handleDate}>
+      <button className="checkboxButton" onClick={handleDate}>
         Date
         <KeyboardArrowDownIcon />
       </button>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "flex-start",
-        }}
-      >
+      <div className="checkboxContent">
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <DemoContainer components={["DatePicker"]}>
             <DatePicker
@@ -376,7 +350,7 @@ const Catalogo = () => {
     </div>
   ) : (
     <div className="CheckboxContainer">
-      <button onClick={handleDate}>
+      <button className="checkboxButton" onClick={handleDate}>
         Date
         <KeyboardArrowRightIcon />
       </button>
@@ -416,31 +390,34 @@ const Catalogo = () => {
   return (
     <div className="Page">
       <Navbar />
-      <div
-        style={{ display: "flex", flexDirection: "row" }} //va nei CSS
-        className="orizontal"
-      >
-        <div className="cercaFiltra">
-          <div style={{ position: "relative" }} className="Ricerca">
-            <input
-              type="text"
-              placeholder="Cerca un articolo"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-            <button onClick={() => setSearchTerm1(searchTerm)}>Cerca</button>
-            {autocompleteItems.length > 0 &&
-              searchTerm !== "" &&
-              !(
-                autocompleteItems.length === 1 &&
-                autocompleteItems.map((item) => {
-                  return item.props.children === searchTerm;
-                })
-              ) && (
-                <div className="dropdown-content">
-                  <div className="dropdown-style">
-                    <div className="Autocomplete">
-                      {autocompleteItems.map((item) => (
+      <div className="vertical">
+        <h2>Annunci</h2>
+        <div className="catalogInside">
+          <div className="cercaFiltra">
+            <div className="Ricerca">
+              <input
+                type="text"
+                placeholder="Cerca articolo"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                className="ricercaButton"
+                onClick={() => setSearchTerm1(searchTerm)}
+              >
+                Cerca
+              </button>
+              {autocompleteItems.length > 0 &&
+                searchTerm !== "" &&
+                !(
+                  autocompleteItems.length === 1 &&
+                  autocompleteItems.map((item) => {
+                    return item.props.children === searchTerm;
+                  })
+                ) && (
+                  <div className="dropdown-content1">
+                    <div className="dropdown-style1">
+                      {autocompleteItems.slice(0, 5).map((item) => (
                         <button
                           key={item.key}
                           onClick={() => setSearchTerm(item.props.children)}
@@ -450,35 +427,34 @@ const Catalogo = () => {
                       ))}
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+            </div>
+            <div className="Filtra">
+              {Categoriabox}
+              {Datebox}
+              {Ratingbox}
+              {Orderbox}
+            </div>
           </div>
-          <div className="Filtra">
-            {Categoriabox}
-            {Datebox}
-            {Ratingbox}
-            {Orderbox}
-          </div>
-        </div>
-        <div
-          style={{ display: "flex", flexDirection: "row", flexWrap: "wrap" }} // va nei CSS
-          className="listaAnnunciCatalogo"
-        >
-          {filteredCatalogItems.map((ad) => (
-            <Link to={`/dettagli/${ad.id}`} key={ad.id}>
-              <div
-                className={`card ${isCategorySelected(ad) ? "" : "inactive"} ${
-                  isRatingSelected(ad) ? "" : "inactive"
-                } ${isDateSelected(ad) ? "" : "inactive"}`}
-              >
-                <img src={ad.immagine} alt="Immgagine annuncio" />
-                <div className="card-description">
-                  <p>{ad.titolo}</p>
-                  <h6>€ {ad.prezzo}/giorno</h6>
+          <div className="listaAnnunciCatalogo">
+            {filteredCatalogItems.map((ad) => (
+              <Link to={`/dettagli/${ad.id}`} key={ad.id}>
+                <div
+                  className={`card ${
+                    isCategorySelected(ad) ? "" : "inactive"
+                  } ${isRatingSelected(ad) ? "" : "inactive"} ${
+                    isDateSelected(ad) ? "" : "inactive"
+                  }`}
+                >
+                  <img src={ad.immagine} alt="Immgagine annuncio" />
+                  <div className="card-description">
+                    <p>{ad.titolo}</p>
+                    <h6>€ {ad.prezzo}/giorno</h6>
+                  </div>
                 </div>
-              </div>
-            </Link>
-          ))}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
       <Footer />

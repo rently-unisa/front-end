@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -12,10 +12,12 @@ import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 
 const Home = () => {
+  const navigate = useNavigate();
   const annunci = getPremiumAds();
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const nextSlide = () => {
     setCurrentSlide1((prevSlide) => (prevSlide + 1) % annunci.length);
@@ -57,11 +59,21 @@ const Home = () => {
           </div>
           <div className="ricerca">
             <h4>Cerca il tuo prossimo noleggio</h4>
-            <input type="text" placeholder="Cerca un articolo" />
+            <input
+              type="text"
+              placeholder="Cerca un articolo"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
             <div className="imagebox">
               <img className="imager" src={image1} alt="Immagine decorativa" />
               <img className="imagel" src={image2} alt="Immagine decorativa" />
-              <button className="cerca-button">Cerca</button>
+              <button
+                onClick={() => navigate(`/catalogo/${searchTerm}`)}
+                className="cerca-button"
+              >
+                Cerca
+              </button>
             </div>
           </div>
         </div>

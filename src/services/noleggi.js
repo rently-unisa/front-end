@@ -141,7 +141,13 @@ const getRentalById = (rentalId) => {
   return rentalsData.find((rental) => rental.id === rentalId);
 };
 
-const addRental = (newRental) => {
+const addRental = (newRentalData) => {
+  const newRentalId = rentalsData.length + 1;
+  const newRental = {
+    id: newRentalId,
+    ...newRentalData,
+  };
+
   rentalsData.push(newRental);
 };
 

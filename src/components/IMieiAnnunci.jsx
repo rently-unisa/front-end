@@ -58,7 +58,9 @@ const IMieiAnnunci = () => {
               <div className="rentalItem">
                 <h3>Operazioni</h3>
                 <div className="pulsante">
-                  <Link to="/">Modifica annuncio</Link>
+                  <Link to={`/modificaAnnuncio/${a.id}`} key={a.id}>
+                    Modifica annuncio
+                  </Link>
                 </div>
                 <button className="pulsante" onClick={() => handleDelete(a.id)}>
                   Elimina

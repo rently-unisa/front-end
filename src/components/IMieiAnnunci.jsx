@@ -1,21 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
+import Cookies from "js-cookie";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
 import "../style/ListPage.css";
-import { getUserByUsername } from "../services/utenti";
 import { getAdsByUserId, deleteAdById } from "../services/annunciNoleggio";
 
 const IMieiAnnunci = () => {
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUser = user.id;
-  const [userAds, setAds] = useState(getAdsByUserId(idUser));
+  const idUsername = Cookies.get("id");
+  const [userAds, setAds] = useState();
+
+  const fetchUserAnnunci = (idUsername) => {
+    getAdsByUserId(idUsername).then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          console.log(ad);
+          setAds(ad);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+  };
+
+  useEffect(() => {
+    fetchUserAnnunci(idUsername);
+  }, []);
 
   const handleDelete = (id) => {
     deleteAdById(id);
-    setAds(getAdsByUserId(idUser));
+    fetchUserAnnunci(idUsername);
   };
 
   return (

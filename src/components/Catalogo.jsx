@@ -49,18 +49,31 @@ const Catalogo = () => {
   ];
 
   useEffect(() => {
-    const fetchPremiumAds = async () => {
-      const premiumData = await getPremiumAds();
-      setPremiumAds(premiumData);
-    };
+    getPremiumAds().then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          console.log(ad);
+          setPremiumAds(ad);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
 
-    const fetchAllAds = async () => {
-      const allData = await getAllAds();
-      setAllAds(allData);
-    };
-
-    fetchPremiumAds();
-    fetchAllAds();
+    getAllAds().then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          console.log(ad);
+          setAllAds(ad);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
   }, []);
 
   const catalogItems = [

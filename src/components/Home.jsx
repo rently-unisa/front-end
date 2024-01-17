@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { Link } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
@@ -12,10 +12,25 @@ import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 
 const Home = () => {
-  const annunci = getPremiumAds();
+  const [annunci, setAnnunci] = useState();
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
+
+  useEffect(() => {
+    getPremiumAds().then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          console.log(ad);
+          setAnnunci(ad);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide1((prevSlide) => (prevSlide + 1) % annunci.length);
@@ -71,28 +86,34 @@ const Home = () => {
             <button onClick={prevSlide}>
               <ArrowBackIosIcon />
             </button>
-            <div className="listaAnnunciHome">
-              {annunci.map((ad, index) => (
-                <div
-                  key={index}
-                  className={`card ${index === currentSlide1 ? "primo" : ""} ${
-                    index === currentSlide2 ? "secondo" : ""
-                  } ${index === currentSlide3 ? "terzo" : ""} ${
-                    index !== currentSlide1 &&
-                    index !== currentSlide2 &&
-                    index !== currentSlide3
-                      ? "inactive"
-                      : ""
-                  }`}
-                >
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
-                  <div className="card-description">
-                    <p>{ad.titolo}</p>
-                    <h6>€ {ad.prezzo}/giorno</h6>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {annunci && (
+              <div className="listaAnnunciHome">
+                {annunci.map((ad, index) => (
+                  <Link to={`/dettagli/${ad.id}`} key={ad.id}>
+                    <div
+                      key={ad.id}
+                      className={`card ${
+                        index === currentSlide1 ? "primo" : ""
+                      } ${index === currentSlide2 ? "secondo" : ""} ${
+                        index === currentSlide3 ? "terzo" : ""
+                      } ${
+                        index !== currentSlide1 &&
+                        index !== currentSlide2 &&
+                        index !== currentSlide3
+                          ? "inactive"
+                          : ""
+                      }`}
+                    >
+                      <img src={ad.immagine} alt="Immgagine annuncio" />
+                      <div className="card-description">
+                        <p>{ad.titolo}</p>
+                        <h6>€ {ad.prezzo}/giorno</h6>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
             <button onClick={nextSlide}>
               <ArrowForwardIosIcon />
             </button>

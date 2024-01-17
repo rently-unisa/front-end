@@ -1,4 +1,4 @@
-import { getPremiumUsers } from "./utenti";
+//import { getPremiumUsers } from "./utenti";
 
 const adsData = [
   {
@@ -189,25 +189,25 @@ const getAllAds = () => {
     return null;
   } */
 
-const getPremiumAds = () => {
+/*const getPremiumAds = () => {
   const users = getPremiumUsers();
   return adsData.filter((ad) => users.some((user) => user.id === ad.idUtente));
-};
+};*/
 
-/*const getPremiumAds = async () => {
+const getPremiumAds = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/ricerca/premium`);
+    const response = await fetch(
+      `http://79.22.155.129:4000/api/ricerca/premium`,
+      {
+        method: "GET",
+      }
+    );
 
-    if (response.ok) {
-      const premiumAds = await response.json();
-      return premiumAds;
-    } else {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Errore durante il recupero degli annunci');
-    }
+    return response;
   } catch (error) {
-    return null;
-  } */
+    return "Errore nella richiesta degli annunci";
+  }
+};
 
 const getAdById = (id) => {
   return adsData.find((ad) => ad.id === id);

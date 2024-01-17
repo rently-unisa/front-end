@@ -61,17 +61,17 @@
 
 .description {
     width: 32.5rem;
-    color: --nero;
+    color: var(--nero);
     text-align: center;
-    font-size: 1.25rem;
+    font-size: var(--font-size2);
     font-style: normal;
     font-weight: 500;
-    line-height: 1.5rem; /* 120% */
+    line-height: 1.5rem;
 }
 
 .fields {
     display: flex;
-    font-size: 1.25rem;
+    font-size: var(--font-size2);
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;

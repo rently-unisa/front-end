@@ -25,7 +25,7 @@ const IMieiAnnunci = () => {
         <div className="rentalTitleContainer">
           <h1>I miei annunci</h1>
           <div className="pulsante">
-            <Link to="/">Crea un annuncio</Link>
+            <Link to="/creaUnAnnuncio">Crea un annuncio</Link>
           </div>
         </div>
         <div className="rentalList">
@@ -58,7 +58,9 @@ const IMieiAnnunci = () => {
               <div className="rentalItem">
                 <h3>Operazioni</h3>
                 <div className="pulsante">
-                  <Link to="/">Modifica annuncio</Link>
+                  <Link to={`/modificaAnnuncio/${a.id}`} key={a.id}>
+                    Modifica annuncio
+                  </Link>
                 </div>
                 <button className="pulsante" onClick={() => handleDelete(a.id)}>
                   Elimina

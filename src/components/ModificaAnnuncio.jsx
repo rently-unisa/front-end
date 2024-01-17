@@ -15,6 +15,7 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { useParams } from "react-router-dom";
+import "../style/FormAnnunci.css";
 
 const ModificaAnnuncio = () => {
   const { username } = useAuth();
@@ -265,12 +266,12 @@ const ModificaAnnuncio = () => {
   return (
     <div className="Page">
       <Navbar />
-      <div>
-        <div>
+      <div className="containerAnnunci">
+        <div className="leftContainerAnnunci">
           <div>
             <h1>Modifica l'annuncio</h1>
           </div>
-          <div className="parametri">
+          <div className="parametriAnnunci">
             <div className="parametro1">
               <p>Titolo</p>
               <input
@@ -279,16 +280,6 @@ const ModificaAnnuncio = () => {
                 value={titolo}
                 placeholder="Inserisci il titolo dell'annuncio"
                 onChange={(e) => setTitolo(e.target.value)}
-              />
-            </div>
-            <div className="parametro1">
-              <p>Descrizione</p>
-              <input
-                className="input"
-                type="text"
-                value={descrizione}
-                placeholder="Inserisci la descrizione"
-                onChange={(e) => setDescrizione(e.target.value)}
               />
             </div>
             <div className="parametro1">
@@ -341,6 +332,19 @@ const ModificaAnnuncio = () => {
                 onChange={(e) => setCap(e.target.value)}
               />
             </div>
+          </div>
+          <div className="annunciDescrizione">
+            <div className="parametro1">
+              <p>Descrizione</p>
+              <textarea
+                className="input"
+                value={descrizione}
+                placeholder="Inserisci la descrizione"
+                onChange={(e) => setDescrizione(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="boxContainerAnnunci">
             {Categoriabox}
             {Condizionebox}
             {Databox}
@@ -351,8 +355,8 @@ const ModificaAnnuncio = () => {
             </button>
           </div>
         </div>
-        <div>
-          <div>
+        <div className="rightContainerAnnunci">
+          <div className="imageAnnunciContainer">
             <img src={immagine} alt="Immagine dell'annuncio" />
           </div>
           {Imagebox}

@@ -14,6 +14,7 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import "../style/FormAnnunci.css";
 
 const CreaAnnuncio = () => {
   const { username } = useAuth();
@@ -233,12 +234,12 @@ const CreaAnnuncio = () => {
   return (
     <div className="Page">
       <Navbar />
-      <div>
-        <div>
+      <div className="containerAnnunci">
+        <div className="leftContainerAnnunci">
           <div>
             <h1>Crea un annuncio</h1>
           </div>
-          <div className="parametri">
+          <div className="parametriAnnunci">
             <div className="parametro1">
               <p>Titolo</p>
               <input
@@ -247,16 +248,6 @@ const CreaAnnuncio = () => {
                 value={titolo}
                 placeholder="Inserisci il titolo dell'annuncio"
                 onChange={(e) => setTitolo(e.target.value)}
-              />
-            </div>
-            <div className="parametro1">
-              <p>Descrizione</p>
-              <input
-                className="input"
-                type="text"
-                value={descrizione}
-                placeholder="Inserisci la descrizione"
-                onChange={(e) => setDescrizione(e.target.value)}
               />
             </div>
             <div className="parametro1">
@@ -309,6 +300,19 @@ const CreaAnnuncio = () => {
                 onChange={(e) => setCap(e.target.value)}
               />
             </div>
+          </div>
+          <div className="annunciDescrizione">
+            <div className="parametro1">
+              <p>Descrizione</p>
+              <textarea
+                className="input"
+                value={descrizione}
+                placeholder="Inserisci la descrizione"
+                onChange={(e) => setDescrizione(e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="boxContainerAnnunci">
             {Categoriabox}
             {Condizionebox}
             {Databox}
@@ -319,8 +323,8 @@ const CreaAnnuncio = () => {
             </button>
           </div>
         </div>
-        <div>
-          <div>
+        <div className="rightContainerAnnunci">
+          <div className="imageAnnunciContainer">
             <img src={immagine} alt="Immagine dell'annuncio" />
           </div>
           {Imagebox}

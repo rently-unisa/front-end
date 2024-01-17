@@ -58,10 +58,28 @@ const getValutazioniOggettoById = (id) => {
   return valutazioniOggettoData.find((valutazione) => valutazione.id === id);
 };
 
-const getValutazioniOggettoByAnnuncioId = (idAnnuncio) => {
+/*const getValutazioniOggettoByAnnuncioId = (idAnnuncio) => {
   return valutazioniOggettoData.filter(
     (valutazione) => valutazione.idAnnuncio === idAnnuncio
   );
+}; */
+
+const getValutazioniOggettoByAnnuncioId = async (idAnnuncio) => {
+  try {
+    const response = await fetch(
+      `http://79.22.155.129:4000/api/valutazione/visualizza-valutazioni-annuncio?id=${idAnnuncio}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta delle valutazioni degli oggetti: ",
+      error.message
+    );
+  }
 };
 
 const addValutazioneOggetto = (newValutazioneData) => {

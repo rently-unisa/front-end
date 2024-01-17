@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../style/Assistenza.css";
@@ -10,74 +10,76 @@ import { getUserByEmail } from "../services/utenti.js";
 import { useNavigate } from "react-router-dom";
 
 const Assistenza = () => {
-    const navigate = useNavigate();
-    const [tipo, setTipo] = useState(null);
-    const [contenuto, setContenuto] = useState("");
-    const [email, setEmail] = useState("");
-  
-    const handleTipoChange = (event) => {
-      setTipo(event.target.value);
-    };
+  const navigate = useNavigate();
+  const [tipo, setTipo] = useState(null);
+  const [contenuto, setContenuto] = useState("");
+  const [email, setEmail] = useState("");
 
-    const handleSubmit = () => {
-      if (tipo !== null) {
-        if (contenuto !== "") {
-          const user = getUserByEmail (email);
-          if(user) {
-            const newSegnalazione = {
-              id: 0,
-              tipo: tipo,
-              contenuto: contenuto,
-              idSegnalatore: user.id
-            };
-            const result = addSegnalazione(newSegnalazione);
-            alert("La segnalazione è stata inviata correttamente");
-            navigate("/");
-          } else alert("L'email inserita non è corretta");
-        }else alert("Il messaggio non può essere vuoto");
-      } else alert("Inserisci un tipo di segnalazione");
-      
-    }
+  const handleTipoChange = (event) => {
+    setTipo(event.target.value);
+  };
+
+  const handleSubmit = () => {
+    if (tipo !== null) {
+      if (contenuto !== "") {
+        const user = getUserByEmail(email);
+        if (user) {
+          const newSegnalazione = {
+            id: 0,
+            tipo: tipo,
+            contenuto: contenuto,
+            idSegnalatore: user.id,
+          };
+          addSegnalazione(newSegnalazione);
+          alert("La segnalazione è stata inviata correttamente");
+          navigate("/");
+        } else alert("L'email inserita non è corretta");
+      } else alert("Il messaggio non può essere vuoto");
+    } else alert("Inserisci un tipo di segnalazione");
+  };
 
   return (
     <div className="Page">
       <Navbar />
       <div className="onde">
-      <img className="ondaSX" src={image2} alt="Immagine decorativa" />
-      <img className="ondaDX" src={image3} alt="Immagine decorativa" />
+        <img className="ondaSX" src={image2} alt="Immagine decorativa" />
+        <img className="ondaDX" src={image3} alt="Immagine decorativa" />
       </div>
 
       <div className="assistenzaContainer">
         <div className="boxForm">
           <div className="title"> Assistenza </div>
           <div className="description"> Inviaci un messaggio </div>
-          
+
           <div className="fields">
             Seleziona una categoria di segnalazione
             <div className="radioButton">
               <label>
-                <input className="topOptions"
+                <input
+                  className="topOptions"
                   type="radio"
                   value="ritardo-consegna"
-                  checked={tipo === 'ritardo-consegna'}
+                  checked={tipo === "ritardo-consegna"}
                   onChange={handleTipoChange}
                 />
                 Ritardo consegna
               </label>
               <label>
-                <input className="topOptions"
+                <input
+                  className="topOptions"
                   type="radio"
                   value="ritardo-restituzione"
-                  checked={tipo === 'ritardo-restituzione'}
+                  checked={tipo === "ritardo-restituzione"}
                   onChange={handleTipoChange}
                 />
                 Ritardo restituzione
               </label>
               <label>
-                <input className="bottomOptions"
+                <input
+                  className="bottomOptions"
                   type="radio"
                   value="oggetto-smarrito"
-                  checked={tipo === 'oggetto-smarrito'}
+                  checked={tipo === "oggetto-smarrito"}
                   onChange={handleTipoChange}
                 />
                 Oggetto smarrito
@@ -86,7 +88,7 @@ const Assistenza = () => {
                 <input
                   type="radio"
                   value="oggetto-danneggiato"
-                  checked={tipo === 'oggetto-danneggiato'}
+                  checked={tipo === "oggetto-danneggiato"}
                   onChange={handleTipoChange}
                 />
                 Oggetto danneggiato
@@ -95,18 +97,22 @@ const Assistenza = () => {
           </div>
           <div className="fields">
             Email
-            <input className="textBox"
-            type="text"
-            value={email} onChange={(e) => setEmail(e.target.value)}
-            placeholder="Inserisci la tua email"
+            <input
+              className="textBox"
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Inserisci la tua email"
             />
           </div>
           <div className="fields">
             Messaggio
-            <input className="textBox"
-            type="textarea"
-            value={contenuto} onChange={(e) => setContenuto(e.target.value)}
-            placeholder="Inserisci il tuo messaggio"
+            <input
+              className="textBox"
+              type="textarea"
+              value={contenuto}
+              onChange={(e) => setContenuto(e.target.value)}
+              placeholder="Inserisci il tuo messaggio"
             />
           </div>
           <button className="button" onClick={handleSubmit}>

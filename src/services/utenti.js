@@ -102,7 +102,6 @@ const getUserByEmailAndPassword = async (email, password) => {
 
     return response;
   } catch (error) {
-    console.error("Errore durante la richiesta di login");
     return "Credenziali non valide";
   }
 };
@@ -131,6 +130,10 @@ const getUserById = async (id) => {
 
 const getUserByUsername = (username) => {
   return usersData.find((user) => user.username === username);
+};
+
+const getUserByEmail = (email) => {
+  return usersData.find((user) => user.email === email);
 };
 
 /*const addUser = (newUserData) => {

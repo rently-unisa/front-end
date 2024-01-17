@@ -17,6 +17,7 @@ const Home = () => {
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
+  const [searchTerm, setSearchTerm] = useState();
 
   useEffect(() => {
     getPremiumAds().then((response) => {
@@ -117,7 +118,7 @@ const Home = () => {
                     >
                       <img src={ad.immagine} alt="Immgagine annuncio" />
                       <div className="card-description">
-                        <p>{ad.titolo}</p>
+                        <p>{ad.nome}</p>
                         <h6>€ {ad.prezzo}/giorno</h6>
                       </div>
                     </div>

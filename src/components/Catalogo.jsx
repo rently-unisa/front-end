@@ -60,22 +60,14 @@ const Catalogo = () => {
           console.log(ad);
           setPremiumAds(ad);
         });
-      } else {
-        response.json().then((result) => {
-          alert(result.message);
-        });
       }
     });
 
     getAllAds().then((response) => {
+      console.log(response);
       if (response.ok) {
         response.json().then((ad) => {
-          console.log(ad);
           setAllAds(ad);
-        });
-      } else {
-        response.json().then((result) => {
-          alert(result.message);
         });
       }
     });
@@ -89,10 +81,10 @@ const Catalogo = () => {
   ];
 
   const autocompleteItems = catalogItems
-    .filter((ad) => ad.titolo.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter((ad) => ad.nome.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((ad) => (
-      <div key={ad.id} onClick={() => setSearchTerm(ad.titolo)}>
-        {ad.titolo}
+      <div key={ad.id} onClick={() => setSearchTerm(ad.nome)}>
+        {ad.nome}
       </div>
     ));
 
@@ -303,13 +295,9 @@ const Catalogo = () => {
       case "Prezzo decrescente":
         return [...catalogItems].sort((a, b) => b.prezzo - a.prezzo);
       case "Nome A-Z":
-        return [...catalogItems].sort((a, b) =>
-          a.titolo.localeCompare(b.titolo)
-        );
+        return [...catalogItems].sort((a, b) => a.nome.localeCompare(b.nome));
       case "Nome Z-A":
-        return [...catalogItems].sort((a, b) =>
-          b.titolo.localeCompare(a.titolo)
-        );
+        return [...catalogItems].sort((a, b) => b.nome.localeCompare(a.nome));
       default:
         return catalogItems;
     }
@@ -394,7 +382,7 @@ const Catalogo = () => {
   };
 
   const filteredCatalogItems = orderedCatalogItems().filter((ad) => {
-    const title = ad.titolo.toLowerCase();
+    const title = ad.nome.toLowerCase();
     const searchTermLower = searchTerm1.toLowerCase();
     return title.includes(searchTermLower);
   });
@@ -402,73 +390,75 @@ const Catalogo = () => {
   return (
     <div className="Page">
       <Navbar />
-      <div className="vertical">
-        <h2>Annunci</h2>
-        <div className="catalogInside">
-          <div className="cercaFiltra">
-            <div className="Ricerca">
-              <input
-                type="text"
-                placeholder="Cerca articolo"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                className="ricercaButton"
-                onClick={() => setSearchTerm1(searchTerm)}
-              >
-                Cerca
-              </button>
-              {autocompleteItems.length > 0 &&
-                searchTerm !== "" &&
-                !(
-                  autocompleteItems.length === 1 &&
-                  autocompleteItems.map((item) => {
-                    return item.props.children === searchTerm;
-                  })
-                ) && (
-                  <div className="dropdown-content1">
-                    <div className="dropdown-style1">
-                      {autocompleteItems.slice(0, 5).map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setSearchTerm(item.props.children)}
-                        >
-                          {item.props.children}
-                        </button>
-                      ))}
+      {filteredCatalogItems && (
+        <div className="vertical">
+          <h2>Annunci</h2>
+          <div className="catalogInside">
+            <div className="cercaFiltra">
+              <div className="Ricerca">
+                <input
+                  type="text"
+                  placeholder="Cerca articolo"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                  className="ricercaButton"
+                  onClick={() => setSearchTerm1(searchTerm)}
+                >
+                  Cerca
+                </button>
+                {autocompleteItems.length > 0 &&
+                  searchTerm !== "" &&
+                  !(
+                    autocompleteItems.length === 1 &&
+                    autocompleteItems.map((item) => {
+                      return item.props.children === searchTerm;
+                    })
+                  ) && (
+                    <div className="dropdown-content1">
+                      <div className="dropdown-style1">
+                        {autocompleteItems.slice(0, 5).map((item) => (
+                          <button
+                            key={item.key}
+                            onClick={() => setSearchTerm(item.props.children)}
+                          >
+                            {item.props.children}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+              </div>
+              <div className="Filtra">
+                {Categoriabox}
+                {Datebox}
+                {Ratingbox}
+                {Orderbox}
+              </div>
+            </div>
+            <div className="listaAnnunciCatalogo">
+              {filteredCatalogItems.map((ad) => (
+                <Link to={`/dettagli/${ad.id}`} key={ad.id}>
+                  <div
+                    className={`card ${
+                      isCategorySelected(ad) ? "" : "inactive"
+                    } ${isRatingSelected(ad) ? "" : "inactive"} ${
+                      isDateSelected(ad) ? "" : "inactive"
+                    }`}
+                  >
+                    <img src={ad.immagine} alt="Immgagine annuncio" />
+                    <div className="card-description">
+                      <p>{ad.nome}</p>
+                      <h6>€ {ad.prezzo}/giorno</h6>
                     </div>
                   </div>
-                )}
+                </Link>
+              ))}
             </div>
-            <div className="Filtra">
-              {Categoriabox}
-              {Datebox}
-              {Ratingbox}
-              {Orderbox}
-            </div>
-          </div>
-          <div className="listaAnnunciCatalogo">
-            {filteredCatalogItems.map((ad) => (
-              <Link to={`/dettagli/${ad.id}`} key={ad.id}>
-                <div
-                  className={`card ${
-                    isCategorySelected(ad) ? "" : "inactive"
-                  } ${isRatingSelected(ad) ? "" : "inactive"} ${
-                    isDateSelected(ad) ? "" : "inactive"
-                  }`}
-                >
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
-                  <div className="card-description">
-                    <p>{ad.titolo}</p>
-                    <h6>€ {ad.prezzo}/giorno</h6>
-                  </div>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
-      </div>
+      )}
       <Footer />
     </div>
   );

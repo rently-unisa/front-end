@@ -19,48 +19,81 @@ const Dettagli = () => {
   const [Annuncio, setAnnuncio] = useState();
   const [adUser, setAdUser] = useState();
   const [ratings, setRatings] = useState();
-  const [usernames, setUsernames] = useState();
+  const [usernames, setUsernames] = useState([]);
   const { isLoggedIn } = useAuth();
   const [popupVisible, setPopupVisible] = useState(false);
 
   useEffect(() => {
+    let nicknames = [];
+
     const fetchAd = async () => {
-      const adData = await getAdById(idAnnuncio);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //non serve
-      setAnnuncio(adData);
-      fetchUser(adData.idUtente);
-      fetchRating(adData.id);
+      getAdById(idAnnuncio).then((response) => {
+        if (response.ok) {
+          response.json().then((ad) => {
+            fetchUser(ad.idUtente);
+            fetchRating(ad.id);
+            setAnnuncio(ad);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
-    const fetchUser = async (adUtente) => {
-      const adUtente1 = await getUserById(adUtente);
-      setAdUser(adUtente1);
+    const fetchUser = async (idAdUtente) => {
+      getUserById(idAdUtente).then((response) => {
+        if (response.ok) {
+          response.json().then((utente) => {
+            setAdUser(utente);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
     const fetchRating = async (id) => {
-      const adRatings = await getValutazioniOggettoByAnnuncioId(id);
-      setRatings(adRatings);
-      const names = await Promise.all(
-        adRatings.map(async (rating) => {
-          const username = await fetchUsername(rating.idValutatore);
-          return username;
-        })
-      );
-      setUsernames(names);
-    };
+      getValutazioniOggettoByAnnuncioId(id).then((response) => {
+        if (response.ok) {
+          response.json().then((adRatings) => {
+            setRatings(adRatings);
+            adRatings.map((rating) => {
+              getUserById(rating.idValutatore).then((response) => {
+                if (response.ok) {
+                  response
+                    .json()
+                    .then((utente) => nicknames.push(utente.username));
+                } else {
+                  response.json().then((result) => {
+                    alert(result.message);
+                  });
+                }
+              });
+            });
 
-    const fetchUsername = async (id) => {
-      const name = await getUserById(id);
-      return name;
+            setUsernames(nicknames);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
     fetchAd();
   }, [idAnnuncio]);
 
+  useEffect(() => {}, [ratings]);
+
   return (
     <div className="Page">
       <Navbar />
-      {Annuncio ? (
+      {Annuncio && adUser && ratings && usernames ? (
         <>
           <div className="container">
             <div className="title">{Annuncio.titolo}</div>
@@ -70,7 +103,7 @@ const Dettagli = () => {
                   <p>{Annuncio.descrizione}</p>
                   <p>
                     <span>Condizioni: </span>
-                    {Annuncio.condizioni}
+                    {Annuncio.condizione}
                   </p>
                 </div>
                 <div className="actionButtons">

@@ -170,24 +170,21 @@ const adsData = [
   },
 ];
 
-const getAllAds = () => {
+/*const getAllAds = () => {
   return adsData;
-};
+};*/
 
-/*const getAllAds = async () => {
+const getAllAds = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/ricerca/all`);
+    const response = await fetch(`http://79.22.155.129:4000/api/ricerca/all`, {
+      method: "GET",
+    });
 
-    if (response.ok) {
-      const ads = await response.json();
-      return ads;
-    } else {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Errore durante il recupero degli annunci');
-    }
+    return response;
   } catch (error) {
-    return null;
-  } */
+    return error;
+  }
+};
 
 /*const getPremiumAds = () => {
   const users = getPremiumUsers();
@@ -209,20 +206,16 @@ const getPremiumAds = async () => {
   }
 };
 
-const getAdById = (id) => {
+/*const getAdById = (id) => {
   return adsData.find((ad) => ad.id === id);
-};
+}; */
 
-/*const getAdById = async (id) => {
+const getAdById = async (id) => {
   try {
     const response = await fetch(
+      `http://79.22.155.129:4000/api/annuncio/visualizza-annuncio?id=${id}`,
       {
-        "http://localhost:8080/api/gestione-annuncio/visualliza-annuncio",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
+        method: "GET",
       }
     );
 
@@ -231,22 +224,18 @@ const getAdById = (id) => {
     console.error("Errore durante la richiesta di login");
     return "Credenziali non valide";
   }
-}; */
+};
 
-const getAdsByUserId = (userId) => {
+/*const getAdsByUserId = (userId) => {
   return adsData.filter((ad) => ad.idUtente === userId);
-};
+}; */
 
-/*const getAdById = async (id) => {
+const getAdsByUserId = async (id) => {
   try {
     const response = await fetch(
+      `http://79.22.155.129:4000/api/annuncio/visualizza-annunci-utente?id=${id}`,
       {
-        "http://localhost:8080/api/gestione-annuncio/visualliza-annunci-utente",
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ id }),
+        method: "GET",
       }
     );
 
@@ -255,7 +244,7 @@ const getAdsByUserId = (userId) => {
     console.error("Errore durante la richiesta di login");
     return "Credenziali non valide";
   }
-}; */
+};
 
 const addAd = (newAdData) => {
   const newAdId = adsData.length + 1;
@@ -272,7 +261,7 @@ const addAd = (newAdData) => {
 
 /*const addAd = (newAdData) => {
 try {
-  const response = await fetch('http://localhost:8080/api/gestione-annuncio/aggiungi-annuncio', {
+  const response = await fetch('http://79.22.155.129:4000/api/annuncio/aggiungi-annuncio', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -293,7 +282,7 @@ try {
 }
 };*/
 
-const deleteAdById = (id) => {
+/*const deleteAdById = (id) => {
   const indexToDelete = adsData.findIndex((ad) => ad.id === id);
 
   if (indexToDelete !== -1) {
@@ -302,9 +291,24 @@ const deleteAdById = (id) => {
   }
 
   return false;
+}; */
+
+const deleteAdById = async (id) => {
+  try {
+    const response = await fetch(
+      `http://79.22.155.129:4000/api/annuncio/delete-annuncio?id=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Credenziali non valide";
+  }
 };
 
-const modifyAd = (modifiedAd) => {
+/*const modifyAd = (modifiedAd) => {
   const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
 
   if (indexToModify !== -1) {
@@ -314,32 +318,30 @@ const modifyAd = (modifiedAd) => {
   }
 
   return false;
-};
+};*/
 
-/*const modifyAd = async (modifiedAd) => {
+const modifyAd = async (modifiedAd) => {
   try {
-    const duplicateUsersResponse = await fetch('http://localhost:8080/api/gestione-annuncio/modifica-annuncio', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(modifiedAd),
-    });
+    const response = await fetch(
+      "http://79.22.155.129:4000/api/annuncio/modifica-annuncio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(modifiedAd),
+      }
+    );
 
-    if (duplicateUsersResponse.ok) {
-      const successMessage = await duplicateUsersResponse.text();
-      console.log(successMessage); // Puoi gestire il messaggio di successo come preferisci
-      return true;
-    } else {
-      const errorMessage = await duplicateUsersResponse.text();
-      console.error(errorMessage || 'Errore sconosciuto durante la modifica dell\'utente');
-      return false;
-    }
+    return response;
   } catch (error) {
-    console.error('Errore durante la richiesta di modifica dell\'utente:', error.message);
+    console.error(
+      "Errore durante la richiesta di modifica dell'utente:",
+      error.message
+    );
     return false;
   }
-}; */
+};
 
 export {
   getAllAds,

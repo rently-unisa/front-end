@@ -1,4 +1,4 @@
-const userValutetionData = [
+const userValutationData = [
   {
     id: 1,
     voto: 8,
@@ -15,36 +15,36 @@ const userValutetionData = [
   },
 ];
 
-const getAllUserValutetions = () => {
-  return userValutetionData;
+const getAllUserValutations = () => {
+  return userValutationData;
 };
 
-const getUserValutetionById = (id) => {
-  return userValutetionData.find((valutetion) => valutetion.id === id);
+const getUserValutationById = (id) => {
+  return userValutationData.find((valutation) => valutation.id === id);
 };
 
-const getUserValutetionsByValutatoId = (idValutato) => {
-  return userValutetionData.filter(
-    (valutetion) => valutetion.idValutato === idValutato
+const getUserValutationsByValutatoId = (idValutato) => {
+  return userValutationData.filter(
+    (valutation) => valutation.idValutato === idValutato
   );
 };
 
-const addUserValutetion = (newValutetionData) => {
-  const newUserValutetionId = userValutetionData.length + 1;
+const addUserValutation = (newValutationData) => {
+  const newUserValutationId = userValutationData.length + 1;
 
-  const newUserValutetion = {
-    id: newUserValutetionId,
-    ...newValutetionData,
+  const newUserValutation = {
+    id: newUserValutationId,
+    ...newValutationData,
   };
 
-  userValutetionData.push(newUserValutetion);
+  userValutationData.push(newUserValutation);
 
-  return newUserValutetion;
+  return newUserValutation;
 };
 
 export {
-  getAllUserValutetions,
-  getUserValutetionById,
-  getUserValutetionsByValutatoId,
-  addUserValutetion,
+  getAllUserValutations,
+  getUserValutationById,
+  getUserValutationsByValutatoId,
+  addUserValutation,
 };

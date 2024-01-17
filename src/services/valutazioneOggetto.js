@@ -64,7 +64,7 @@ const getObjectValutationsById = (id) => {
   );
 }; */
 
-const getValutazioniOggettoByAnnuncioId = async (idAnnuncio) => {
+const getObjectValutationsByAnnuncioId = async (idAnnuncio) => {
   try {
     const response = await fetch(
       `http://79.22.155.129:4000/api/valutazione/visualizza-valutazioni-annuncio?id=${idAnnuncio}`,

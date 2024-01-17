@@ -7,7 +7,7 @@ import { useAuth } from "../AuthContext";
 import RichiestaNoleggio from "./RichiestaNoleggio";
 import { getAdById } from "../services/annunciNoleggio";
 import { getUserById } from "../services/utenti";
-import { getValutazioniOggettoByAnnuncioId } from "../services/valutazioneOggetto";
+import { getObjectValutationsByAnnuncioId } from "../services/valutazioneOggetto";
 import { Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
@@ -57,11 +57,11 @@ const Dettagli = () => {
     };
 
     const fetchRating = async (id) => {
-      getValutazioniOggettoByAnnuncioId(id).then((response) => {
+      getObjectValutationsByAnnuncioId(id).then((response) => {
         if (response.ok) {
           response.json().then((adRatings) => {
             setRatings(adRatings);
-            adRatings.map((rating) => {
+            adRatings.forEach((rating) => {
               getUserById(rating.idValutatore).then((response) => {
                 if (response.ok) {
                   response

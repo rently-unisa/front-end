@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
+import Cookies from "js-cookie";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
-import { getUserByUsername } from "../services/utenti";
 import { addAd } from "../services/annunciNoleggio";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -17,21 +16,19 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import "../style/FormAnnunci.css";
 
 const CreaAnnuncio = () => {
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUtente = user.id;
+  const idUtente = Cookies.get("id");
 
   const [titolo, setTitolo] = useState("");
   const [descrizione, setDescrizione] = useState("");
   const [prezzo, setPrezzo] = useState();
   const [strada, setStrada] = useState("");
-  const [civico, setCivico] = useState("");
   const [città, setCittà] = useState("");
   const [cap, setCap] = useState("");
   const [immagine, setImmagine] = useState([]);
   const [dataFine, setDataFine] = useState();
   const [categoria, setCategoria] = useState("");
   const [condizioni, setCondizioni] = useState("");
+  const [immaginiCaricate, setImmaginiCaricate] = useState([]);
 
   const [isCategoriaOpen, setIsCategoriaOpen] = useState(false);
   const categories = [
@@ -50,20 +47,25 @@ const CreaAnnuncio = () => {
 
   const handleCreation = () => {
     const newAd = {
+      id: 0,
       idUtente,
-      titolo,
+      nome: titolo,
       strada,
-      civico,
       città,
+      civico: "",
       cap,
       descrizione,
       immagine,
       prezzo,
       categoria,
       dataFine,
-      condizioni,
+      condizione: condizioni,
     };
-    addAd(newAd);
+    addAd(newAd, immaginiCaricate).then((response) => {
+      if (!response.ok) {
+        alert("Errore");
+      }
+    });
   };
 
   const handleCategoria = () => {
@@ -85,8 +87,9 @@ const CreaAnnuncio = () => {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
+    const file = event.target.files;
+    setImmaginiCaricate(file);
+    /*if (file) {
       // Leggi il file come array di byte
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -94,7 +97,7 @@ const CreaAnnuncio = () => {
         setImmagine(arrayBuffer);
       };
       reader.readAsDataURL(file);
-    }
+    }*/
   };
 
   useEffect(() => {
@@ -268,16 +271,6 @@ const CreaAnnuncio = () => {
                 value={strada}
                 placeholder="Inserisci la strada"
                 onChange={(e) => setStrada(e.target.value)}
-              />
-            </div>
-            <div className="parametro1">
-              <p>Civico</p>
-              <input
-                className="input"
-                type="text"
-                value={civico}
-                placeholder="Inserisci il civico"
-                onChange={(e) => setCivico(e.target.value)}
               />
             </div>
             <div className="parametro1">

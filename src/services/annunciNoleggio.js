@@ -1,12 +1,11 @@
 //import { getPremiumUsers } from "./utenti";
 
-const adsData = [
+/*const adsData = [
   {
     id: 1,
     idUtente: 1,
     titolo: "Annuncio 1",
     strada: "Via Example 1",
-    civico: "123",
     città: "Città1",
     cap: "12345",
     descrizione: "Descrizione dell'annuncio 1.",
@@ -21,7 +20,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Annuncio 2",
     strada: "Via Example 2",
-    civico: "456",
     città: "Città2",
     cap: "67890",
     descrizione: "Descrizione dell'annuncio 2.",
@@ -36,7 +34,6 @@ const adsData = [
     idUtente: 3,
     titolo: "Annuncio 3",
     strada: "Via Nuova 3",
-    civico: "789",
     città: "Città1",
     cap: "54321",
     descrizione: "Descrizione dell'annuncio 3.",
@@ -51,7 +48,6 @@ const adsData = [
     idUtente: 5,
     titolo: "Annuncio 4",
     strada: "Via Vecchia 7",
-    civico: "101",
     città: "Città2",
     cap: "112233",
     descrizione: "Descrizione dell'annuncio 4.",
@@ -66,7 +62,6 @@ const adsData = [
     idUtente: 5,
     titolo: "Annuncio 5",
     strada: "Via Nuova 5",
-    civico: "999",
     città: "Città2",
     cap: "54321",
     descrizione: "Descrizione dell'annuncio 5.",
@@ -81,7 +76,6 @@ const adsData = [
     idUtente: 6,
     titolo: "Annuncio 6",
     strada: "Via Antica 10",
-    civico: "777",
     città: "Città2",
     cap: "112233",
     descrizione: "Descrizione dell'annuncio 6.",
@@ -96,7 +90,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Annuncio 7",
     strada: "Via Moderna 3",
-    civico: "888",
     città: "Città2",
     cap: "12345",
     descrizione: "Descrizione dell'annuncio 7.",
@@ -111,7 +104,6 @@ const adsData = [
     idUtente: 4,
     titolo: "Smartphone Samsung Galaxy S21",
     strada: "Via Tecnologica 42",
-    civico: "789",
     città: "Città1",
     cap: "98765",
     descrizione: "Vendo smartphone Samsung Galaxy S21 in ottime condizioni.",
@@ -126,7 +118,6 @@ const adsData = [
     idUtente: 7,
     titolo: "Tavolo da Pranzo Moderno",
     strada: "Via Arredamento 13",
-    civico: "222",
     città: "Città1",
     cap: "13579",
     descrizione:
@@ -142,7 +133,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Giacca in Pelle da Uomo",
     strada: "Via Fashion 7",
-    civico: "777",
     città: "Città2",
     cap: "24680",
     descrizione: "Giacca in pelle da uomo, taglia M, colore nero.",
@@ -157,7 +147,6 @@ const adsData = [
     idUtente: 1,
     titolo: "Libro: Il Signore degli Anelli",
     strada: "Via Libreria 8",
-    civico: "888",
     città: "Città1",
     cap: "54321",
     descrizione:
@@ -168,7 +157,7 @@ const adsData = [
     dataFine: "2024-05-20",
     condizioni: "Nuovo",
   },
-];
+];*/
 
 /*const getAllAds = () => {
   return adsData;
@@ -246,7 +235,7 @@ const getAdsByUserId = async (id) => {
   }
 };
 
-const addAd = (newAdData) => {
+/*const addAd = (newAdData) => {
   const newAdId = adsData.length + 1;
 
   const newAd = {
@@ -257,30 +246,35 @@ const addAd = (newAdData) => {
   adsData.push(newAd);
 
   return newAd;
-};
-
-/*const addAd = (newAdData) => {
-try {
-  const response = await fetch('http://79.22.155.129:4000/api/annuncio/aggiungi-annuncio', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(newAdData),
-  });
-
-  if (response.ok) {
-    const newAd = await response.json();
-    return newAd;
-  } else {
-    const errorMessage = await response.text();
-    throw new Error(errorMessage || 'Errore sconosciuto durante la registrazione');
-  }
-} catch (error) {
-  console.error('Errore durante la richiesta di registrazione:', error.message);
-  return null;
-}
 };*/
+
+const addAd = async (newAdData, images) => {
+  try {
+    const formData = new FormData();
+    formData.append(
+      "model",
+      new Blob([JSON.stringify(newAdData)], { type: "application/json" })
+    );
+
+    const response = await fetch(
+      "http://79.22.155.129:4000/api/annuncio/aggiungi-annuncio",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+        body: formData,
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di registrazione:",
+      error.message
+    );
+  }
+};
 
 /*const deleteAdById = (id) => {
   const indexToDelete = adsData.findIndex((ad) => ad.id === id);

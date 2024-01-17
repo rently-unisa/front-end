@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import logo from "../image/Logo.png";
 import search from "../image/search.svg";
 import "../style/Navbar.css";
@@ -10,6 +10,7 @@ const Navbar = () => {
   const { isLoggedIn, logout } = useAuth();
   const username = Cookies.get("username");
   const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleLogout = () => {
     logout();
@@ -62,8 +63,15 @@ const Navbar = () => {
         </div>
         {userMenu}
         <div className="search-bar">
-          <input type="text" placeholder="Cerca nel sito" />
-          <img src={search} alt="Search" />
+          <input
+            type="text"
+            placeholder="Cerca un articolo"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <Link to={`/catalogo/${searchTerm}`}>
+            <img src={search} alt="Search" />
+          </Link>
         </div>
       </div>
     </div>

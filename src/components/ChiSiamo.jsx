@@ -13,7 +13,7 @@ const ChiSiamo = () => {
     <div className="Page">
       <Navbar />
       <div className="sezionec">
-        <img className="top-right" src={onda2} alt="Immagine decortiva" />
+        <img className="top-right" src={onda2} alt="Immagine decorativa" />
 
         <div className="container">
           <h1 className="titolo">Chi Siamo</h1>

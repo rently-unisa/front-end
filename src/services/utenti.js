@@ -232,6 +232,7 @@ export {
   getUserByEmailAndPassword,
   getUserById,
   getUserByUsername,
+  getUserByEmail,
   addUser,
   deleteUserById,
   modifyUser,

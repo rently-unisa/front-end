@@ -1,4 +1,4 @@
-const valutazioniOggettoData = [
+const objectValutationData = [
   {
     id: 1,
     voto: 8,
@@ -50,17 +50,17 @@ const valutazioniOggettoData = [
   },
 ];
 
-const getAllValutazioniOggetto = () => {
-  return valutazioniOggettoData;
+const getAllObjectValutations = () => {
+  return objectValutationData;
 };
 
-const getValutazioniOggettoById = (id) => {
-  return valutazioniOggettoData.find((valutazione) => valutazione.id === id);
+const getObjectValutationsById = (id) => {
+  return objectValutationData.find((valutation) => valutation.id === id);
 };
 
-/*const getValutazioniOggettoByAnnuncioId = (idAnnuncio) => {
-  return valutazioniOggettoData.filter(
-    (valutazione) => valutazione.idAnnuncio === idAnnuncio
+/*const getObjectValutationsByAnnuncioId = (idAnnuncio) => {
+  return objectValutationData.filter(
+    (valutation) => valutation.idAnnuncio === idAnnuncio
   );
 }; */
 
@@ -82,22 +82,22 @@ const getValutazioniOggettoByAnnuncioId = async (idAnnuncio) => {
   }
 };
 
-const addValutazioneOggetto = (newValutazioneData) => {
-  const newValutazioneId = valutazioniOggettoData.length + 1;
+const addObjectValutations = (newValutationData) => {
+  const newValutationId = objectValutationData.length + 1;
 
-  const nuovaValutazione = {
-    id: newValutazioneId,
-    ...newValutazioneData,
+  const newValutation = {
+    id: newValutationId,
+    ...newValutationData,
   };
 
-  valutazioniOggettoData.push(nuovaValutazione);
+  objectValutationData.push(newValutation);
 
-  return nuovaValutazione;
+  return newValutation;
 };
 
 export {
-  getAllValutazioniOggetto,
-  getValutazioniOggettoById,
-  getValutazioniOggettoByAnnuncioId,
-  addValutazioneOggetto,
+  getAllObjectValutations,
+  getObjectValutationsById,
+  getObjectValutationsByAnnuncioId,
+  addObjectValutations,
 };

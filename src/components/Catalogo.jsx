@@ -4,7 +4,7 @@ import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { getAllAds, getPremiumAds } from "../services/annunciNoleggio";
-import { getValutazioniOggettoByAnnuncioId } from "../services/valutazioneOggetto";
+import { getObjectValutationsByAnnuncioId } from "../services/valutazioneOggetto";
 import { getRentalsByAnnuncioId } from "../services/noleggi";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -227,7 +227,7 @@ const Catalogo = () => {
   );
 
   const isRatingSelected = (ad) => {
-    const adRatings = getValutazioniOggettoByAnnuncioId(ad.id);
+    const adRatings = getObjectValutationsByAnnuncioId(ad.id);
 
     if (selectedRating.length === 0) {
       return true;

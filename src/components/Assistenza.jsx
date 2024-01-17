@@ -8,6 +8,8 @@ import image3 from "../image/assistenzaOndaDX.svg";
 import { addSegnalazione } from "../services/assistenza.js";
 import { getUserByEmail } from "../services/utenti.js";
 import { useNavigate } from "react-router-dom";
+import ValutazioneOggetto from "./ValutazioneOggetto.jsx";
+import ValutazioneUtente from "./ValutazioneUtente.jsx";
 
 const Assistenza = () => {
   const navigate = useNavigate();
@@ -15,17 +17,20 @@ const Assistenza = () => {
   const [contenuto, setContenuto] = useState("");
   const [email, setEmail] = useState("");
 
+  const [buttonValutazioneUtente, setButtonValutazioneUtente] = useState(false);
+  const [buttonValutazioneOggetto, setButtonValutazioneOggetto] =
+    useState(false);
+
   const handleTipoChange = (event) => {
     setTipo(event.target.value);
   };
 
   const handleSubmit = () => {
     if (tipo !== null) {
-      if (contenuto !== "") {
-        const user = getUserByEmail(email);
-        if (user) {
+      const user = getUserByEmail(email);
+      if (user) {
+        if (contenuto !== "") {
           const newSegnalazione = {
-            id: 0,
             tipo: tipo,
             contenuto: contenuto,
             idSegnalatore: user.id,
@@ -33,8 +38,8 @@ const Assistenza = () => {
           addSegnalazione(newSegnalazione);
           alert("La segnalazione è stata inviata correttamente");
           navigate("/");
-        } else alert("L'email inserita non è corretta");
-      } else alert("Il messaggio non può essere vuoto");
+        } else alert("Il messaggio non può essere vuoto");
+      } else alert("L'email inserita non è valida");
     } else alert("Inserisci un tipo di segnalazione");
   };
 
@@ -118,6 +123,28 @@ const Assistenza = () => {
           <button className="button" onClick={handleSubmit}>
             Invia messaggio
           </button>
+          <div>
+            <button
+              className="valutazione-button"
+              onClick={() => setButtonValutazioneOggetto(true)}
+            >
+              Valutazione oggetto
+            </button>
+            <ValutazioneOggetto
+              trigger={buttonValutazioneOggetto}
+              setTrigger={setButtonValutazioneOggetto}
+            ></ValutazioneOggetto>
+            <button
+              className="valutazione-button"
+              onClick={() => setButtonValutazioneUtente(true)}
+            >
+              Valutazione utente
+            </button>
+            <ValutazioneUtente
+              trigger={buttonValutazioneUtente}
+              setTrigger={setButtonValutazioneUtente}
+            ></ValutazioneUtente>
+          </div>
         </div>
         <div className="assistenzaImg">
           <img src={image1} alt="Immagine decorativa" />

@@ -2,38 +2,42 @@
 import image3 from "../image/onda2nuovo1.svg";
 import image4 from "../image/onda2nuovo2.svg";*/
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
 import { getUserById, modifyUser } from "../services/utenti";
 import { Link } from "react-router-dom";
 import "../style/AreaPersonale.css";
 
 const AreaPersonale = () => {
-  const { idUsername } = useAuth();
+  const idUsername = Cookies.get("id");
   const [user, setUser] = useState();
-  getUserById(idUsername).then((response) => {
-    try {
+  const [id, setId] = useState("");
+  const [premium, setPremium] = useState("");
+  const [nome, setNome] = useState("");
+  const [cognome, setCognome] = useState("");
+  const [email, setEmail] = useState("");
+  const [userUsername, setUsername] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confPassword, setConfPassword] = useState("");
+
+  useEffect(() => {
+    getUserById(idUsername).then((response) => {
       if (response.ok) {
         response.json().then((utente) => setUser(utente));
       } else {
-        const errorMessage = response.text();
-        throw new Error(
-          errorMessage ||
-            "Errore sconosciuto durante il recupero del profilo utente"
-        );
+        response.json().then((result) => {
+          alert(result.message);
+        });
       }
-    } catch (error) {
-      alert("Errore durante la richiesta del profilo utente:", error.message);
-    }
-  });
+    });
+  }, [idUsername]);
 
   useEffect(() => {
     if (user) {
-      const { id, premium, password, nome, cognome, email, username } = user;
+      const { id, premium, nome, cognome, email, username } = user;
       setId(id);
       setPremium(premium);
-      setActPassword(password);
       setNome(nome);
       setCognome(cognome);
       setEmail(email);
@@ -41,26 +45,7 @@ const AreaPersonale = () => {
     }
   }, [user]);
 
-  const [id, setId] = useState("");
-  const [premium, setPremium] = useState("");
-  const [actPassword, setActPassword] = useState("");
-  const [nome, setNome] = useState("");
-  const [cognome, setCognome] = useState("");
-  const [email, setEmail] = useState("");
-  const [userUsername, setUsername] = useState("");
-  const [newPassword, setPassword] = useState("");
-  const [confPassword, setConfPassword] = useState("");
-
   const handleModify = (subscribe) => {
-    let password = "";
-    if (
-      newPassword !== "" &&
-      confPassword !== "" &&
-      newPassword === confPassword
-    ) {
-      password = newPassword;
-    } else password = actPassword;
-
     let username = userUsername;
     const newUserData = {
       id,
@@ -68,14 +53,20 @@ const AreaPersonale = () => {
       cognome,
       email,
       username,
-      password,
+      nuovaPassword: newPassword,
+      confermaNuovaPassword: confPassword,
       premium: subscribe,
     };
-    modifyUser(newUserData);
 
-    setPassword("");
-    setConfPassword("");
-    setActPassword(password);
+    modifyUser(newUserData).then((response) => {
+      if (response.ok) {
+        response.json().then((utente) => setUser(utente));
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
   };
 
   const handleSubscribe = () => {
@@ -184,22 +175,13 @@ const AreaPersonale = () => {
                   />
                 </div>
                 <div className="parametro1">
-                  <p>Vecchia Password</p>
-                  <input
-                    className="input"
-                    type="password"
-                    value={actPassword}
-                    readOnly
-                  />
-                </div>
-                <div className="parametro1">
                   <p>Password</p>
                   <input
                     className="input"
                     type="password"
                     value={newPassword}
-                    placeholder="Inserisci la tua password"
-                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Inserisci la tua nuova password"
+                    onChange={(e) => setNewPassword(e.target.value)}
                   />
                 </div>
                 <div className="parametro1">

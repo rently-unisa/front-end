@@ -90,7 +90,7 @@ const getPremiumUsers = () => {
 const getUserByEmailAndPassword = async (email, password) => {
   try {
     const response = await fetch(
-      "http://localhost:8080/api/autenticazione/login",
+      "http://79.22.155.129:4000/api/autenticazione/login",
       {
         method: "POST",
         headers: {
@@ -114,7 +114,10 @@ const getUserByEmailAndPassword = async (email, password) => {
 const getUserById = async (id) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/area-personale/profilo-utente?id=${id}`
+      `http://79.22.155.129:4000/api/area-personale/profilo-utente?id=${id}`,
+      {
+        method: "GET",
+      }
     );
 
     return response;
@@ -123,7 +126,6 @@ const getUserById = async (id) => {
       "Errore durante la richiesta del profilo utente:",
       error.message
     );
-    return null;
   }
 };
 
@@ -156,7 +158,7 @@ const getUserByUsername = (username) => {
 const addUser = async (newUserData) => {
   try {
     const response = await fetch(
-      "http://localhost:8080/api/autenticazione/signup",
+      "http://79.22.155.129:4000/api/autenticazione/signup",
       {
         method: "POST",
         headers: {
@@ -183,7 +185,7 @@ const deleteUserById = (idDeleteUser) => {
   }
 };
 
-const modifyUser = (newUserData) => {
+/*const modifyUser = (newUserData) => {
   const duplicateUsers = usersData.filter(
     (user) =>
       user.id !== newUserData.id &&
@@ -199,32 +201,30 @@ const modifyUser = (newUserData) => {
   } else {
     return false;
   }
-};
+};*/
 
-/*const modifyUser = async (newUserData) => {
+const modifyUser = async (newUserData) => {
   try {
-    const duplicateUsersResponse = await fetch('http://localhost:8080/gestione-area-personale/modifica-dati-utente', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newUserData),
-    });
+    const response = await fetch(
+      "http://79.22.155.129:4000/api/area-personale/modifica-dati-utente",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUserData),
+      }
+    );
 
-    if (duplicateUsersResponse.ok) {
-      const successMessage = await duplicateUsersResponse.text();
-      console.log(successMessage); // Puoi gestire il messaggio di successo come preferisci
-      return true;
-    } else {
-      const errorMessage = await duplicateUsersResponse.text();
-      console.error(errorMessage || 'Errore sconosciuto durante la modifica dell\'utente');
-      return false;
-    }
+    return response;
   } catch (error) {
-    console.error('Errore durante la richiesta di modifica dell\'utente:', error.message);
-    return false;
+    console.error(
+      "Errore durante la richiesta di modifica dell'utente:",
+      error.message
+    );
+    return "Modifica non riuscita";
   }
-}; */
+};
 
 export {
   getAllUsers,

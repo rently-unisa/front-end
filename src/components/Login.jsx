@@ -17,24 +17,19 @@ const Login = () => {
 
   const handleLogin = () => {
     getUserByEmailAndPassword(username, password).then((response) => {
-      try {
-        if (response.ok) {
-          response.json().then((newUser) => {
-            if (newUser) {
-              login(newUser);
-              navigate("/");
-            } else {
-              alert("Errore durante la richiesta del profilo utente");
-            }
-          });
-        } else {
-          const errorMessage = response.text();
-          throw new Error(
-            errorMessage || "Errore sconosciuto durante il login"
-          );
-        }
-      } catch (error) {
-        alert("Errore durante la richiesta di login:", error.message);
+      if (response.ok) {
+        response.json().then((newUser) => {
+          if (newUser) {
+            login(newUser);
+            navigate("/");
+          } else {
+            alert("Errore durante la richiesta del profilo utente");
+          }
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
       }
     });
   };

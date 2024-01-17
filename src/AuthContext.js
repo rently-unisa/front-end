@@ -7,7 +7,6 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
-  const [idUsername, setIdUsername] = useState();
 
   useEffect(() => {
     const savedUsername = Cookies.get("username");
@@ -15,18 +14,11 @@ export const AuthProvider = ({ children }) => {
       setIsLoggedIn(true);
       setUsername(savedUsername);
     }
-
-    const savedId = Cookies.get("idUsername");
-    if (savedId) {
-      setIdUsername(savedId);
-    }
   }, []);
 
   const login = (user) => {
     setIsLoggedIn(true);
     setUsername(user.username);
-    setIdUsername(user.id);
-    console.log(user);
     Cookies.set("username", user.username);
     Cookies.set("id", user.id);
   };
@@ -34,15 +26,14 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     setIsLoggedIn(false);
     setUsername("");
-    setIdUsername(null);
 
     Cookies.remove("username");
-    Cookies.remove("idUsername");
+    Cookies.remove("id");
   };
 
   const contextValue = useMemo(
-    () => ({ isLoggedIn, username, idUsername, login, logout }),
-    [isLoggedIn, username, idUsername]
+    () => ({ isLoggedIn, username, login, logout }),
+    [isLoggedIn, username]
   );
 
   return (

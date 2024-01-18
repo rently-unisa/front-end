@@ -14,6 +14,8 @@ import {
 } from "../services/noleggi";
 import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
+import ValutazioneOggetto from "./ValutazioneOggetto.jsx";
+import ValutazioneUtente from "./ValutazioneUtente.jsx";
 
 const IMieiNoleggi = () => {
   //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
@@ -35,6 +37,28 @@ const IMieiNoleggi = () => {
   const [noleggiatoreRentals, setNoleggiatoreRentals] = useState(
     getRentalsByNoleggiatore(idUser)
   );
+  const [valutazioneOggettoParams, setValutazioneOggettoParams] = useState({
+    idAnnuncio: null,
+    idValutatore: null,
+  });
+  const [valutazioneUtenteParams, setValutazioneUtenteParams] = useState({
+    idValutato: null,
+    idValutatore: null,
+  });
+  const [buttonValutazioneOggetto, setButtonValutazioneOggetto] =
+    useState(false);
+
+  const handleOpenValutazioneOggetto = (idAnnuncio, idValutatore) => {
+    setValutazioneOggettoParams({ idAnnuncio, idValutatore });
+    setButtonValutazioneOggetto(true);
+  };
+
+  const [buttonValutazioneUtente, setButtonValutazioneUtente] = useState(false);
+
+  const handleOpenValutazioneUtente = (idValutato, idValutatore) => {
+    setValutazioneUtenteParams({ idValutato, idValutatore });
+    setButtonValutazioneUtente(true);
+  };
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -57,6 +81,9 @@ const IMieiNoleggi = () => {
             Vai alla pagina "Le mie richieste"
           </Link>
         </div>
+      </div>
+      <div>
+        <p>Seleziona un filtro:</p>
       </div>
       <div className="rentalList">
         {noleggianteRentals.map((r) => (
@@ -92,21 +119,51 @@ const IMieiNoleggi = () => {
               {r.stato === "INIZIO" && (
                 <button
                   className="pulsante"
-                  onClick={() => handleModifyState(r.id, "FINE")}
+                  onClick={() => handleModifyState(r.id, "IN CORSO")}
                 >
                   Ho ricevuto l'oggetto
                 </button>
               )}
-
-              {r.stato === "FINE" && <p>In corso...</p>}
-
+              {r.stato === "IN CORSO" && <p>In corso...</p>}
+              {r.stato === "FINE" && <p>Fine</p>}
               {r.stato === "CONCLUSIONE" && <p>Conclusione</p>}
               {r.stato === "CONCLUSIONE" && (
-                <button className="pulsante">Valuta l'autore</button>
+                <div>
+                  <button
+                    className="pulsante"
+                    onClick={() =>
+                      handleOpenValutazioneUtente(r.noleggiatore, idUser)
+                    }
+                  >
+                    Valuta l'autore
+                  </button>
+                  <ValutazioneUtente
+                    trigger={buttonValutazioneUtente}
+                    setTrigger={setButtonValutazioneUtente}
+                    idValutato={valutazioneUtenteParams.idValutato}
+                    idValutatore={valutazioneUtenteParams.idValutatore}
+                  ></ValutazioneUtente>
+                </div>
               )}
               {r.stato === "CONCLUSIONE" && (
-                <button className="pulsante">Valuta l'oggetto</button>
+                <div>
+                  <button
+                    className="pulsante"
+                    onClick={() =>
+                      handleOpenValutazioneOggetto(r.idAnnuncio, idUser)
+                    }
+                  >
+                    Valuta l'oggetto
+                  </button>
+                  <ValutazioneOggetto
+                    trigger={buttonValutazioneOggetto}
+                    setTrigger={setButtonValutazioneOggetto}
+                    idAnnuncio={valutazioneOggettoParams.idAnnuncio}
+                    idValutatore={valutazioneOggettoParams.idValutatore}
+                  ></ValutazioneOggetto>
+                </div>
               )}
+              {r.stato === "CONCLUSOCONVALUTAZIONE" && <p>Noleggio Concluso</p>}
             </div>
           </div>
         ))}
@@ -121,6 +178,9 @@ const IMieiNoleggi = () => {
             Vai alla pagina "Le richieste dei miei annunci"
           </Link>
         </div>
+      </div>
+      <div>
+        <p>Seleziona un filtro:</p>
       </div>
       <div className="rentalList">
         {noleggiatoreRentals.map((r) => (
@@ -153,9 +213,9 @@ const IMieiNoleggi = () => {
             <div className="rentalItem">
               <h3>Stato</h3>
               {r.stato === "INIZIO" && <p>Inizio</p>}
-
-              {r.stato === "FINE" && <p>In corso...</p>}
-              {r.stato === "FINE" && ( //va chiamata la funzione che controlla il passaggio del tempo
+              {r.stato === "IN CORSO" && <p>In corso...</p>}
+              {r.stato === "FINE" && <p>Fine</p>}
+              {r.stato === "FINE" && (
                 <button
                   className="pulsante"
                   onClick={() => handleModifyState(r.id, "CONCLUSIONE")}
@@ -163,11 +223,26 @@ const IMieiNoleggi = () => {
                   Ho ricevuto l'oggetto indietro
                 </button>
               )}
-
               {r.stato === "CONCLUSIONE" && <p>Conclusione</p>}
               {r.stato === "CONCLUSIONE" && (
-                <button className="pulsante">Valuta l'utente</button>
+                <div>
+                  <button
+                    className="pulsante"
+                    onClick={() =>
+                      handleOpenValutazioneUtente(r.noleggiante, idUser)
+                    }
+                  >
+                    Valuta l'utente
+                  </button>
+                  <ValutazioneUtente
+                    trigger={buttonValutazioneUtente}
+                    setTrigger={setButtonValutazioneUtente}
+                    idValutato={valutazioneUtenteParams.idValutato}
+                    idValutatore={valutazioneUtenteParams.idValutatore}
+                  ></ValutazioneUtente>
+                </div>
               )}
+              {r.stato === "CONCLUSOCONVALUTAZIONE" && <p>Noleggio Concluso</p>}
             </div>
           </div>
         ))}

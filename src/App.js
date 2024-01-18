@@ -16,6 +16,7 @@ import IMieiNoleggi from "./components/IMieiNoleggi";
 import IMieiAnnunci from "./components/IMieiAnnunci";
 import CreaAnnuncio from "./components/CreaAnnuncio";
 import ModificaAnnuncio from "./components/ModificaAnnuncio";
+import ProfiloUtente from "./components/ProfiloUtente";
 import "./style/App.css";
 
 const App = () => {
@@ -39,6 +40,7 @@ const App = () => {
           <Route path="/annunci" element={<IMieiAnnunci />} />
           <Route path="/creaUnAnnuncio" element={<CreaAnnuncio />} />
           <Route path="/modificaAnnuncio/:id" element={<ModificaAnnuncio />} />
+          <Route path="/utente/:id" element={<ProfiloUtente />} />
         </Routes>
       </Router>
     </div>

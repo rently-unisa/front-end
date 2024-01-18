@@ -15,6 +15,7 @@ import {
 } from "../services/noleggi";
 import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
+import Chat from "./Chat";
 
 const LeMieRichieste = () => {
   //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
@@ -23,6 +24,16 @@ const LeMieRichieste = () => {
   const idUser = user.id; //id utente a prescindere che sia noleggiante o noleggiatore
   const param = useParams();
   const defaultChecked = true;
+  const [chatParams, setChatParams] = useState({
+    idEmittente: null,
+    idRicevente: null,
+  });
+  const [chatVisibility, setChatVisibility] = useState(false);
+  const handleOpenChat = (idEmittente, idRicevente) => {
+    setChatParams({ idEmittente, idRicevente });
+    setChatVisibility(true);
+  };
+
   const [checked, setChecked] = useState(
     param.checked === "true"
       ? true
@@ -93,7 +104,22 @@ const LeMieRichieste = () => {
             <div className="rentalItem">
               <h3>Autore dell'annuncio</h3>
               <p>{getUserById(r.noleggiatore).username}</p>
-              <button className="pulsante">Contatta</button>
+              <div>
+                <button
+                  className="pulsante"
+                  onClick={() => {
+                    handleOpenChat(r.noleggiante, r.noleggiatore);
+                  }}
+                >
+                  Contatta
+                </button>
+                <Chat
+                  trigger={chatVisibility}
+                  setTrigger={setChatVisibility}
+                  idEmittente={chatParams.idEmittente}
+                  idRicevente={chatParams.idRicevente}
+                />
+              </div>
             </div>
             <div className="rentalItem">
               <h3>Intervallo noleggio</h3>

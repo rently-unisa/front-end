@@ -24,8 +24,17 @@ const getMessageById = (messageId) => {
   return messagesData.find((message) => message.id === messageId);
 };
 
-const addMessage = (newMessage) => {
+const addMessage = (newMessageData) => {
+  const newMessageId = messagesData.length + 1;
+
+  const newMessage = {
+    id: newMessageId,
+    ...newMessageData,
+  };
+
   messagesData.push(newMessage);
+
+  return newMessage;
 };
 
 const deleteMessageById = (messageId) => {

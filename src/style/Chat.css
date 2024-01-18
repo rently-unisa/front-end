@@ -1,0 +1,36 @@
+.chat {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chat-body {
+  position: fixed;
+  right: 0;
+  display: flex;
+  padding: 1rem;
+  gap: 1rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: var(--chiaro);
+}
+
+.my-message {
+  /* DA CAMBIARE */
+  background-color: #4caf50; /* Colore di sfondo per i tuoi messaggi */
+  color: white; /* Colore del testo per i tuoi messaggi */
+}
+
+.other-message {
+  /* DA CAMBIARE */
+  background-color: #2196f3; /* Colore di sfondo per i messaggi dell'interlocutore */
+  color: white; /* Colore del testo per i messaggi dell'interlocutore */
+}

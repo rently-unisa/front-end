@@ -9,6 +9,9 @@ const rentalsData = [
     stato: "RICHIESTA",
     prezzoTotale: 150.5,
     idAnnuncio: 1,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 2,
@@ -20,6 +23,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 200.75,
     idAnnuncio: 2,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 3,
@@ -31,6 +37,9 @@ const rentalsData = [
     stato: "CONCLUSIONE",
     prezzoTotale: 300.2,
     idAnnuncio: 3,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 4,
@@ -42,6 +51,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 180.9,
     idAnnuncio: 4,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 5,
@@ -53,6 +65,9 @@ const rentalsData = [
     stato: "INIZIO",
     prezzoTotale: 250.0,
     idAnnuncio: 5,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 6,
@@ -64,6 +79,9 @@ const rentalsData = [
     stato: "RICHIESTA",
     prezzoTotale: 210.6,
     idAnnuncio: 6,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 7,
@@ -75,6 +93,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 180.0,
     idAnnuncio: 7,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 8,
@@ -86,6 +107,9 @@ const rentalsData = [
     stato: "CONCLUSIONE",
     prezzoTotale: 320.75,
     idAnnuncio: 3,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 9,
@@ -97,6 +121,9 @@ const rentalsData = [
     stato: "INIZIO",
     prezzoTotale: 190.3,
     idAnnuncio: 2,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 10,
@@ -108,6 +135,9 @@ const rentalsData = [
     stato: "FINE",
     prezzoTotale: 280.5,
     idAnnuncio: 1,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 11,
@@ -119,6 +149,9 @@ const rentalsData = [
     stato: "RIFIUTATA",
     prezzoTotale: 280.5,
     idAnnuncio: 2,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
   },
   {
     id: 12,
@@ -130,6 +163,65 @@ const rentalsData = [
     stato: "RIFIUTATA",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
+  },
+  {
+    id: 13,
+    dataInizio: "2023-10-10",
+    dataFine: "2023-10-15",
+    dataRichiesta: "2023-10-03",
+    noleggiante: 1,
+    noleggiatore: 2,
+    stato: "IN CORSO",
+    prezzoTotale: 280.5,
+    idAnnuncio: 3,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
+  },
+  {
+    id: 14,
+    dataInizio: "2023-10-10",
+    dataFine: "2023-10-15",
+    dataRichiesta: "2023-10-03",
+    noleggiante: 1,
+    noleggiatore: 2,
+    stato: "IN CORSO",
+    prezzoTotale: 280.5,
+    idAnnuncio: 3,
+    valutazioneNoleggiante: false,
+    valutazioneAnnuncio: false,
+    valutazioneNoleggiatore: false,
+  },
+  {
+    id: 15,
+    dataInizio: "2023-10-10",
+    dataFine: "2023-10-15",
+    dataRichiesta: "2023-10-03",
+    noleggiante: 1,
+    noleggiatore: 2,
+    stato: "CONCLUSOCONVALUTAZIONE",
+    prezzoTotale: 280.5,
+    idAnnuncio: 3,
+    valutazioneNoleggiante: true,
+    valutazioneAnnuncio: true,
+    valutazioneNoleggiatore: true,
+  },
+  {
+    id: 16,
+    dataInizio: "2023-10-10",
+    dataFine: "2023-10-15",
+    dataRichiesta: "2023-10-03",
+    noleggiante: 1,
+    noleggiatore: 2,
+    stato: "CONCLUSOCONVALUTAZIONE",
+    prezzoTotale: 280.5,
+    idAnnuncio: 3,
+    valutazioneNoleggiante: true,
+    valutazioneAnnuncio: true,
+    valutazioneNoleggiatore: true,
   },
 ];
 
@@ -191,7 +283,13 @@ const getRentalsByNoleggiante = (noleggianteId) => {
   return rentalsData.filter(
     (rental) =>
       rental.noleggiante === noleggianteId &&
-      ["INIZIO", "FINE", "CONCLUSIONE"].includes(rental.stato)
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
   );
 };
 
@@ -199,7 +297,13 @@ const getRentalsByNoleggiatore = (noleggiatoreId) => {
   return rentalsData.filter(
     (rental) =>
       rental.noleggiatore === noleggiatoreId &&
-      ["INIZIO", "FINE", "CONCLUSIONE"].includes(rental.stato)
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
   );
 };
 

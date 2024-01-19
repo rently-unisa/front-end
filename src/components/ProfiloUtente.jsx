@@ -10,6 +10,7 @@ import { Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Chat from "./Chat";
 
 const ProfiloUtente = () => {
   const userId = parseInt(useParams().id, 10);
@@ -17,6 +18,15 @@ const ProfiloUtente = () => {
   const [userAds, setUserAds] = useState();
   const [ratings, setRatings] = useState();
   const [usernames, setUsernames] = useState();
+  const [chatParams, setChatParams] = useState({
+    idEmittente: null,
+    idRicevente: null,
+  });
+  const [chatVisibility, setChatVisibility] = useState(false);
+  const handleOpenChat = (idEmittente, idRicevente) => {
+    setChatParams({ idEmittente, idRicevente });
+    setChatVisibility(true);
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -66,7 +76,21 @@ const ProfiloUtente = () => {
               <p>{User.cognome}</p>
             </div>
             <div className="contactButton">
-              <button>Contatta</button>
+              <div>
+                <button
+                  onClick={() => {
+                    handleOpenChat(r.noleggiante, r.noleggiatore);
+                  }}
+                >
+                  Contatta
+                </button>
+                <Chat
+                  trigger={chatVisibility}
+                  setTrigger={setChatVisibility}
+                  idEmittente={chatParams.idEmittente}
+                  idRicevente={chatParams.idRicevente}
+                />
+              </div>
             </div>
           </div>
           <div className="listaAnnunciCatalogo">

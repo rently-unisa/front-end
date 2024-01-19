@@ -13,6 +13,7 @@ import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../style/Dettagli.css";
+import Chat from "./Chat";
 
 const Dettagli = () => {
   const idAnnuncio = parseInt(useParams().id, 10);
@@ -22,6 +23,15 @@ const Dettagli = () => {
   const [usernames, setUsernames] = useState([]);
   const { isLoggedIn } = useAuth();
   const [popupVisible, setPopupVisible] = useState(false);
+  const [chatParams, setChatParams] = useState({
+    idEmittente: null,
+    idRicevente: null,
+  });
+  const [chatVisibility, setChatVisibility] = useState(false);
+  const handleOpenChat = (idEmittente, idRicevente) => {
+    setChatParams({ idEmittente, idRicevente });
+    setChatVisibility(true);
+  };
 
   useEffect(() => {
     let nicknames = [];
@@ -88,8 +98,6 @@ const Dettagli = () => {
     fetchAd();
   }, [idAnnuncio]);
 
-  useEffect(() => {}, [ratings]);
-
   return (
     <div className="Page">
       <Navbar />
@@ -127,7 +135,21 @@ const Dettagli = () => {
                       <Link to={`/utente/${adUser.id}`}>{adUser.username}</Link>
                     </div>
                     <div className="contactButton">
-                      <button>Contatta</button>
+                      <div>
+                        <button
+                          onClick={() => {
+                            handleOpenChat(r.noleggiante, r.noleggiatore);
+                          }}
+                        >
+                          Contatta
+                        </button>
+                        <Chat
+                          trigger={chatVisibility}
+                          setTrigger={setChatVisibility}
+                          idEmittente={chatParams.idEmittente}
+                          idRicevente={chatParams.idRicevente}
+                        />
+                      </div>
                     </div>
                   </div>
                 </div>

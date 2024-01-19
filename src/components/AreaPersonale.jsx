@@ -8,6 +8,7 @@ import Footer from "./Footer";
 import { getUserById, modifyUser } from "../services/utenti";
 import { Link } from "react-router-dom";
 import "../style/AreaPersonale.css";
+import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
 
 const AreaPersonale = () => {
   const idUsername = Cookies.get("id");
@@ -20,17 +21,55 @@ const AreaPersonale = () => {
   const [userUsername, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
+  const [ratings, setRatings] = useState();
+  const [usernames, setUsernames] = useState();
 
   useEffect(() => {
-    getUserById(idUsername).then((response) => {
-      if (response.ok) {
-        response.json().then((utente) => setUser(utente));
-      } else {
-        response.json().then((result) => {
-          alert(result.message);
-        });
-      }
-    });
+    const fetchUser = async () => {
+      getUserById(idUsername).then((response) => {
+        if (response.ok) {
+          response.json().then((utente) => {
+            fetchRating(idUsername);
+            setUser(utente);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
+    };
+
+    const fetchRating = async (id) => {
+      getUserValutationsByValutatoId(id).then((response) => {
+        if (response.ok) {
+          response.json().then((adRatings) => {
+            setRatings(adRatings);
+            adRatings.forEach((rating) => {
+              getUserById(rating.idValutatore).then((response) => {
+                if (response.ok) {
+                  response
+                    .json()
+                    .then((utente) => nicknames.push(utente.username));
+                } else {
+                  response.json().then((result) => {
+                    alert(result.message);
+                  });
+                }
+              });
+            });
+
+            setUsernames(nicknames);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
+    };
+
+    fetchUser();
   }, [idUsername]);
 
   useEffect(() => {
@@ -199,6 +238,184 @@ const AreaPersonale = () => {
             <button className="pulsante" onClick={() => handleModify(premium)}>
               Applica modifiche
             </button>
+          </div>
+          <div className="reviewsContainer">
+            <div className="reviewsTitle">Recensioni sull'utente</div>
+            <div className="reviewsContainer1">
+              <div className="reviewsStats">
+                <div className="reviewsNumber">
+                  {ratings.length < 2
+                    ? `${ratings.length} review`
+                    : `${ratings.length} reviews`}
+                </div>
+                <div className="overallRating">Overall rating</div>
+                <div className="ratingMedium">
+                  <div className="averageRating">
+                    {ratings.reduce((sum, rating) => sum + rating.voto, 0) /
+                      (ratings.length * 2) ===
+                    0
+                      ? "Nessuna recensione"
+                      : ratings.reduce((sum, rating) => sum + rating.voto, 0) /
+                        (ratings.length * 2)}
+                  </div>
+                  <div className="ratingStars">
+                    <Rating
+                      name="read-only"
+                      style={{ color: "#282a28" }}
+                      value={
+                        ratings.reduce((sum, rating) => sum + rating.voto, 0) /
+                        (ratings.length * 2)
+                      }
+                      precision={0.5}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <Box sx={{ width: 150 }}>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">5</span>{" "}
+                    <Slider
+                      defaultValue={ratings.reduce(
+                        (count, rating) =>
+                          rating.voto >= 9 ? count + 1 : count + 0,
+                        0
+                      )}
+                      max={ratings.length}
+                      size="small"
+                      disabled
+                    />
+                    <span className="RatingNumber">
+                      {ratings.reduce(
+                        (count, rating) =>
+                          rating.voto >= 9 ? count + 1 : count + 0,
+                        0
+                      )}
+                    </span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">4</span>{" "}
+                    <Slider
+                      defaultValue={ratings.reduce(
+                        (count, rating) =>
+                          7 <= rating.voto && rating.voto < 9
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                      max={ratings.length}
+                      size="small"
+                      disabled
+                    />
+                    <span className="RatingNumber">
+                      {ratings.reduce(
+                        (count, rating) =>
+                          7 <= rating.voto && rating.voto < 9
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                    </span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">3</span>{" "}
+                    <Slider
+                      defaultValue={ratings.reduce(
+                        (count, rating) =>
+                          5 <= rating.voto && rating.voto < 7
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                      max={ratings.length}
+                      size="small"
+                      disabled
+                    />
+                    <span className="RatingNumber">
+                      {ratings.reduce(
+                        (count, rating) =>
+                          5 <= rating.voto && rating.voto < 7
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                    </span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">2</span>{" "}
+                    <Slider
+                      defaultValue={ratings.reduce(
+                        (count, rating) =>
+                          3 <= rating.voto && rating.voto < 5
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                      max={ratings.length}
+                      size="small"
+                      disabled
+                    />
+                    <span className="RatingNumber">
+                      {ratings.reduce(
+                        (count, rating) =>
+                          3 <= rating.voto && rating.voto < 5
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                    </span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">1</span>{" "}
+                    <Slider
+                      defaultValue={ratings.reduce(
+                        (count, rating) =>
+                          1 <= rating.voto && rating.voto < 3
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                      max={ratings.length}
+                      size="small"
+                      disabled
+                    />
+                    <span className="RatingNumber">
+                      {ratings.reduce(
+                        (count, rating) =>
+                          1 <= rating.voto && rating.voto < 3
+                            ? count + 1
+                            : count + 0,
+                        0
+                      )}
+                    </span>
+                  </div>
+                </Box>
+              </div>
+              <div className="userReviews">
+                {ratings.map((rating) => (
+                  <div key={rating.id} className="containerUserReviews">
+                    <div className="usernameUserReviews">
+                      {
+                        usernames.find(
+                          (user) => user.id === rating.idValutatore
+                        )?.username
+                      }
+                    </div>
+                    <div className="iconsUserReviews">
+                      <Rating
+                        name="read-only"
+                        style={{ color: "#282a28", fontSize: "1.2rem" }}
+                        value={rating.voto / 2}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </div>
+                    <div className="review-textUserReviews">
+                      {rating.descrizione}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>

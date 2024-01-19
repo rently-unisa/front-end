@@ -182,7 +182,22 @@ const LeMieRichieste = () => {
             <div className="rentalItem">
               <h3>Richiedente</h3>
               <p>{getUserById(r.noleggiante).username}</p>
-              <button className="pulsante">Contatta</button>
+              <div>
+                <button
+                  className="pulsante"
+                  onClick={() => {
+                    handleOpenChat(r.noleggiatore, r.noleggiante);
+                  }}
+                >
+                  Contatta
+                </button>
+                <Chat
+                  trigger={chatVisibility}
+                  setTrigger={setChatVisibility}
+                  idEmittente={chatParams.idEmittente}
+                  idRicevente={chatParams.idRicevente}
+                />
+              </div>
             </div>
             <div className="rentalItem">
               <h3>Intervallo noleggio</h3>

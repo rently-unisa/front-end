@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import dayjs from "dayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { addMessage, getMessagesByUserId } from "../services/messaggi";
@@ -16,7 +17,7 @@ function Chat(props) {
     if (newText !== "") {
       const newMessage = {
         testo: newText,
-        orarioInvio: "",
+        orarioInvio: dayjs().format("YYYY-MM-DD HH:mm:ss"),
         idUtente1: props.idEmittente,
         idUtente2: props.idRicevente,
       };

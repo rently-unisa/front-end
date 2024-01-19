@@ -1,28 +1,28 @@
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
 import Switch from "@mui/material/Switch";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useParams } from "react-router-dom";
-import { getUserByUsername, getUserById } from "../services/utenti";
 import {
   getRentalsByNoleggiante,
   getRentalsByNoleggiatore,
   getRentalById,
   modifyRental,
 } from "../services/noleggi";
+import { getUserById } from "../services/utenti.js";
 import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
 import ValutazioneOggetto from "./ValutazioneOggetto.jsx";
 import ValutazioneUtente from "./ValutazioneUtente.jsx";
 import Chat from "./Chat";
+import Cookies from "js-cookie";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 const IMieiNoleggi = () => {
   //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUser = user.id; //id utente a prescindere che sia noleggiante o noleggiatore
+  const idUser = Cookies.get("id");
   const param = useParams();
   const defaultChecked = true;
   const [chatParams, setChatParams] = useState({
@@ -68,10 +68,30 @@ const IMieiNoleggi = () => {
       : defaultChecked
   );
   const [noleggianteRentals, setNoleggianteRentals] = useState(
-    getRentalsByNoleggiante(idUser)
+    getRentalsByNoleggiante(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          return rental;
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    })
   );
   const [noleggiatoreRentals, setNoleggiatoreRentals] = useState(
-    getRentalsByNoleggiatore(idUser)
+    getRentalsByNoleggiatore(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          return rental;
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    })
   );
   const [valutazioneOggettoParams, setValutazioneOggettoParams] = useState({
     idAnnuncio: null,
@@ -101,11 +121,42 @@ const IMieiNoleggi = () => {
   };
 
   const handleModifyState = (id, stato) => {
-    const noleggio = getRentalById(id);
-    noleggio.stato = stato;
-    modifyRental(noleggio);
-    setNoleggianteRentals(getRentalsByNoleggiante(idUser));
-    setNoleggiatoreRentals(getRentalsByNoleggiatore(idUser));
+    getRentalById(id).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          rental.stato = stato;
+          modifyRental(rental);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+
+    getRentalsByNoleggiante(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          setNoleggianteRentals(rental);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+
+    getRentalsByNoleggiatore(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          setNoleggiatoreRentals(rental);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
   };
 
   const FiltraStatobox = isFiltraStatoOpen ? (
@@ -116,7 +167,6 @@ const IMieiNoleggi = () => {
       </button>
       <div
         style={{
-          //riportare in CSS
           display: "flex",
           flexDirection: "column",
           alignItems: "flex-start",
@@ -160,6 +210,7 @@ const IMieiNoleggi = () => {
       </div>
       <div>
         <p>Seleziona un filtro:</p>
+        <FiltraStatobox />
       </div>
       <div className="rentalList">
         {noleggianteRentals.map((r) => (
@@ -181,7 +232,21 @@ const IMieiNoleggi = () => {
             </div>
             <div className="rentalItem">
               <h3>Autore dell'annuncio</h3>
-              <p>{getUserById(r.noleggiatore).username}</p>
+              <p>
+                {
+                  getUserById(r.noleggiatore).then((response) => {
+                    if (response.ok) {
+                      response.json().then((rental) => {
+                        return rental;
+                      });
+                    } else {
+                      response.json().then((result) => {
+                        alert(result.message);
+                      });
+                    }
+                  }).username
+                }
+              </p>
               <div>
                 <button
                   className="pulsante"

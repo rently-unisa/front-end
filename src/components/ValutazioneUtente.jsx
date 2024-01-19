@@ -21,7 +21,6 @@ function ValutazioneUtente(props) {
         idValutato: props.idValutato,
       };
       addUserValutation(newValutazione);
-      console.log(newValutazione);
       alert("La valutazione è stata inviata correttamente");
     } else alert("Inserisci una recensione");
     props.setTrigger(false);

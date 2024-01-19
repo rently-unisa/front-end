@@ -61,6 +61,20 @@ const CreaAnnuncio = () => {
   ];
   const [isCondizioneOpen, setIsCondizioneOpen] = useState(false);
   const conditions = ["Ottima", "Buona", "Discreta"];
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      Elettronica: "ELETTRONICA",
+      Libri: "LIBRI",
+      Elettrodomestici: "ELETTRODOMESTICI",
+      "Giardino e giardinaggio": "GIARDINO",
+      "Arte e musica": "ARTE",
+      "Casa e cucina": "CASAECUCINA",
+      "Oggettistica professionale": "OGGETTISTICAPROFESSIONALE",
+      Sport: "SPORT",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
 
   const handleCreation = () => {
     const newAd = {
@@ -72,7 +86,7 @@ const CreaAnnuncio = () => {
       cap,
       descrizione,
       prezzo,
-      categoria,
+      categoria: mapCategoriaToValue(categoria),
       dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
       condizione: condizioni,
     };

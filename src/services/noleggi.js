@@ -250,8 +250,166 @@ const getRentalById = (rentalId) => {
   }
 }; */
 
-const addRental = (newRental) => {
+const getRentalsByAnnuncioId = (annuncioId) => {
+  return rentalsData.filter((rental) => rental.idAnnuncio === annuncioId);
+};
+
+//Manca il backend
+
+/*const getRentalsByNoleggiante = (noleggianteId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiante === noleggianteId &&
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
+  );
+};*/
+
+const getRentalsByNoleggiante = async (noleggianteId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/noleggiante?id=${noleggianteId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsByNoleggiatore = (noleggiatoreId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiatore === noleggiatoreId &&
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
+  );
+};*/
+
+const getRentalsByNoleggiatore = async (noleggiatoreId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/noleggiatore?id=${noleggiatoreId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsRequestsByNoleggiante = (noleggianteId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiante === noleggianteId &&
+      ["ACCETTATA", "RICHIESTA", "RIFIUTATA"].includes(rental.stato)
+  );
+};*/
+
+const getRentalsRequestsByNoleggiante = async (noleggianteId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/richieste/noleggiante?id=${noleggianteId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsRequestsByNoleggiatore = (noleggiatoreId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiatore === noleggiatoreId &&
+      ["ACCETTATA", "RICHIESTA"].includes(rental.stato)
+  );
+};*/
+
+const getRentalsRequestsByNoleggiatore = async (noleggiatoreId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/richieste/noleggiatore?id=${noleggiatoreId}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const addRental = (newRental) => {
   rentalsData.push(newRental);
+};*/
+
+const addRental = async (newRental) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/noleggio/aggiungi-noleggio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newRental),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di noleggio:", error.message);
+    return "Errore durante la richiesta di noleggio";
+  }
+};
+
+/*const modifyRental = (modifiedRental) => {
+  deleteRentalById(modifiedRental.id);
+  rentalsData.push(modifiedRental);
+};*/
+
+const modifyRental = async (modifiedRental) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/noleggio/salva-noleggio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(modifiedRental),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di modifica del noleggio:",
+      error.message
+    );
+    return "Errore durante la richiesta di modifica del noleggio";
+  }
 };
 
 const deleteRentalById = (rentalId) => {
@@ -263,83 +421,15 @@ const deleteRentalById = (rentalId) => {
   console.log(rentalsData);
 };
 
-const getRentalsByAnnuncioId = (annuncioId) => {
-  return rentalsData.filter((rental) => rental.idAnnuncio === annuncioId);
-};
-
-const getRentalsByStato = (stato) => {
-  return rentalsData.filter((rental) => rental.stato === stato);
-};
-
-const getRentalsByDataInizio = (dataInizio) => {
-  return rentalsData.filter((rental) => rental.dataInizio === dataInizio);
-};
-
-const getRentalsByDataFine = (dataFine) => {
-  return rentalsData.filter((rental) => rental.dataFine === dataFine);
-};
-
-const getRentalsByNoleggiante = (noleggianteId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiante === noleggianteId &&
-      [
-        "INIZIO",
-        "IN CORSO",
-        "FINE",
-        "CONCLUSIONE",
-        "CONCLUSOCONVALUTAZIONE",
-      ].includes(rental.stato)
-  );
-};
-
-const getRentalsByNoleggiatore = (noleggiatoreId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiatore === noleggiatoreId &&
-      [
-        "INIZIO",
-        "IN CORSO",
-        "FINE",
-        "CONCLUSIONE",
-        "CONCLUSOCONVALUTAZIONE",
-      ].includes(rental.stato)
-  );
-};
-
-const getRentalsRequestsByNoleggiante = (noleggianteId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiante === noleggianteId &&
-      ["ACCETTATA", "RICHIESTA", "RIFIUTATA"].includes(rental.stato)
-  );
-};
-
-const getRentalsRequestsByNoleggiatore = (noleggiatoreId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiatore === noleggiatoreId &&
-      ["ACCETTATA", "RICHIESTA"].includes(rental.stato)
-  );
-};
-
-const modifyRental = (modifiedRental) => {
-  deleteRentalById(modifiedRental.id);
-  rentalsData.push(modifiedRental);
-};
-
 export {
   getAllRentals,
-  getRentalsByDataFine,
-  getRentalsByDataInizio,
   getRentalById,
-  getRentalsByStato,
   getRentalsByAnnuncioId,
   getRentalsByNoleggiante,
   getRentalsByNoleggiatore,
   getRentalsRequestsByNoleggiante,
   getRentalsRequestsByNoleggiatore,
-  deleteRentalById,
   addRental,
   modifyRental,
+  deleteRentalById,
 };

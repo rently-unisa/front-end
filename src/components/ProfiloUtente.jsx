@@ -11,13 +11,14 @@ import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Chat from "./Chat";
+import Cookies from "js-cookie";
 
 const ProfiloUtente = () => {
   const userId = parseInt(useParams().id, 10);
   const [User, setUser] = useState();
   const [userAds, setUserAds] = useState();
   const [ratings, setRatings] = useState();
-  const [usernames, setUsernames] = useState();
+  const [usernames, setUsernames] = useState({});
   const [chatParams, setChatParams] = useState({
     idEmittente: null,
     idRicevente: null,
@@ -28,35 +29,77 @@ const ProfiloUtente = () => {
     setChatVisibility(true);
   };
 
+  const getRatingUsername = async (id) => {
+    try {
+      const response = await getUserById(id);
+      if (response.ok) {
+        const user = await response.json();
+        return { id, username: user.username };
+      } else {
+        const result = await response.json();
+        alert(result.message);
+        return { id, username: "Utente sconosciuto" };
+      }
+    } catch (error) {
+      console.error("Error fetching username:", error);
+      return { id, username: "Utente sconosciuto" };
+    }
+  };
+
   useEffect(() => {
     const fetchUser = async () => {
-      const userData = await getUserById(userId);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //non serve
-      setUser(userData);
-      fetchUserAds(userData.id);
-      fetchRating(userData.id);
+      getUserById(userId).then((response) => {
+        if (response.ok) {
+          response.json().then((userData) => {
+            fetchUserAds(userData.id);
+            fetchRating(userData.id);
+            setUser(userData);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
     const fetchUserAds = async (id) => {
-      const ads = await getAdsByUserId(id);
-      setUserAds(ads);
+      await getAdsByUserId(id).then((response) => {
+        if (response.ok) {
+          response.json().then((ads) => {
+            setUserAds(ads);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
     const fetchRating = async (id) => {
-      const userRatings = await getUserValutationsByValutatoId(id);
-      setRatings(userRatings);
-      const names = await Promise.all(
-        userRatings.map(async (rating) => {
-          const username = await fetchUsername(rating.idValutatore);
-          return username;
-        })
-      );
-      setUsernames(names);
-    };
+      getUserValutationsByValutatoId(id).then((response) => {
+        if (response.ok) {
+          response.json().then(async (adRatings) => {
+            const userPromises = adRatings.map((rating) =>
+              getRatingUsername(rating.valutatore)
+            );
+            const usersData = await Promise.all(userPromises);
 
-    const fetchUsername = async (id) => {
-      const name = await getUserById(id);
-      return name;
+            const newUsernameMapping = {};
+            usersData.forEach((userData) => {
+              newUsernameMapping[userData.id] = userData.username;
+            });
+
+            setRatings(adRatings);
+            setUsernames(newUsernameMapping);
+          });
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      });
     };
 
     fetchUser();
@@ -65,7 +108,7 @@ const ProfiloUtente = () => {
   return (
     <div className="Page">
       <Navbar />
-      {User ? (
+      {User && ratings ? (
         <div className="container">
           <h1>Profilo utente</h1>
           <div className="contact">
@@ -79,7 +122,7 @@ const ProfiloUtente = () => {
               <div>
                 <button
                   onClick={() => {
-                    handleOpenChat(r.noleggiante, r.noleggiatore);
+                    handleOpenChat(Cookies.get("id"), userId);
                   }}
                 >
                   Contatta
@@ -99,7 +142,7 @@ const ProfiloUtente = () => {
                 <div className={`card `}>
                   <img src={ad.immagine} alt="Immgagine annuncio" />
                   <div className="card-description">
-                    <p>{ad.titolo}</p>
+                    <p>{ad.nome}</p>
                     <h6>€ {ad.prezzo}/giorno</h6>
                   </div>
                 </div>
@@ -261,11 +304,7 @@ const ProfiloUtente = () => {
                 {ratings.map((rating) => (
                   <div key={rating.id} className="containerUserReviews">
                     <div className="usernameUserReviews">
-                      {
-                        usernames.find(
-                          (user) => user.id === rating.idValutatore
-                        )?.username
-                      }
+                      {usernames[rating.valutatore]}
                     </div>
                     <div className="iconsUserReviews">
                       <Rating

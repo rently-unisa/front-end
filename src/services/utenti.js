@@ -113,7 +113,7 @@ const getUserByEmailAndPassword = async (email, password) => {
 const getUserById = async (id) => {
   try {
     const response = await fetch(
-      `http://localhostù:4000/api/area-personale/profilo-utente?id=${id}`,
+      `http://localhost:4000/api/area-personale/profilo-utente?id=${id}`,
       {
         method: "GET",
       }

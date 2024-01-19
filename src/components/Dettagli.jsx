@@ -14,13 +14,14 @@ import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../style/Dettagli.css";
 import Chat from "./Chat";
+import Cookies from "js-cookie";
 
 const Dettagli = () => {
   const idAnnuncio = parseInt(useParams().id, 10);
   const [Annuncio, setAnnuncio] = useState();
   const [adUser, setAdUser] = useState();
   const [ratings, setRatings] = useState();
-  const [usernames, setUsernames] = useState([]);
+  const [usernames, setUsernames] = useState({});
   const { isLoggedIn } = useAuth();
   const [popupVisible, setPopupVisible] = useState(false);
   const [chatParams, setChatParams] = useState({
@@ -33,15 +34,30 @@ const Dettagli = () => {
     setChatVisibility(true);
   };
 
-  useEffect(() => {
-    let nicknames = [];
+  const getRatingUsername = async (id) => {
+    try {
+      const response = await getUserById(id);
+      if (response.ok) {
+        const user = await response.json();
+        return { id, username: user.username };
+      } else {
+        const result = await response.json();
+        alert(result.message);
+        return { id, username: "Utente sconosciuto" };
+      }
+    } catch (error) {
+      console.error("Error fetching username:", error);
+      return { id, username: "Utente sconosciuto" };
+    }
+  };
 
+  useEffect(() => {
     const fetchAd = async () => {
       getAdById(idAnnuncio).then((response) => {
         if (response.ok) {
           response.json().then((ad) => {
             fetchUser(ad.idUtente);
-            fetchRating(ad.id);
+            fetchRatings(ad.id);
             setAnnuncio(ad);
           });
         } else {
@@ -66,26 +82,22 @@ const Dettagli = () => {
       });
     };
 
-    const fetchRating = async (id) => {
+    const fetchRatings = async (id) => {
       getObjectValutationsByAnnuncioId(id).then((response) => {
         if (response.ok) {
-          response.json().then((adRatings) => {
-            setRatings(adRatings);
-            adRatings.forEach((rating) => {
-              getUserById(rating.idValutatore).then((response) => {
-                if (response.ok) {
-                  response
-                    .json()
-                    .then((utente) => nicknames.push(utente.username));
-                } else {
-                  response.json().then((result) => {
-                    alert(result.message);
-                  });
-                }
-              });
+          response.json().then(async (adRatings) => {
+            const userPromises = adRatings.map((rating) =>
+              getRatingUsername(rating.valutatore)
+            );
+            const usersData = await Promise.all(userPromises);
+
+            const newUsernameMapping = {};
+            usersData.forEach((userData) => {
+              newUsernameMapping[userData.id] = userData.username;
             });
 
-            setUsernames(nicknames);
+            setRatings(adRatings);
+            setUsernames(newUsernameMapping);
           });
         } else {
           response.json().then((result) => {
@@ -101,7 +113,7 @@ const Dettagli = () => {
   return (
     <div className="Page">
       <Navbar />
-      {Annuncio && adUser && ratings && usernames ? (
+      {Annuncio && adUser && ratings ? (
         <>
           <div className="container">
             <div className="title">{Annuncio.titolo}</div>
@@ -138,7 +150,7 @@ const Dettagli = () => {
                       <div>
                         <button
                           onClick={() => {
-                            handleOpenChat(r.noleggiante, r.noleggiatore);
+                            handleOpenChat(Cookies.get("id"), adUser.id);
                           }}
                         >
                           Contatta
@@ -322,11 +334,7 @@ const Dettagli = () => {
                   {ratings.map((rating) => (
                     <div key={rating.id} className="containerUserReviews">
                       <div className="usernameUserReviews">
-                        {
-                          usernames.find(
-                            (user) => user.id === rating.idValutatore
-                          )?.username
-                        }
+                        {usernames[rating.valutatore]}
                       </div>
                       <div className="iconsUserReviews">
                         <Rating

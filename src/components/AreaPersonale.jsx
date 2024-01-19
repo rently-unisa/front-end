@@ -9,6 +9,9 @@ import { getUserById, modifyUser } from "../services/utenti";
 import { Link } from "react-router-dom";
 import "../style/AreaPersonale.css";
 import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
+import { Box } from "@mui/material";
+import Rating from "@mui/material/Rating";
+import Slider from "@mui/material/Slider";
 
 const AreaPersonale = () => {
   const idUsername = Cookies.get("id");
@@ -23,6 +26,23 @@ const AreaPersonale = () => {
   const [confPassword, setConfPassword] = useState("");
   const [ratings, setRatings] = useState();
   const [usernames, setUsernames] = useState();
+
+  const getRatingUsername = async (id) => {
+    try {
+      const response = await getUserById(id);
+      if (response.ok) {
+        const user = await response.json();
+        return { id, username: user.username };
+      } else {
+        const result = await response.json();
+        alert(result.message);
+        return { id, username: "Utente sconosciuto" };
+      }
+    } catch (error) {
+      console.error("Error fetching username:", error);
+      return { id, username: "Utente sconosciuto" };
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -43,23 +63,19 @@ const AreaPersonale = () => {
     const fetchRating = async (id) => {
       getUserValutationsByValutatoId(id).then((response) => {
         if (response.ok) {
-          response.json().then((adRatings) => {
-            setRatings(adRatings);
-            adRatings.forEach((rating) => {
-              getUserById(rating.idValutatore).then((response) => {
-                if (response.ok) {
-                  response
-                    .json()
-                    .then((utente) => nicknames.push(utente.username));
-                } else {
-                  response.json().then((result) => {
-                    alert(result.message);
-                  });
-                }
-              });
+          response.json().then(async (adRatings) => {
+            const userPromises = adRatings.map((rating) =>
+              getRatingUsername(rating.valutatore)
+            );
+            const usersData = await Promise.all(userPromises);
+
+            const newUsernameMapping = {};
+            usersData.forEach((userData) => {
+              newUsernameMapping[userData.id] = userData.username;
             });
 
-            setUsernames(nicknames);
+            setRatings(adRatings);
+            setUsernames(newUsernameMapping);
           });
         } else {
           response.json().then((result) => {
@@ -239,6 +255,8 @@ const AreaPersonale = () => {
               Applica modifiche
             </button>
           </div>
+        </div>
+        {ratings && (
           <div className="reviewsContainer">
             <div className="reviewsTitle">Recensioni sull'utente</div>
             <div className="reviewsContainer1">
@@ -394,11 +412,7 @@ const AreaPersonale = () => {
                 {ratings.map((rating) => (
                   <div key={rating.id} className="containerUserReviews">
                     <div className="usernameUserReviews">
-                      {
-                        usernames.find(
-                          (user) => user.id === rating.idValutatore
-                        )?.username
-                      }
+                      {usernames[rating.valutatore]}
                     </div>
                     <div className="iconsUserReviews">
                       <Rating
@@ -417,7 +431,7 @@ const AreaPersonale = () => {
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
       <Footer />
     </div>

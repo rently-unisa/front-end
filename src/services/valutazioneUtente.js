@@ -1,4 +1,4 @@
-const userValutationData = [
+/*const userValutationData = [
   {
     id: 1,
     voto: 8,
@@ -13,23 +13,33 @@ const userValutationData = [
     idValutatore: 1,
     idValutato: 2,
   },
-];
+];*/
 
-const getAllUserValutations = () => {
-  return userValutationData;
-};
-
-const getUserValutationById = (id) => {
-  return userValutationData.find((valutation) => valutation.id === id);
-};
-
-const getUserValutationsByValutatoId = (idValutato) => {
+/*const getUserValutationsByValutatoId = (idValutato) => {
   return userValutationData.filter(
     (valutation) => valutation.idValutato === idValutato
   );
+};*/
+
+const getUserValutationsByValutatoId = async (idValutato) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/valutazione/visualizza-valutazioni-annuncio?id=${idValutato}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta delle valutazioni degli oggetti: ",
+      error.message
+    );
+  }
 };
 
-const addUserValutation = (newValutationData) => {
+/*const addUserValutation = (newValutationData) => {
   const newUserValutationId = userValutationData.length + 1;
 
   const newUserValutation = {
@@ -40,11 +50,26 @@ const addUserValutation = (newValutationData) => {
   userValutationData.push(newUserValutation);
 
   return newUserValutation;
+};*/
+
+const addUserValutation = async (newValutationData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/valutazione/aggiungi-valutazione-oggetto",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newValutationData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di valutazione:", error.message);
+    return "Errore durante la richiesta di valutazione";
+  }
 };
 
-export {
-  getAllUserValutations,
-  getUserValutationById,
-  getUserValutationsByValutatoId,
-  addUserValutation,
-};
+export { getUserValutationsByValutatoId, addUserValutation };

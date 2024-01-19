@@ -90,7 +90,7 @@ const getPremiumUsers = () => {
 const getUserByEmailAndPassword = async (email, password) => {
   try {
     const response = await fetch(
-      "http://79.22.155.129:4000/api/autenticazione/login",
+      "http://localhost:4000/api/autenticazione/login",
       {
         method: "POST",
         headers: {
@@ -113,7 +113,7 @@ const getUserByEmailAndPassword = async (email, password) => {
 const getUserById = async (id) => {
   try {
     const response = await fetch(
-      `http://79.22.155.129:4000/api/area-personale/profilo-utente?id=${id}`,
+      `http://localhostù:4000/api/area-personale/profilo-utente?id=${id}`,
       {
         method: "GET",
       }
@@ -161,7 +161,7 @@ const getUserByEmail = (email) => {
 const addUser = async (newUserData) => {
   try {
     const response = await fetch(
-      "http://79.22.155.129:4000/api/autenticazione/signup",
+      "http://localhost:4000/api/autenticazione/signup",
       {
         method: "POST",
         headers: {
@@ -209,7 +209,7 @@ const deleteUserById = (idDeleteUser) => {
 const modifyUser = async (newUserData) => {
   try {
     const response = await fetch(
-      "http://79.22.155.129:4000/api/area-personale/modifica-dati-utente",
+      "http://localhost:4000/api/area-personale/modifica-dati-utente",
       {
         method: "POST",
         headers: {

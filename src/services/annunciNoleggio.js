@@ -1,4 +1,5 @@
 //import { getPremiumUsers } from "./utenti";
+import axios from "axios";
 
 /*const adsData = [
   {
@@ -165,7 +166,7 @@
 
 const getAllAds = async () => {
   try {
-    const response = await fetch(`http://79.22.155.129:4000/api/ricerca/all`, {
+    const response = await fetch(`http://localhost:4000/api/ricerca/all`, {
       method: "GET",
     });
 
@@ -182,12 +183,9 @@ const getAllAds = async () => {
 
 const getPremiumAds = async () => {
   try {
-    const response = await fetch(
-      `http://79.22.155.129:4000/api/ricerca/premium`,
-      {
-        method: "GET",
-      }
-    );
+    const response = await fetch(`http://localhost:4000/api/ricerca/premium`, {
+      method: "GET",
+    });
 
     return response;
   } catch (error) {
@@ -202,7 +200,7 @@ const getPremiumAds = async () => {
 const getAdById = async (id) => {
   try {
     const response = await fetch(
-      `http://79.22.155.129:4000/api/annuncio/visualizza-annuncio?id=${id}`,
+      `http://localhost:4000/api/annuncio/visualizza-annuncio?id=${id}`,
       {
         method: "GET",
       }
@@ -222,7 +220,7 @@ const getAdById = async (id) => {
 const getAdsByUserId = async (id) => {
   try {
     const response = await fetch(
-      `http://79.22.155.129:4000/api/annuncio/visualizza-annunci-utente?id=${id}`,
+      `http://localhost:4000/api/annuncio/visualizza-annunci-utente?id=${id}`,
       {
         method: "GET",
       }
@@ -248,25 +246,20 @@ const getAdsByUserId = async (id) => {
   return newAd;
 };*/
 
-const addAd = async (newAdData, images) => {
+const addAd = async (newAdData, image) => {
   try {
     const formData = new FormData();
-    formData.append(
-      "model",
-      new Blob([JSON.stringify(newAdData)], { type: "application/json" })
+    for (let key in newAdData) {
+      formData.append(key, newAdData[key]);
+    }
+    formData.append("image", image);
+    const response = await axios.post(
+      "http://localhost:4000/api/annuncio/aggiungi-annuncio",
+      formData,
+      { headers: { "Content-Type": "multipart/form-data" } }
     );
 
-    const response = await fetch(
-      "http://79.22.155.129:4000/api/annuncio/aggiungi-annuncio",
-      {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-        },
-        body: formData,
-      }
-    );
-
+    console.log(response);
     return response;
   } catch (error) {
     console.error(
@@ -290,7 +283,7 @@ const addAd = async (newAdData, images) => {
 const deleteAdById = async (id) => {
   try {
     const response = await fetch(
-      `http://79.22.155.129:4000/api/annuncio/delete-annuncio?id=${id}`,
+      `http://localhost:4000/api/annuncio/delete-annuncio?id=${id}`,
       {
         method: "GET",
       }
@@ -317,7 +310,7 @@ const deleteAdById = async (id) => {
 const modifyAd = async (modifiedAd) => {
   try {
     const response = await fetch(
-      "http://79.22.155.129:4000/api/annuncio/modifica-annuncio",
+      "http://localhost:4000/api/annuncio/modifica-annuncio",
       {
         method: "POST",
         headers: {

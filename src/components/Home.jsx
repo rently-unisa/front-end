@@ -23,7 +23,6 @@ const Home = () => {
     getPremiumAds().then((response) => {
       if (response.ok) {
         response.json().then((ad) => {
-          console.log(ad);
           setAnnunci(ad);
         });
       } else {

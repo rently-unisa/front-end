@@ -14,7 +14,6 @@ const IMieiAnnunci = () => {
     getAdsByUserId(id).then((response) => {
       if (response.ok) {
         response.json().then((ad) => {
-          console.log(ad);
           setAds(ad);
         });
       } else {

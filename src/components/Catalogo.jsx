@@ -40,7 +40,6 @@ const Catalogo = () => {
     "Giardino e giardinaggio",
     "Arte e musica",
     "Casa e cucina",
-    "Auto e moto",
     "Oggettistica professionale",
     "Sport",
   ];
@@ -57,14 +56,12 @@ const Catalogo = () => {
     getPremiumAds().then((response) => {
       if (response.ok) {
         response.json().then((ad) => {
-          console.log(ad);
           setPremiumAds(ad);
         });
       }
     });
 
     getAllAds().then((response) => {
-      console.log(response);
       if (response.ok) {
         response.json().then((ad) => {
           setAllAds(ad);

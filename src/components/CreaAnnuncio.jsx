@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import Navbar from "./Navbar";
@@ -13,16 +14,33 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import Snackbar from "@mui/material/Snackbar";
+import { Box } from "@mui/material";
+import Alert from "@mui/material/Alert";
 import "../style/FormAnnunci.css";
 
 const CreaAnnuncio = () => {
+  const navigate = useNavigate();
   const idUtente = Cookies.get("id");
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const [titolo, setTitolo] = useState("");
   const [descrizione, setDescrizione] = useState("");
   const [prezzo, setPrezzo] = useState();
   const [strada, setStrada] = useState("");
-  const [città, setCittà] = useState("");
+  const [citta, setCitta] = useState("");
   const [cap, setCap] = useState("");
   const [immagine, setImmagine] = useState([]);
   const [dataFine, setDataFine] = useState();
@@ -38,7 +56,6 @@ const CreaAnnuncio = () => {
     "Giardino e giardinaggio",
     "Arte e musica",
     "Casa e cucina",
-    "Auto e moto",
     "Oggettistica professionale",
     "Sport",
   ];
@@ -51,19 +68,19 @@ const CreaAnnuncio = () => {
       idUtente,
       nome: titolo,
       strada,
-      città,
-      civico: "",
+      citta,
       cap,
       descrizione,
-      immagine,
       prezzo,
       categoria,
-      dataFine,
+      dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
       condizione: condizioni,
     };
     addAd(newAd, immaginiCaricate).then((response) => {
-      if (!response.ok) {
-        alert("Errore");
+      if (!response || response.status !== 201) {
+        handleClick({ vertical: "top", horizontal: "center" });
+      } else {
+        navigate("/annunci");
       }
     });
   };
@@ -87,9 +104,9 @@ const CreaAnnuncio = () => {
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files;
+    const file = event.target.files[0];
     setImmaginiCaricate(file);
-    /*if (file) {
+    if (file) {
       // Leggi il file come array di byte
       const reader = new FileReader();
       reader.onloadend = () => {
@@ -97,7 +114,7 @@ const CreaAnnuncio = () => {
         setImmagine(arrayBuffer);
       };
       reader.readAsDataURL(file);
-    }*/
+    }
   };
 
   useEffect(() => {
@@ -236,6 +253,24 @@ const CreaAnnuncio = () => {
 
   return (
     <div className="Page">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+          message="I love snacks"
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Problemi nella creazione dell'annuncio
+          </Alert>
+        </Snackbar>
+      </Box>
       <Navbar />
       <div className="containerAnnunci">
         <div className="leftContainerAnnunci">
@@ -278,9 +313,9 @@ const CreaAnnuncio = () => {
               <input
                 className="input"
                 type="text"
-                value={città}
+                value={citta}
                 placeholder="Inserisci la città"
-                onChange={(e) => setCittà(e.target.value)}
+                onChange={(e) => setCitta(e.target.value)}
               />
             </div>
             <div className="parametro1">

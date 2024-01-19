@@ -50,7 +50,7 @@
     font-size: 2.5rem;
     font-style: normal;
     font-weight: bold;
-    line-height: 3rem; /* 120% */
+    line-height: 3rem;
     display: flex;
     width: 32.5rem;
     height: 4rem;
@@ -117,4 +117,9 @@
     font-size: var(--font-size);
     font-weight: 500;
     line-height: 1.5rem;
+}
+
+.button:hover {
+    background: var(--bianco);
+    color: var(--nero);
 }

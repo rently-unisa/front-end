@@ -225,10 +225,6 @@ const rentalsData = [
   },
 ];
 
-const getAllRentals = () => {
-  return rentalsData;
-};
-
 const getRentalById = (rentalId) => {
   return rentalsData.find((rental) => rental.id === rentalId);
 };
@@ -273,7 +269,7 @@ const getRentalsByAnnuncioId = (annuncioId) => {
 const getRentalsByNoleggiante = async (noleggianteId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/noleggio/noleggiante?id=${noleggianteId}`,
+      `http://localhost:4000/api/noleggio/noleggiante?idUtente=${noleggianteId}`,
       {
         method: "GET",
       }
@@ -302,7 +298,7 @@ const getRentalsByNoleggiante = async (noleggianteId) => {
 const getRentalsByNoleggiatore = async (noleggiatoreId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/noleggio/noleggiatore?id=${noleggiatoreId}`,
+      `http://localhost:4000/api/noleggio/noleggiatore?idUtente=${noleggiatoreId}`,
       {
         method: "GET",
       }
@@ -325,7 +321,7 @@ const getRentalsByNoleggiatore = async (noleggiatoreId) => {
 const getRentalsRequestsByNoleggiante = async (noleggianteId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/noleggio/richieste/noleggiante?id=${noleggianteId}`,
+      `http://localhost:4000/api/noleggio/richieste/noleggiante?idUtente=${noleggianteId}`,
       {
         method: "GET",
       }
@@ -348,7 +344,7 @@ const getRentalsRequestsByNoleggiante = async (noleggianteId) => {
 const getRentalsRequestsByNoleggiatore = async (noleggiatoreId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/noleggio/richieste/noleggiatore?id=${noleggiatoreId}`,
+      `http://localhost:4000/api/noleggio/richieste/noleggiatore?idUtente=${noleggiatoreId}`,
       {
         method: "GET",
       }
@@ -422,7 +418,6 @@ const deleteRentalById = (rentalId) => {
 };
 
 export {
-  getAllRentals,
   getRentalById,
   getRentalsByAnnuncioId,
   getRentalsByNoleggiante,

@@ -1,5 +1,6 @@
 //import { getPremiumUsers } from "./utenti";
 import axios from "axios";
+import Cookies from "js-cookie";
 
 /*const adsData = [
   {
@@ -185,6 +186,9 @@ const getPremiumAds = async () => {
   try {
     const response = await fetch(`http://localhost:4000/api/ricerca/premium`, {
       method: "GET",
+      headers: {
+        Authorization: Cookies.get("token"),
+      },
     });
 
     return response;

@@ -135,9 +135,9 @@
   align-items: flex-start;
   gap: 1.0625rem;
   border-radius: 0.625rem;
-  border-top: 2px solid #528f5f;
-  border-left: 2px solid #528f5f;
-  background: #17643b;
+  border-top: 2px solid var(--medio);
+  border-left: 2px solid var(--medio);
+  background: var(--scuro);
 }
 
 .dropdown-content a,

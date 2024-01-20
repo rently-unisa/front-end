@@ -51,7 +51,7 @@
 
 .descrizione p {
   margin: 0;
-  font-size: 1.5rem;
+  font-size: var(--font-size3);
   font-weight: 400;
   line-height: 2.25rem;
 }
@@ -176,18 +176,19 @@
   align-items: center;
   align-content: center;
   gap: 0.625rem 2.5rem;
-  flex-wrap: wrap;
 }
 
 .card {
   display: flex;
   width: 20.375rem;
   height: 26.25rem;
+  justify-content: space-between;
   flex-direction: column;
   align-items: center;
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  margin-bottom: 2%;
 }
 
 .card p {
@@ -219,22 +220,15 @@
 }
 
 .primo {
-  position: absolute;
-  left: 1.6875%;
-  bottom: 2.53125%;
+  position: relative;
 }
 
 .secondo {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  bottom: 2.53125%;
+  position: relative;
 }
 
 .terzo {
-  position: absolute;
-  right: 1.6875%;
-  bottom: 2.53125%;
+  position: relative;
 }
 
 .inactive {
@@ -257,4 +251,54 @@
 .scopri:hover {
   background-color: var(--bianco);
   color: var(--medio);
+}
+
+@media screen and (max-width: 1534px) {
+  .listaAnnunciHome {
+    justify-content: center;
+  }
+
+  .terzo {
+    position: absolute;
+    visibility: hidden;
+  }
+}
+
+@media screen and (max-width: 1043px) {
+  .intestazione {
+    min-width: 22rem;
+  }
+
+  .descrizione p {
+    font-size: var(--font-size);
+  }
+
+  .listaAnnunciHome {
+    justify-content: center;
+    min-width: 16.375rem;
+    width: 0%;
+  }
+
+  .card {
+    display: flex;
+    width: 16.375rem;
+    height: 24.25rem;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 0.625rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2%;
+  }
+
+  .secondo {
+    position: absolute;
+    visibility: hidden;
+  }
+
+  .terzo {
+    position: absolute;
+    visibility: hidden;
+  }
 }

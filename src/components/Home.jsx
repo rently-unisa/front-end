@@ -100,21 +100,20 @@ const Home = () => {
             {annunci && (
               <div className="listaAnnunciHome">
                 {annunci.map((ad, index) => (
-                  <Link to={`/dettagli/${ad.id}`} key={ad.id}>
-                    <div
-                      key={ad.id}
-                      className={`card ${
-                        index === currentSlide1 ? "primo" : ""
-                      } ${index === currentSlide2 ? "secondo" : ""} ${
-                        index === currentSlide3 ? "terzo" : ""
-                      } ${
-                        index !== currentSlide1 &&
-                        index !== currentSlide2 &&
-                        index !== currentSlide3
-                          ? "inactive"
-                          : ""
-                      }`}
-                    >
+                  <Link
+                    className={`${index === currentSlide1 ? "primo" : ""} ${
+                      index === currentSlide2 ? "secondo" : ""
+                    } ${index === currentSlide3 ? "terzo" : ""} ${
+                      index !== currentSlide1 &&
+                      index !== currentSlide2 &&
+                      index !== currentSlide3
+                        ? "inactive"
+                        : ""
+                    }`}
+                    to={`/dettagli/${ad.id}`}
+                    key={ad.id}
+                  >
+                    <div key={ad.id} className={`card`}>
                       <img src={ad.immagine} alt="Immgagine annuncio" />
                       <div className="card-description">
                         <p>{ad.nome}</p>

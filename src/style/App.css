@@ -41,6 +41,11 @@ body.blue {
   cursor: pointer;
 }
 
+a {
+  text-decoration: none;
+  color: var(--nero);
+}
+
 .Page {
   position: relative;
   width: 100vw;

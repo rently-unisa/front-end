@@ -53,6 +53,7 @@ const Dettagli = () => {
 
   useEffect(() => {
     const fetchAd = async () => {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       getAdById(idAnnuncio).then((response) => {
         if (response.ok) {
           response.json().then((ad) => {

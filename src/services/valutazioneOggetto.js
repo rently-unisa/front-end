@@ -74,6 +74,24 @@ const getObjectValutationsByAnnuncioId = async (idAnnuncio) => {
   }
 };
 
+const getAverageObjectValutationsByAnnuncioId = async (idAnnuncio) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/valutazione/visualizza-media-valutazioni-annuncio?id=${idAnnuncio}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta delle valutazioni degli oggetti: ",
+      error.message
+    );
+  }
+};
+
 /*const addObjectValutations = (newValutationData) => {
   const newValutationId = objectValutationData.length + 1;
 
@@ -107,4 +125,8 @@ const addObjectValutations = async (newValutationData) => {
   }
 };
 
-export { getObjectValutationsByAnnuncioId, addObjectValutations };
+export {
+  getObjectValutationsByAnnuncioId,
+  getAverageObjectValutationsByAnnuncioId,
+  addObjectValutations,
+};

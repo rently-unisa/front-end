@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
-import { getUserByUsername } from "../services/utenti";
 import { getAdById, modifyAd } from "../services/annunciNoleggio";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
@@ -14,13 +12,14 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../style/FormAnnunci.css";
+import Cookies from "js-cookie";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const ModificaAnnuncio = () => {
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUtente = user.id;
+  const idUtente = Cookies.get("id");
+  const navigate = useNavigate();
   const idAnnuncio = parseInt(useParams().id, 10);
   const [titolo, setTitolo] = useState();
   const [descrizione, setDescrizione] = useState();
@@ -33,6 +32,7 @@ const ModificaAnnuncio = () => {
   const [dataFine, setDataFine] = useState();
   const [categoria, setCategoria] = useState();
   const [condizioni, setCondizioni] = useState();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchAd = async () => {
@@ -76,6 +76,18 @@ const ModificaAnnuncio = () => {
   const [isCondizioneOpen, setIsCondizioneOpen] = useState(false);
   const conditions = ["Ottima", "Buona", "Discreta"];
 
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
   const handleModify = () => {
     const modifiedAd = {
       idUtente,
@@ -91,7 +103,13 @@ const ModificaAnnuncio = () => {
       dataFine,
       condizioni,
     };
-    modifyAd(modifiedAd);
+    modifyAd(modifiedAd).then((response) => {
+      if (!response || response.status !== 201) {
+        handleClick({ vertical: "top", horizontal: "center" });
+      } else {
+        navigate("/annunci");
+      }
+    });
   };
 
   const handleCategoria = () => {
@@ -266,6 +284,24 @@ const ModificaAnnuncio = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+          message="I love snacks"
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Problemi nella creazione dell'annuncio
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="containerAnnunci">
         <div className="leftContainerAnnunci">
           <div>

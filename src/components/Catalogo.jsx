@@ -18,6 +18,7 @@ import "../style/Catalogo.css";
 const Catalogo = () => {
   const [premiumAds, setPremiumAds] = useState([]);
   const [allAds, setAllAds] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const [isCategoriaOpen, setIsCategoriaOpen] = useState(false);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [isDateOpen, setIsDateOpen] = useState(false);
@@ -52,6 +53,26 @@ const Catalogo = () => {
     "Nome Z-A",
   ];
 
+  const getRatingAverage = async (id) => {
+    try {
+      const response = await getObjectValutationsByAnnuncioId(id);
+      if (response.ok) {
+        const rentals = await response.json();
+        const rental =
+          rentals.reduce((sum, rating) => sum + rating.voto, 0) /
+          rentals.length;
+        return { id, media: rental };
+      } else {
+        const result = await response.json();
+        console.log(result.message);
+        return { id, media: 0 };
+      }
+    } catch (error) {
+      console.error("Error fetching average:", error);
+      return { id, media: 0 };
+    }
+  };
+
   useEffect(() => {
     getPremiumAds().then((response) => {
       if (response.ok) {
@@ -63,8 +84,18 @@ const Catalogo = () => {
 
     getAllAds().then((response) => {
       if (response.ok) {
-        response.json().then((ad) => {
-          setAllAds(ad);
+        response.json().then(async (ads) => {
+          const rentalPromises = ads.map((ad) => getRatingAverage(ad.id));
+          const rentalsData = await Promise.all(rentalPromises);
+
+          const newRentalsMapping = {};
+          rentalsData.forEach((rentalData) => {
+            newRentalsMapping[rentalData.id] = rentalData.media;
+          });
+
+          setAllAds(ads);
+          console.log(rentalsData);
+          setRatings(newRentalsMapping);
         });
       }
     });
@@ -224,23 +255,13 @@ const Catalogo = () => {
   );
 
   const isRatingSelected = (ad) => {
-    const adRatings = getObjectValutationsByAnnuncioId(ad.id);
-
     if (selectedRating.length === 0) {
       return true;
     }
 
-    if (adRatings.length === 0) {
-      return false;
-    }
-
-    const averageRating =
-      adRatings.reduce((sum, rating) => sum + rating.voto, 0) /
-      adRatings.length;
-
     return (
       selectedRating.reduce((min, rating) => (min <= rating ? min : rating)) <=
-      averageRating
+      ratings[ad.id]
     );
   };
 
@@ -436,14 +457,14 @@ const Catalogo = () => {
             </div>
             <div className="listaAnnunciCatalogo">
               {filteredCatalogItems.map((ad) => (
-                <Link to={`/dettagli/${ad.id}`} key={ad.id}>
-                  <div
-                    className={`card ${
-                      isCategorySelected(ad) ? "" : "inactive"
-                    } ${isRatingSelected(ad) ? "" : "inactive"} ${
-                      isDateSelected(ad) ? "" : "inactive"
-                    }`}
-                  >
+                <Link
+                  className={`${isCategorySelected(ad) ? "" : "inactive"} ${
+                    isRatingSelected(ad) ? "" : "inactive"
+                  } ${isDateSelected(ad) ? "" : "inactive"}`}
+                  to={`/dettagli/${ad.id}`}
+                  key={ad.id}
+                >
+                  <div className="card">
                     <img src={ad.immagine} alt="Immgagine annuncio" />
                     <div className="card-description">
                       <p>{ad.nome}</p>

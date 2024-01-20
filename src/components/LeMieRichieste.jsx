@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
 import Switch from "@mui/material/Switch";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Link, useParams } from "react-router-dom";
-import { getUserByUsername, getUserById } from "../services/utenti";
+import { getUserById } from "../services/utenti";
 import {
   getRentalsRequestsByNoleggiante,
   getRentalsRequestsByNoleggiatore,
@@ -16,12 +15,10 @@ import {
 import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
 import Chat from "./Chat";
+import Cookies from "js-cookie";
 
 const LeMieRichieste = () => {
-  //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUser = user.id; //id utente a prescindere che sia noleggiante o noleggiatore
+  const idUser = Cookies.get("id");
   const param = useParams();
   const defaultChecked = true;
   const [chatParams, setChatParams] = useState({
@@ -42,12 +39,35 @@ const LeMieRichieste = () => {
       : defaultChecked
   );
 
-  const [noleggianteRentalsRequests, setNoleggianteRentalsRequest] = useState(
-    getRentalsRequestsByNoleggiante(idUser)
-  );
-  const [noleggiatoreRentalsRequests, setNoleggiatoreRentalsRequest] = useState(
-    getRentalsRequestsByNoleggiatore(idUser)
-  );
+  const [noleggianteRentalsRequests, setNoleggianteRentalsRequest] = useState();
+  const [noleggiatoreRentalsRequests, setNoleggiatoreRentalsRequest] =
+    useState();
+
+  useEffect(() => {
+    getRentalsRequestsByNoleggiante(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          setNoleggianteRentalsRequest(rental);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+
+    getRentalsRequestsByNoleggiatore(idUser).then((response) => {
+      if (response.ok) {
+        response.json().then((rental) => {
+          setNoleggiatoreRentalsRequest(rental);
+        });
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
+        });
+      }
+    });
+  }, [idUser]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -56,10 +76,34 @@ const LeMieRichieste = () => {
   const handleModifyState = (id, stato) => {
     const noleggio = getRentalById(id);
     noleggio.stato = stato;
-    modifyRental(noleggio);
-    console.log(noleggio.stato);
-    setNoleggianteRentalsRequest(getRentalsRequestsByNoleggiante(idUser));
-    setNoleggiatoreRentalsRequest(getRentalsRequestsByNoleggiatore(idUser));
+    modifyRental(noleggio).then((response) => {
+      if (!response || response.status !== 201) {
+        alert("Modifica non effettuata");
+      } else {
+        getRentalsRequestsByNoleggiante(idUser).then((response) => {
+          if (response.ok) {
+            response.json().then((rental) => {
+              setNoleggianteRentalsRequest(rental);
+            });
+          } else {
+            response.json().then((result) => {
+              alert(result.message);
+            });
+          }
+        });
+        getRentalsRequestsByNoleggiatore(idUser).then((response) => {
+          if (response.ok) {
+            response.json().then((rental) => {
+              setNoleggiatoreRentalsRequest(rental);
+            });
+          } else {
+            response.json().then((result) => {
+              alert(result.message);
+            });
+          }
+        });
+      }
+    });
   };
 
   const handlePayment = (id) => {
@@ -69,8 +113,23 @@ const LeMieRichieste = () => {
   };
 
   const handleDelete = (id) => {
-    deleteRentalById(id);
-    setNoleggianteRentalsRequest(getRentalsRequestsByNoleggiante(idUser));
+    deleteRentalById(id).then((response) => {
+      if (response.ok) {
+        getRentalsRequestsByNoleggiante(idUser).then((response) => {
+          if (response.ok) {
+            response.json().then((rental) => {
+              setNoleggianteRentalsRequest(rental);
+            });
+          } else {
+            response.json().then((result) => {
+              alert(result.message);
+            });
+          }
+        });
+      } else {
+        alert("Errore");
+      }
+    });
   };
 
   const requests = checked ? (
@@ -83,73 +142,78 @@ const LeMieRichieste = () => {
           </Link>
         </div>
       </div>
-      <div className="rentalList">
-        {noleggianteRentalsRequests.map((r) => (
-          <div className="rental">
-            <div className="rentalItem">
-              <img
-                src={getAdById(r.idAnnuncio).immagine}
-                alt="Immagine annuncio"
-              />
-            </div>
-            <div className="rentalItem">
-              <h3>Annuncio</h3>
-              {getAdById(r.idAnnuncio) && (
-                <p>{getAdById(r.idAnnuncio).titolo}</p>
-              )}
-              <div className="pulsante">
-                <Link to="/">Vai all'annuncio</Link>
-              </div>
-            </div>
-            <div className="rentalItem">
-              <h3>Autore dell'annuncio</h3>
-              <p>{getUserById(r.noleggiatore).username}</p>
-              <div>
-                <button
-                  className="pulsante"
-                  onClick={() => {
-                    handleOpenChat(r.noleggiante, r.noleggiatore);
-                  }}
-                >
-                  Contatta
-                </button>
-                <Chat
-                  trigger={chatVisibility}
-                  setTrigger={setChatVisibility}
-                  idEmittente={chatParams.idEmittente}
-                  idRicevente={chatParams.idRicevente}
+      {noleggianteRentalsRequests && (
+        <div className="rentalList">
+          {noleggianteRentalsRequests.map((r) => (
+            <div className="rental">
+              <div className="rentalItem">
+                <img
+                  src={getAdById(r.idAnnuncio).immagine}
+                  alt="Immagine annuncio"
                 />
               </div>
-            </div>
-            <div className="rentalItem">
-              <h3>Intervallo noleggio</h3>
-              <p>{r.dataInizio}</p>
-              <p>{r.dataFine}</p>
-            </div>
-            <div className="rentalItem">
-              <h3>Stato</h3>
-              {r.stato === "ACCETTATA" && <p>Accettata</p>}
-              {r.stato === "ACCETTATA" && (
-                <button
-                  className="pulsante"
-                  onClick={() => handlePayment(r.id)}
-                >
-                  Effettua il pagamento
-                </button>
-              )}
+              <div className="rentalItem">
+                <h3>Annuncio</h3>
+                {getAdById(r.idAnnuncio) && (
+                  <p>{getAdById(r.idAnnuncio).titolo}</p>
+                )}
+                <div className="pulsante">
+                  <Link to="/">Vai all'annuncio</Link>
+                </div>
+              </div>
+              <div className="rentalItem">
+                <h3>Autore dell'annuncio</h3>
+                <p>{getUserById(r.noleggiatore).username}</p>
+                <div>
+                  <button
+                    className="pulsante"
+                    onClick={() => {
+                      handleOpenChat(r.noleggiante, r.noleggiatore);
+                    }}
+                  >
+                    Contatta
+                  </button>
+                  <Chat
+                    trigger={chatVisibility}
+                    setTrigger={setChatVisibility}
+                    idEmittente={chatParams.idEmittente}
+                    idRicevente={chatParams.idRicevente}
+                  />
+                </div>
+              </div>
+              <div className="rentalItem">
+                <h3>Intervallo noleggio</h3>
+                <p>{r.dataInizio}</p>
+                <p>{r.dataFine}</p>
+              </div>
+              <div className="rentalItem">
+                <h3>Stato</h3>
+                {r.stato === "ACCETTATA" && <p>Accettata</p>}
+                {r.stato === "ACCETTATA" && (
+                  <button
+                    className="pulsante"
+                    onClick={() => handlePayment(r.id)}
+                  >
+                    Effettua il pagamento
+                  </button>
+                )}
 
-              {r.stato === "RICHIESTA" && <p>In attesa...</p>}
+                {r.stato === "RICHIESTA" && <p>In attesa...</p>}
 
-              {r.stato === "RIFIUTATA" && <p>Rifiutata</p>}
-              {r.stato === "RIFIUTATA" && (
-                <button className="pulsante" onClick={() => handleDelete(r.id)}>
-                  Elimina
-                </button>
-              )}
+                {r.stato === "RIFIUTATA" && <p>Rifiutata</p>}
+                {r.stato === "RIFIUTATA" && (
+                  <button
+                    className="pulsante"
+                    onClick={() => handleDelete(r.id)}
+                  >
+                    Elimina
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   ) : (
     <div>

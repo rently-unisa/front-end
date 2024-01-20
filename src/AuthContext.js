@@ -21,6 +21,7 @@ export const AuthProvider = ({ children }) => {
     setUsername(user.username);
     Cookies.set("username", user.username);
     Cookies.set("id", user.id);
+    Cookies.set("token", user.token);
   };
 
   const logout = () => {
@@ -29,6 +30,7 @@ export const AuthProvider = ({ children }) => {
 
     Cookies.remove("username");
     Cookies.remove("id");
+    Cookies.remove("token");
   };
 
   const contextValue = useMemo(

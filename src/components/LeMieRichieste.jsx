@@ -132,7 +132,7 @@ const LeMieRichieste = () => {
     });
   };
 
-  const requests = checked ? (
+  const renderRentals = (
     <div>
       <div className="rentalTitleContainer">
         <h1>Le mie richieste</h1>
@@ -215,7 +215,9 @@ const LeMieRichieste = () => {
         </div>
       )}
     </div>
-  ) : (
+  );
+
+  const renderRentalDetails = (
     <div>
       <div className="rentalTitleContainer">
         <h1>Le richieste per i miei annunci</h1>
@@ -321,7 +323,7 @@ const LeMieRichieste = () => {
           </ThemeProvider>
           <div className="divider"></div>
         </div>
-        {requests}
+        {checked ? renderRentals : renderRentalDetails}
       </div>
       <Footer />
     </div>

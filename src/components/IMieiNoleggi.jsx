@@ -73,7 +73,7 @@ const IMieiNoleggi = () => {
                 <p>{getAdById(r.idAnnuncio).titolo}</p>
               )}
               <div className="pulsante">
-                <Link to="/">Vai all'annuncio</Link>
+                <Link to="/" style={{textDecoration: "none", color: "inherit"}}>Vai all'annuncio</Link>
               </div>
             </div>
             <div className="rentalItem">
@@ -201,6 +201,7 @@ const IMieiNoleggi = () => {
         </div>
         {rentals}
       </div>
+      <div className="divisore"></div>
       <Footer />
     </div>
   );

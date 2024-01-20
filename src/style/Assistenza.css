@@ -123,3 +123,37 @@
     background: var(--bianco);
     color: var(--nero);
 }
+
+@media only screen and (max-width: 768px) {
+    .assistenzaImg {
+        display: none;
+      }
+    .assistenzaContainer {
+      flex-direction: column;
+      padding: 1.1875rem;
+      gap: 0.625rem;
+    }
+  
+    .boxForm {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      margin: 2rem 0; /* Margini superiori e inferiori più piccoli */
+      align-items: flex-start;
+    }
+  
+    .title {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      font-size: 2rem; /* Riduzione della dimensione del font */
+    }
+  
+    .description {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      font-size: 1.25rem; /* Riduzione della dimensione del font */
+    }
+  
+    .textBox {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+    }
+    .button {
+        align-self: center;
+    }
+  }

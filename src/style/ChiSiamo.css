@@ -129,3 +129,88 @@
   font-weight: 400;
   line-height: 2.25rem;
 }
+
+@media (max-width: 768px) {
+  .sezionec img {
+    display: none;
+  }
+
+    .container,
+    .divisione1,
+    .divisione2,
+    .divisione3 {
+      width: 90%;
+      padding: 0;
+      gap: 1.5rem;
+    }
+  
+    .divisione2 {
+      padding: 0;
+      gap: 1rem;
+      height: auto;
+    }
+  
+    .container-pinfo,
+    .container-pinfo2,
+    .container-pinfo3 {
+      width: 90%;
+      padding: 1rem;
+    }
+    
+    .container-pinfo2 {
+      align-items: flex-start;
+      height: 100%;
+    }
+
+    .container-pinfo3 {
+      align-items: flex-start;
+    }
+
+    .pinfo,
+    .pinfo2,
+    .pinfo3 {
+      width: 90%;
+      height: auto;
+    }
+  
+  .sezionec {
+    position: relative;
+    width: 90%;
+    min-height: 85.2vh;
+    padding: 4rem 0 8rem 0;
+  }
+  
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    gap: 5px;
+    z-index: 1;
+  }
+  
+  .bottom-left,
+  .top-right {
+    position: absolute;
+    z-index: 0;
+  }
+  
+  .bottom-left {
+    left: 0;
+    bottom: -4.8rem;
+  }
+  
+  .top-right {
+    right: 0;
+    top: -5rem;
+  }
+  
+  .titolo {
+    color: var(--nero);
+    text-align: center;
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 2.25rem;
+  }
+  }

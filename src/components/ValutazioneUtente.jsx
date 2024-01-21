@@ -20,8 +20,13 @@ function ValutazioneUtente(props) {
         idValutatore: props.idValutatore,
         idValutato: props.idValutato,
       };
-      addUserValutation(newValutazione);
-      alert("La valutazione è stata inviata correttamente");
+      addUserValutation(newValutazione).then((response) => {
+        if (!response || response.status !== 201) {
+          alert("C'è stato un problema nel salvare la recensione");
+        } else {
+          alert("La valutazione è stata inviata correttamente");
+        }
+      });
     } else alert("Inserisci una recensione");
     props.setTrigger(false);
   };

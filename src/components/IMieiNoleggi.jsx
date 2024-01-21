@@ -284,7 +284,9 @@ const IMieiNoleggi = () => {
                         </p>
                       }
                       <div className="pulsante">
-                        <Link to="/">Vai all'annuncio</Link>
+                        <Link to={`/dettagli/${r.annuncio}`}>
+                          Vai all'annuncio
+                        </Link>
                       </div>
                     </div>
                     <div className="rentalItem">
@@ -453,7 +455,9 @@ const IMieiNoleggi = () => {
                       </p>
                     }
                     <div className="pulsante">
-                      <Link to="/">Vai all'annuncio</Link>
+                      <Link to={`/dettagli/${r.annuncio}`}>
+                        Vai all'annuncio
+                      </Link>
                     </div>
                   </div>
                   <div className="rentalItem">

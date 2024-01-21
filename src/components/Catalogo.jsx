@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import dayjs from "dayjs";
+//import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { getAllAds, getPremiumAds } from "../services/annunciNoleggio";
 import { getObjectValutationsByAnnuncioId } from "../services/valutazioneOggetto";
-import { getRentalsByAnnuncioId } from "../services/noleggi";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+//import { getRentalsByAnnuncioId } from "../services/noleggi";
+//import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+//import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+//import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+//import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import StarIcon from "@mui/icons-material/Star";
@@ -21,13 +21,13 @@ const Catalogo = () => {
   const [ratings, setRatings] = useState([]);
   const [isCategoriaOpen, setIsCategoriaOpen] = useState(false);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
-  const [isDateOpen, setIsDateOpen] = useState(false);
+  //const [isDateOpen, setIsDateOpen] = useState(false);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState();
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
+  //const [start, setStart] = useState(null);
+  //const [end, setEnd] = useState(null);
   const termineRicerca = useParams().search;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTerm1, setSearchTerm1] = useState(
@@ -45,8 +45,22 @@ const Catalogo = () => {
     "Sport",
   ];
 
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      ELETTRONICA: "Elettronica",
+      LIBRI: "Libri",
+      ELETTRODOMESTICI: "Elettrodomestici",
+      GIARDINO: "Giardino e giardinaggio",
+      ARTE: "Arte e musica",
+      CASAECUCINA: "Casa e cucina",
+      OGGETTISTICAPROFESSIONALE: "Oggettistica professionale",
+      SPORT: "Sport",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
+
   const orderOptions = [
-    "Default",
     "Prezzo crescente",
     "Prezzo decrescente",
     "Nome A-Z",
@@ -124,9 +138,9 @@ const Catalogo = () => {
     isRatingOpen ? setIsRatingOpen(false) : setIsRatingOpen(true);
   };
 
-  const handleDate = () => {
+  /*const handleDate = () => {
     isDateOpen ? setIsDateOpen(false) : setIsDateOpen(true);
-  };
+  };*/
 
   const handleOrder = () => {
     isOrderOpen ? setIsOrderOpen(false) : setIsOrderOpen(true);
@@ -174,7 +188,7 @@ const Catalogo = () => {
   const isCategorySelected = (ad) => {
     return (
       selectedCategories.length === 0 ||
-      selectedCategories.includes(ad.categoria)
+      selectedCategories.includes(mapCategoriaToValue(ad.categoria))
     );
   };
 
@@ -321,7 +335,7 @@ const Catalogo = () => {
     }
   };
 
-  const Datebox = isDateOpen ? (
+  /*const Datebox = isDateOpen ? (
     <div className="CheckboxContainer">
       <button className="checkboxButton" onClick={handleDate}>
         Date
@@ -397,7 +411,7 @@ const Catalogo = () => {
     } else {
       return true;
     }
-  };
+  };*/
 
   const filteredCatalogItems = orderedCatalogItems().filter((ad) => {
     const title = ad.nome.toLowerCase();
@@ -450,7 +464,7 @@ const Catalogo = () => {
               </div>
               <div className="Filtra">
                 {Categoriabox}
-                {Datebox}
+                {/*{Datebox}*/}
                 {Ratingbox}
                 {Orderbox}
               </div>
@@ -460,7 +474,7 @@ const Catalogo = () => {
                 <Link
                   className={`${isCategorySelected(ad) ? "" : "inactive"} ${
                     isRatingSelected(ad) ? "" : "inactive"
-                  } ${isDateSelected(ad) ? "" : "inactive"}`}
+                  }`} //${isDateSelected(ad) ? "" : "inactive"}}
                   to={`/dettagli/${ad.id}`}
                   key={ad.id}
                 >

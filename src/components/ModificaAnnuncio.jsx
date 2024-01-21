@@ -76,7 +76,6 @@ const ModificaAnnuncio = () => {
       idUtente,
       titolo,
       strada,
-      civico,
       città,
       cap,
       descrizione,

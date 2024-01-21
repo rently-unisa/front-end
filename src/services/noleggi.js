@@ -225,29 +225,23 @@ const rentalsData = [
   },
 ];
 
-const getRentalById = (rentalId) => {
+/*const getRentalById = (rentalId) => {
   return rentalsData.find((rental) => rental.id === rentalId);
-};
+};*/
 
-/*const getRentalById = async (rentalId) => {
+const getRentalById = async (rentalId) => {
   try {
-    const response = await fetch(`http://localhost:8080/------qualcosa------?id=${id}`);
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/visualizza-noleggio?idNoleggio=${rentalId}`
+    );
 
-    if (response.ok) {
-      const rental = await response.json();
-      return rental;
-    } else {
-      const errorMessage = await response.text();
-      throw new Error(errorMessage || 'Errore sconosciuto durante il recupero del profilo utente');
-    }
+    return response;
   } catch (error) {
-    console.error('Errore durante la richiesta del profilo utente:', error.message);
-    return null;
+    console.error(
+      "Errore durante la richiesta del profilo utente:",
+      error.message
+    );
   }
-}; */
-
-const getRentalsByAnnuncioId = (annuncioId) => {
-  return rentalsData.filter((rental) => rental.idAnnuncio === annuncioId);
 };
 
 //Manca il backend
@@ -419,7 +413,6 @@ const deleteRentalById = (rentalId) => {
 
 export {
   getRentalById,
-  getRentalsByAnnuncioId,
   getRentalsByNoleggiante,
   getRentalsByNoleggiatore,
   getRentalsRequestsByNoleggiante,

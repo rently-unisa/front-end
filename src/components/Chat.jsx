@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import dayjs from "dayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import SendRoundedIcon from "@mui/icons-material/SendRounded";
@@ -8,18 +8,6 @@ import "../style/Chat.css";
 function Chat(props) {
   const [newText, setNewText] = useState("");
   const [messages, setMessages] = useState();
-
-  useEffect(() => {
-    getMessagesByUsersId(props.idEmittente, props.idRicevente).then(
-      (response) => {
-        if (response.ok) {
-          response.json().then((messages) => {
-            setMessages(messages);
-          });
-        }
-      }
-    );
-  }, [props.idEmittente, props.idRicevente]);
 
   const handleSubmitMessage = () => {
     if (newText !== "") {

@@ -123,8 +123,14 @@ const Dettagli = () => {
                 <div className="adDescription">
                   <p>{Annuncio.descrizione}</p>
                   <p>
-                    <span>Condizioni: </span>
-                    {Annuncio.condizione}
+                    <p style={{ textAlign: "left" }}>
+                      <span>Data di fine disponibilità: </span>
+                      {Annuncio.dataFine}
+                    </p>
+                    <p style={{ textAlign: "left" }}>
+                      <span>Condizioni: </span>
+                      {Annuncio.condizione}
+                    </p>
                   </p>
                 </div>
                 <div className="actionButtons">

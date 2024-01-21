@@ -263,6 +263,7 @@
   box-sizing: border-box;
   border-radius: 0.625rem;
   background: var(--chiaro);
+  overflow-wrap: anywhere;
 }
 
 .review-textUserReviews {

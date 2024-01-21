@@ -62,8 +62,8 @@ const IMieiAnnunci = () => {
                 </div>
                 <div className="rentalItem">
                   <h3>Annuncio</h3>
-                  <p>{a.titolo}</p>
-                  <p>{a.prezzo}</p>
+                  <p>{a.nome}</p>
+                  <p>{a.prezzo}€/giorno</p>
                 </div>
                 <div className="rentalItem">
                   <h3>Indirizzo</h3>

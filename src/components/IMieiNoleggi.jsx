@@ -49,7 +49,7 @@ const IMieiNoleggi = () => {
     "ACCETTATA",
     "RIFIUTATA",
     "INIZIO",
-    "IN CORSO",
+    "IN_CORSO",
     "FINE",
     "CONCLUSO",
     "CONCLUSOCONVALUTAZIONE",
@@ -101,23 +101,33 @@ const IMieiNoleggi = () => {
   const [valutazioneOggettoParams, setValutazioneOggettoParams] = useState({
     idAnnuncio: null,
     idValutatore: null,
+    idNoleggio: null,
   });
   const [valutazioneUtenteParams, setValutazioneUtenteParams] = useState({
     idValutato: null,
     idValutatore: null,
+    idNoleggio: null,
   });
   const [buttonValutazioneOggetto, setButtonValutazioneOggetto] =
     useState(false);
 
-  const handleOpenValutazioneOggetto = (idAnnuncio, idValutatore) => {
-    setValutazioneOggettoParams({ idAnnuncio, idValutatore });
+  const handleOpenValutazioneOggetto = (
+    idAnnuncio,
+    idValutatore,
+    idNoleggio
+  ) => {
+    setValutazioneOggettoParams({ idAnnuncio, idValutatore, idNoleggio });
     setButtonValutazioneOggetto(true);
   };
 
   const [buttonValutazioneUtente, setButtonValutazioneUtente] = useState(false);
 
-  const handleOpenValutazioneUtente = (idValutato, idValutatore) => {
-    setValutazioneUtenteParams({ idValutato, idValutatore });
+  const handleOpenValutazioneUtente = (
+    idValutato,
+    idValutatore,
+    idNoleggio
+  ) => {
+    setValutazioneUtenteParams({ idValutato, idValutatore, idNoleggio });
     setButtonValutazioneUtente(true);
   };
 
@@ -334,64 +344,66 @@ const IMieiNoleggi = () => {
                       {r.stato === "INIZIO" && (
                         <button
                           className="pulsante"
-                          onClick={() => handleModifyState(r.id, "IN CORSO")}
+                          onClick={() => handleModifyState(r.id, "IN_CORSO")}
                         >
                           Ho ricevuto l'oggetto
                         </button>
                       )}
-                      {r.stato === "IN CORSO" && <p>In corso...</p>}
+                      {r.stato === "IN_CORSO" && <p>In corso...</p>}
                       {r.stato === "FINE" && <p>Fine</p>}
                       {r.stato === "CONCLUSO" && <p>Conclusione</p>}
                       {r.stato === "CONCLUSO" &&
-                        r.valutazioneAlNoleggiatore ===
-                          false(
-                            <div>
-                              <button
-                                className="pulsante"
-                                onClick={() =>
-                                  handleOpenValutazioneUtente(
-                                    r.noleggiatore,
-                                    idUser
-                                  )
-                                }
-                              >
-                                Valuta l'autore
-                              </button>
-                              <ValutazioneUtente
-                                trigger={buttonValutazioneUtente}
-                                setTrigger={setButtonValutazioneUtente}
-                                idValutato={valutazioneUtenteParams.idValutato}
-                                idValutatore={
-                                  valutazioneUtenteParams.idValutatore
-                                }
-                              ></ValutazioneUtente>
-                            </div>
-                          )}
+                        r.valutazioneAlNoleggiatore === false && (
+                          <div>
+                            <button
+                              className="pulsante"
+                              onClick={() =>
+                                handleOpenValutazioneUtente(
+                                  r.noleggiatore,
+                                  idUser,
+                                  r.id
+                                )
+                              }
+                            >
+                              Valuta l'autore
+                            </button>
+                            <ValutazioneUtente
+                              trigger={buttonValutazioneUtente}
+                              setTrigger={setButtonValutazioneUtente}
+                              idValutato={valutazioneUtenteParams.idValutato}
+                              idValutatore={
+                                valutazioneUtenteParams.idValutatore
+                              }
+                              idNoleggio={valutazioneUtenteParams.idNoleggio}
+                            ></ValutazioneUtente>
+                          </div>
+                        )}
                       {r.stato === "CONCLUSO" &&
-                        r.valutazioneAnnuncio ===
-                          false(
-                            <div>
-                              <button
-                                className="pulsante"
-                                onClick={() =>
-                                  handleOpenValutazioneOggetto(
-                                    r.annuncio,
-                                    idUser
-                                  )
-                                }
-                              >
-                                Valuta l'oggetto
-                              </button>
-                              <ValutazioneOggetto
-                                trigger={buttonValutazioneOggetto}
-                                setTrigger={setButtonValutazioneOggetto}
-                                idAnnuncio={valutazioneOggettoParams.idAnnuncio}
-                                idValutatore={
-                                  valutazioneOggettoParams.idValutatore
-                                }
-                              ></ValutazioneOggetto>
-                            </div>
-                          )}
+                        r.valutazioneAnnuncio === false && (
+                          <div>
+                            <button
+                              className="pulsante"
+                              onClick={() =>
+                                handleOpenValutazioneOggetto(
+                                  r.annuncio,
+                                  idUser,
+                                  r.id
+                                )
+                              }
+                            >
+                              Valuta l'oggetto
+                            </button>
+                            <ValutazioneOggetto
+                              trigger={buttonValutazioneOggetto}
+                              setTrigger={setButtonValutazioneOggetto}
+                              idAnnuncio={valutazioneOggettoParams.idAnnuncio}
+                              idValutatore={
+                                valutazioneOggettoParams.idValutatore
+                              }
+                              idNoleggio={valutazioneOggettoParams.idNoleggio}
+                            ></ValutazioneOggetto>
+                          </div>
+                        )}
                       {r.stato === "CONCLUSOCONVALUTAZIONE" && (
                         <p>Noleggio Concluso</p>
                       )}
@@ -500,7 +512,7 @@ const IMieiNoleggi = () => {
                     <div className="rentalItem">
                       <h3>Stato</h3>
                       {r.stato === "INIZIO" && <p>Inizio</p>}
-                      {r.stato === "IN CORSO" && <p>In corso...</p>}
+                      {r.stato === "IN_CORSO" && <p>In corso...</p>}
                       {r.stato === "FINE" && <p>Fine</p>}
                       {r.stato === "FINE" && (
                         <button
@@ -512,30 +524,31 @@ const IMieiNoleggi = () => {
                       )}
                       {r.stato === "CONCLUSO" && <p>Conclusione</p>}
                       {r.stato === "CONCLUSO" &&
-                        r.valutazioneAlNoleggiante ===
-                          false(
-                            <div>
-                              <button
-                                className="pulsante"
-                                onClick={() =>
-                                  handleOpenValutazioneUtente(
-                                    r.noleggiante,
-                                    idUser
-                                  )
-                                }
-                              >
-                                Valuta l'utente
-                              </button>
-                              <ValutazioneUtente
-                                trigger={buttonValutazioneUtente}
-                                setTrigger={setButtonValutazioneUtente}
-                                idValutato={valutazioneUtenteParams.idValutato}
-                                idValutatore={
-                                  valutazioneUtenteParams.idValutatore
-                                }
-                              ></ValutazioneUtente>
-                            </div>
-                          )}
+                        r.valutazioneAlNoleggiante === false && (
+                          <div>
+                            <button
+                              className="pulsante"
+                              onClick={() =>
+                                handleOpenValutazioneUtente(
+                                  r.noleggiante,
+                                  idUser,
+                                  r.id
+                                )
+                              }
+                            >
+                              Valuta l'utente
+                            </button>
+                            <ValutazioneUtente
+                              trigger={buttonValutazioneUtente}
+                              setTrigger={setButtonValutazioneUtente}
+                              idValutato={valutazioneUtenteParams.idValutato}
+                              idValutatore={
+                                valutazioneUtenteParams.idValutatore
+                              }
+                              idNoleggio={valutazioneUtenteParams.idNoleggio}
+                            ></ValutazioneUtente>
+                          </div>
+                        )}
                       {r.stato === "CONCLUSOCONVALUTAZIONE" && (
                         <p>Noleggio Concluso</p>
                       )}

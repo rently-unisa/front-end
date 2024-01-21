@@ -41,16 +41,18 @@ const RichiestaNoleggio = ({
 
   const handleAddRental = () => {
     const newRequest = {
-      dataInizio: start,
-      dataFine: end,
-      dataRichiesta: dayjs(),
+      dataInizio: dayjs(start).format("YYYY-MM-DD"),
+      dataFine: dayjs(end).format("YYYY-MM-DD"),
+      dataRichiesta: dayjs().format("YYYY-MM-DD"),
       noleggiante: user.id,
       noleggiatore: idCreatore,
       prezzoTotale: end.diff(start, "day") * prezzoAnnuncio,
-      idAnnuncio: idAnnuncio,
+      annuncio: idAnnuncio,
     };
 
     if (
+      start === null ||
+      end === null ||
       dayjs(start).isBefore(dayjs(), "day") ||
       (end && dayjs(start).isAfter(dayjs(end), "day")) ||
       dayjs(end).isBefore(dayjs(), "day") ||
@@ -64,17 +66,12 @@ const RichiestaNoleggio = ({
             "È presente una prenotazione dell'oggetto durante le date selezionate, selezionare un'arco temporale diverso"
           );
         } else if (!response.ok) {
-          const errorMessage = response.text();
-          throw new Error(
-            errorMessage ||
-              "Errore sconosciuto durante la richiesta di noleggio"
-          );
+          alert("Errore sconosciuto durante la richiesta di noleggio");
         } else {
           alert("Richiesta creata con successo");
+          onClose();
         }
       });
-      onClose();
-      alert("Richiesta effettuata");
     }
   };
 

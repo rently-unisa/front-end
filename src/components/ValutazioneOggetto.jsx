@@ -17,18 +17,21 @@ function ValutazioneOggetto(props) {
       const newValutazione = {
         voto: rating * 2,
         descrizione: contenuto,
-        idValutatore: props.idValutatore,
-        idAnnuncio: props.idAnnuncio,
+        valutatore: props.idValutatore,
+        valutato: props.idAnnuncio,
+        noleggio: props.idNoleggio,
       };
       addObjectValutations(newValutazione).then((response) => {
         if (!response || response.status !== 201) {
           alert("C'è stato un problema nel salvare la recensione");
         } else {
           alert("La valutazione è stata inviata correttamente");
+          props.setTrigger(false);
         }
       });
-    } else alert("Inserisci una recensione");
-    props.setTrigger(false);
+    } else {
+      alert("Inserisci una recensione");
+    }
   };
 
   return props.trigger ? (

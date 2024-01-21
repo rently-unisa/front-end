@@ -74,33 +74,42 @@ const LeMieRichieste = () => {
   };
 
   const handleModifyState = (id, stato) => {
-    const noleggio = getRentalById(id);
-    noleggio.stato = stato;
-    modifyRental(noleggio).then((response) => {
-      if (!response || response.status !== 201) {
-        alert("Modifica non effettuata");
-      } else {
-        getRentalsRequestsByNoleggiante(idUser).then((response) => {
-          if (response.ok) {
-            response.json().then((rental) => {
-              setNoleggianteRentalsRequest(rental);
-            });
-          } else {
-            response.json().then((result) => {
-              alert(result.message);
-            });
-          }
+    getRentalById(id).then((response) => {
+      if (response.ok) {
+        response.json().then((noleggio) => {
+          noleggio.stato = stato;
+          modifyRental(noleggio).then((response) => {
+            if (!response || response.status !== 201) {
+              alert("Modifica non effettuata");
+            } else {
+              getRentalsRequestsByNoleggiante(idUser).then((response) => {
+                if (response.ok) {
+                  response.json().then((rental) => {
+                    setNoleggianteRentalsRequest(rental);
+                  });
+                } else {
+                  response.json().then((result) => {
+                    alert(result.message);
+                  });
+                }
+              });
+              getRentalsRequestsByNoleggiatore(idUser).then((response) => {
+                if (response.ok) {
+                  response.json().then((rental) => {
+                    setNoleggiatoreRentalsRequest(rental);
+                  });
+                } else {
+                  response.json().then((result) => {
+                    alert(result.message);
+                  });
+                }
+              });
+            }
+          });
         });
-        getRentalsRequestsByNoleggiatore(idUser).then((response) => {
-          if (response.ok) {
-            response.json().then((rental) => {
-              setNoleggiatoreRentalsRequest(rental);
-            });
-          } else {
-            response.json().then((result) => {
-              alert(result.message);
-            });
-          }
+      } else {
+        response.json().then((result) => {
+          alert(result.message);
         });
       }
     });
@@ -147,23 +156,20 @@ const LeMieRichieste = () => {
           {noleggianteRentalsRequests.map((r) => (
             <div className="rental">
               <div className="rentalItem">
-                <img
-                  src={getAdById(r.idAnnuncio).immagine}
-                  alt="Immagine annuncio"
-                />
+                <img alt="Immagine annuncio" />
               </div>
               <div className="rentalItem">
                 <h3>Annuncio</h3>
-                {getAdById(r.idAnnuncio) && (
+                {/*{getAdById(r.idAnnuncio) && (
                   <p>{getAdById(r.idAnnuncio).titolo}</p>
-                )}
+                )}*/}
                 <div className="pulsante">
-                  <Link to="/">Vai all'annuncio</Link>
+                  <Link to={`/dettagli/${r.annuncio}`}>Vai all'annuncio</Link>
                 </div>
               </div>
               <div className="rentalItem">
                 <h3>Autore dell'annuncio</h3>
-                <p>{getUserById(r.noleggiatore).username}</p>
+                {/*<p>{getUserById(r.noleggiatore).username}</p>*/}
                 <div>
                   <button
                     className="pulsante"
@@ -232,23 +238,20 @@ const LeMieRichieste = () => {
           {noleggiatoreRentalsRequests.map((r) => (
             <div className="rental">
               <div className="rentalItem">
-                <img
-                  src={getAdById(r.idAnnuncio).immagine}
-                  alt="Immagine annuncio"
-                />
+                <img alt="Immagine annuncio" />
               </div>
               <div className="rentalItem">
                 <h3>Annuncio</h3>
-                {getAdById(r.idAnnuncio) && (
+                {/*{getAdById(r.idAnnuncio) && (
                   <p>{getAdById(r.idAnnuncio).titolo}</p>
-                )}
+                )}*/}
                 <div className="pulsante">
-                  <Link to="/">Vai all'annuncio</Link>
+                  <Link to={`/dettagli/${r.annuncio}`}>Vai all'annuncio</Link>
                 </div>
               </div>
               <div className="rentalItem">
                 <h3>Richiedente</h3>
-                <p>{getUserById(r.noleggiante).username}</p>
+                {/*<p>{getUserById(r.noleggiante).username}</p>*/}
                 <div>
                   <button
                     className="pulsante"

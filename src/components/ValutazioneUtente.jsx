@@ -14,21 +14,23 @@ function ValutazioneUtente(props) {
 
   const handleSubmitUtente = () => {
     if (contenuto !== "") {
+      console.log(props);
       const newValutazione = {
         voto: rating * 2,
         descrizione: contenuto,
-        idValutatore: props.idValutatore,
-        idValutato: props.idValutato,
+        valutatore: props.idValutatore,
+        valutato: props.idValutato,
+        noleggio: props.idNoleggio,
       };
       addUserValutation(newValutazione).then((response) => {
         if (!response || response.status !== 201) {
           alert("C'è stato un problema nel salvare la recensione");
         } else {
           alert("La valutazione è stata inviata correttamente");
+          props.setTrigger(false);
         }
       });
     } else alert("Inserisci una recensione");
-    props.setTrigger(false);
   };
 
   return props.trigger ? (

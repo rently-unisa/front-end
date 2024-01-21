@@ -22,7 +22,6 @@ function Chat(props) {
       addMessage(newMessage);
       setMessages(getMessagesByUserId(props.idEmittente));
       setNewText("");
-      console.log(newMessage);
     }
   };
 

@@ -1,82 +1,149 @@
-.containerAnnunci {
+.annunciBody {
   display: flex;
+  flex-direction: column;
   width: 90%;
-  padding: 1.5rem 0rem 2.25rem 2.5625rem;
-  align-items: flex-start;
-  gap: 0.9375rem;
-  border-radius: 1.875rem;
+  height: 62.5rem;
+  padding: 24px 0px 36px 41px;
+  gap: 1rem;
+  border-radius: 30px;
   background: var(--chiaro);
   margin: 3%;
 }
 
-.leftContainerAnnunci {
+.annunciContainer {
   display: flex;
-  padding: 0.9375rem 0rem;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-start;
-  gap: 1.3125rem;
-  width: 85%;
 }
 
-.rightContainerAnnunci {
+.containerSezione1 {
   display: flex;
-  padding: 0.25rem 0.8125rem 1.6875rem 0.5rem;
   flex-direction: column;
-  align-items: center;
-  gap: 2.375rem;
-  width: 50%;
-  height: 100%;
+  align-items: flex-start;
+}
+
+.leftAnnunciContainer {
+  flex: 1;
+  display: flex;
+  padding: 15px 0px;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1.313rem;
 }
 
 .parametriAnnunci {
   display: flex;
-  width: 100%;
-  height: 10%;
-  padding: 0.75rem 0.5625rem;
+  width: 50rem;
+  height: 32rem;
+  padding: 12px 9px;
   align-items: center;
-  align-content: center;
-  gap: 1.5625rem 2.6875rem;
+  align-content: flex-start;
+  font-family: var(--font), sans-serif;
+  gap: 25px 43px;
   flex-wrap: wrap;
 }
 
-.boxContainerAnnunci {
+.annunciFields {
+  text-align: left;
+}
+
+.annunciFields input {
   display: flex;
-  flex-direction: row;
-  gap: 1.5625rem 2.6875rem;
-  flex-wrap: wrap;
+  width: 20rem;
+  height: 2rem;
+  padding: 8px 12px;
   align-items: center;
+  font-family: var(--font), sans-serif;
+  font-size: var(--font-size);
+  gap: 0.25rem;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--bianco);
+}
+
+.annunciFields textarea {
+  display: flex;
+  width: 20rem;
+  height: 8rem;
+  padding: 8px 12px;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--bianco);
+  resize: none;
+  color: var(--nero);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 400;
+  line-height: 20px;
+}
+
+.rightAnnunciContainer {
+  flex: 1;
+  display: flex;
+  padding: 4px 13px 27px 8px;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.375rem;
 }
 
 .imageAnnunciContainer {
-  width: 30rem;
-  height: 30rem;
+  width: 27rem;
+  height: 27rem;
   background-color: #d6d6d6;
   border-radius: 1.875rem;
 }
 
 .imageAnnunciContainer img {
   align-items: center;
-  max-width: 30rem;
-  max-height: 30rem;
+  max-width: 27rem;
+  max-height: 27rem;
   border-radius: 1.875rem;
 }
 
-.parametro1 {
-  width: 39%;
+.boxContainerAnnunci {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5625rem 2.6875rem;
+  align-items: center;
 }
 
-.annunciDescrizione {
-  width: 100%;
-  padding: 0.75rem 0.5625rem;
+.containerSezione2 {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 17rem;
 }
 
-.annunciDescrizione .parametro1 {
-  width: 79%;
+.annunciRadioButton {
+  accent-color: var(--nero);
+  display: flex;
+  font-size: var(--font-size2);
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.parametro1 textarea.input {
-  height: 10rem;
-  width: 100%;
+.datePicker {
+  width: 50rem;
+}
+
+.creaAnnuncioButton {
+  display: flex;
+  justify-content: center;
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
   font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+  margin-left: 35rem;
+}
+
+.creaAnnuncioButton:hover {
+  background: var(--bianco);
+  color: var(--nero);
 }

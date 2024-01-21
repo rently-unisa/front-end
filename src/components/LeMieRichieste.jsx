@@ -227,74 +227,76 @@ const LeMieRichieste = () => {
           </Link>
         </div>
       </div>
-      <div className="rentalList">
-        {noleggiatoreRentalsRequests.map((r) => (
-          <div className="rental">
-            <div className="rentalItem">
-              <img
-                src={getAdById(r.idAnnuncio).immagine}
-                alt="Immagine annuncio"
-              />
-            </div>
-            <div className="rentalItem">
-              <h3>Annuncio</h3>
-              {getAdById(r.idAnnuncio) && (
-                <p>{getAdById(r.idAnnuncio).titolo}</p>
-              )}
-              <div className="pulsante">
-                <Link to="/">Vai all'annuncio</Link>
-              </div>
-            </div>
-            <div className="rentalItem">
-              <h3>Richiedente</h3>
-              <p>{getUserById(r.noleggiante).username}</p>
-              <div>
-                <button
-                  className="pulsante"
-                  onClick={() => {
-                    handleOpenChat(r.noleggiatore, r.noleggiante);
-                  }}
-                >
-                  Contatta
-                </button>
-                <Chat
-                  trigger={chatVisibility}
-                  setTrigger={setChatVisibility}
-                  idEmittente={chatParams.idEmittente}
-                  idRicevente={chatParams.idRicevente}
+      {noleggiatoreRentalsRequests && (
+        <div className="rentalList">
+          {noleggiatoreRentalsRequests.map((r) => (
+            <div className="rental">
+              <div className="rentalItem">
+                <img
+                  src={getAdById(r.idAnnuncio).immagine}
+                  alt="Immagine annuncio"
                 />
               </div>
-            </div>
-            <div className="rentalItem">
-              <h3>Intervallo noleggio</h3>
-              <p>{r.dataInizio}</p>
-              <p>{r.dataFine}</p>
-            </div>
-            <div className="rentalItem">
-              <h3>Stato</h3>
-              {r.stato === "ACCETTATA" && <p>Accettata</p>}
+              <div className="rentalItem">
+                <h3>Annuncio</h3>
+                {getAdById(r.idAnnuncio) && (
+                  <p>{getAdById(r.idAnnuncio).titolo}</p>
+                )}
+                <div className="pulsante">
+                  <Link to="/">Vai all'annuncio</Link>
+                </div>
+              </div>
+              <div className="rentalItem">
+                <h3>Richiedente</h3>
+                <p>{getUserById(r.noleggiante).username}</p>
+                <div>
+                  <button
+                    className="pulsante"
+                    onClick={() => {
+                      handleOpenChat(r.noleggiatore, r.noleggiante);
+                    }}
+                  >
+                    Contatta
+                  </button>
+                  <Chat
+                    trigger={chatVisibility}
+                    setTrigger={setChatVisibility}
+                    idEmittente={chatParams.idEmittente}
+                    idRicevente={chatParams.idRicevente}
+                  />
+                </div>
+              </div>
+              <div className="rentalItem">
+                <h3>Intervallo noleggio</h3>
+                <p>{r.dataInizio}</p>
+                <p>{r.dataFine}</p>
+              </div>
+              <div className="rentalItem">
+                <h3>Stato</h3>
+                {r.stato === "ACCETTATA" && <p>Accettata</p>}
 
-              {r.stato === "RICHIESTA" && <p>In attesa...</p>}
-              {r.stato === "RICHIESTA" && (
-                <button
-                  className="pulsante"
-                  onClick={() => handleModifyState(r.id, "ACCETTATA")}
-                >
-                  Accetta
-                </button>
-              )}
-              {r.stato === "RICHIESTA" && (
-                <button
-                  className="pulsante"
-                  onClick={() => handleModifyState(r.id, "RIFIUTATA")}
-                >
-                  Rifiuta
-                </button>
-              )}
+                {r.stato === "RICHIESTA" && <p>In attesa...</p>}
+                {r.stato === "RICHIESTA" && (
+                  <button
+                    className="pulsante"
+                    onClick={() => handleModifyState(r.id, "ACCETTATA")}
+                  >
+                    Accetta
+                  </button>
+                )}
+                {r.stato === "RICHIESTA" && (
+                  <button
+                    className="pulsante"
+                    onClick={() => handleModifyState(r.id, "RIFIUTATA")}
+                  >
+                    Rifiuta
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 
@@ -325,6 +327,7 @@ const LeMieRichieste = () => {
         </div>
         {checked ? renderRentals : renderRentalDetails}
       </div>
+      <div className="divisore"></div>
       <Footer />
     </div>
   );

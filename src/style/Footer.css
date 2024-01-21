@@ -9,7 +9,8 @@
 }
 
 .social,
-.info-box {
+.info-box,
+.info-box-servizi {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -23,7 +24,15 @@
   gap: 1.375rem;
 }
 
-.info-box a {
+.info-box-servizi {
+  align-content: center;
+  padding: 0.8125rem 1rem;
+  flex-direction: column;
+  gap: 1.375rem;
+}
+
+.info-box a,
+.info-box-servizi a {
   text-decoration: none !important;
 }
 
@@ -70,4 +79,40 @@
 .accessibility-link:hover {
   background-color: var(--bianco) !important;
   color: var(--medio);
+}
+
+/* Media query per rendere il footer responsive */
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    bottom: 0;
+  }
+  .social,
+  .info-box {
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .info-box {
+    padding: 1rem;
+  }
+  .info-box-servizi {
+    visibility: hidden;
+    position: absolute;
+  }
+  .info-header {
+    font-size: 1.5rem;
+    height: auto;
+  }
+  .social-info {
+    width: 2.5rem;
+    height: 3.25rem;
+  }
+  .accessibility-link {
+    width: 7.5rem;
+    height: 3.25rem;
+    padding: 0.25rem;
+  }
 }

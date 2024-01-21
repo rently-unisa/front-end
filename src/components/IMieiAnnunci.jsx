@@ -44,8 +44,13 @@ const IMieiAnnunci = () => {
       <div className="listPageContainer">
         <div className="rentalTitleContainer">
           <h1>I miei annunci</h1>
-          <div className="pulsante">
-            <Link to="/creaUnAnnuncio">Crea un annuncio</Link>
+          <div className="pulsanteCreaAnnuncio">
+            <Link
+              to="/creaUnAnnuncio"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Crea un annuncio
+            </Link>
           </div>
         </div>
         {userAds && (
@@ -78,17 +83,22 @@ const IMieiAnnunci = () => {
                 </div>
                 <div className="rentalItem">
                   <h3>Operazioni</h3>
-                  <div className="pulsante">
-                    <Link to={`/modificaAnnuncio/${a.id}`}>
+                  <div className="pulsanteModifica">
+                    <Link
+                      to={`/modificaAnnuncio/${a.id}`}
+                      key={a.id}
+                      style={{ textDecoration: "none", color: "inherit" }}
+                    >
                       Modifica annuncio
                     </Link>
                   </div>
                   <button
-                    className="pulsante"
+                    className="pulsanteElimina"
                     onClick={() => handleDelete(a.id)}
                   >
                     Elimina
                   </button>
+                  <div style={{ margin: "1px" }}></div>
                 </div>
               </div>
             ))}

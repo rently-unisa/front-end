@@ -172,3 +172,59 @@
 .user-menu:hover .dropdown-content {
   display: block;
 }
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    height: auto;
+    padding: 1rem;
+  }
+
+  .logo-container {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  .logo {
+    width: 3rem;
+  }
+
+  .brand-name {
+    font-size: 24px;
+    line-height: 1.5;
+  }
+
+  .menu {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .search-bar {
+    width: 100%;
+    order: -1;
+  }
+
+  .menu-item {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .user-menu {
+    margin-top: 1rem;
+  }
+
+  .dropdown-content {
+    left: 0;
+  }
+
+  .dropdown-style {
+    width: 100%;
+  }
+
+  .dropdown-content a,
+  .dropdown-content button {
+    font-size: 1rem;
+  }
+}

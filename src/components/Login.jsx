@@ -50,11 +50,11 @@ const Login = () => {
         </div>
         <div className="titolo">Accedi</div>
         <div className="parametro">
-          <p>Email / Username</p>
+          <p>Email</p>
           <input
             type="text"
             value={username}
-            placeholder="Inserisci la tua email oppure il tuo username"
+            placeholder="Inserisci la tua email"
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>

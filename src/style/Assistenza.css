@@ -50,7 +50,7 @@
     font-size: 2.5rem;
     font-style: normal;
     font-weight: bold;
-    line-height: 3rem; /* 120% */
+    line-height: 3rem;
     display: flex;
     width: 32.5rem;
     height: 4rem;
@@ -118,3 +118,42 @@
     font-weight: 500;
     line-height: 1.5rem;
 }
+
+.button:hover {
+    background: var(--bianco);
+    color: var(--nero);
+}
+
+@media only screen and (max-width: 768px) {
+    .assistenzaImg {
+        display: none;
+      }
+    .assistenzaContainer {
+      flex-direction: column;
+      padding: 1.1875rem;
+      gap: 0.625rem;
+    }
+  
+    .boxForm {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      margin: 2rem 0; /* Margini superiori e inferiori più piccoli */
+      align-items: flex-start;
+    }
+  
+    .title {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      font-size: 2rem; /* Riduzione della dimensione del font */
+    }
+  
+    .description {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      font-size: 1.25rem; /* Riduzione della dimensione del font */
+    }
+  
+    .textBox {
+      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+    }
+    .button {
+        align-self: center;
+    }
+  }

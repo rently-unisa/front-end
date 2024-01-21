@@ -411,35 +411,13 @@ const IMieiNoleggi = () => {
                 </Link>
               </div>
             </div>
-            <div>
-              <p>Seleziona un filtro:</p>
-            </div>
-            <div className="rentalList">
-              {noleggiatoreRentals.map((r) => (
-                <div className="rental">
-                  <div className="rentalItem">
-                    <img
-                      src={
-                        getAdById(r.annuncio).then((response) => {
-                          if (response.ok) {
-                            response.json().then((ad) => {
-                              return ad;
-                            });
-                          } else {
-                            response.json().then((result) => {
-                              console.log(result.message);
-                            });
-                          }
-                        })?.immagine
-                      }
-                      alt="Immagine annuncio"
-                    />
-                  </div>
-                  <div className="rentalItem">
-                    <h3>Annuncio</h3>
-                    {
-                      <p>
-                        {
+            {noleggiatoreRentals && (
+              <div className="rentalList">
+                {noleggiatoreRentals.map((r) => (
+                  <div className="rental">
+                    <div className="rentalItem">
+                      <img
+                        src={
                           getAdById(r.annuncio).then((response) => {
                             if (response.ok) {
                               response.json().then((ad) => {
@@ -450,104 +428,126 @@ const IMieiNoleggi = () => {
                                 console.log(result.message);
                               });
                             }
-                          })?.titolo
+                          })?.immagine
                         }
-                      </p>
-                    }
-                    <div className="pulsante">
-                      <Link to={`/dettagli/${r.annuncio}`}>
-                        Vai all'annuncio
-                      </Link>
-                    </div>
-                  </div>
-                  <div className="rentalItem">
-                    <h3>Autore dell'annuncio</h3>
-                    <p>
-                      {
-                        getUserById(r.noleggiante).then((response) => {
-                          if (response.ok) {
-                            response.json().then((user) => {
-                              return user;
-                            });
-                          } else {
-                            response.json().then((result) => {
-                              console.log(result.message);
-                            });
-                          }
-                        })?.username
-                      }
-                    </p>
-                    <div>
-                      <button
-                        className="pulsante"
-                        onClick={() => {
-                          handleOpenChat(r.noleggiatore, r.noleggiante);
-                        }}
-                      >
-                        Contatta
-                      </button>
-                      <Chat
-                        trigger={chatVisibility}
-                        setTrigger={setChatVisibility}
-                        idEmittente={chatParams.idEmittente}
-                        idRicevente={chatParams.idRicevente}
+                        alt="Immagine annuncio"
                       />
                     </div>
-                  </div>
-                  <div className="rentalItem">
-                    <h3>Intervallo noleggio</h3>
-                    <p>{r.dataInizio}</p>
-                    <p>{r.dataFine}</p>
-                  </div>
-                  <div className="rentalItem">
-                    <h3>Stato</h3>
-                    {r.stato === "INIZIO" && <p>Inizio</p>}
-                    {r.stato === "IN CORSO" && <p>In corso...</p>}
-                    {r.stato === "FINE" && <p>Fine</p>}
-                    {r.stato === "FINE" && (
-                      <button
-                        className="pulsante"
-                        onClick={() => handleModifyState(r.id, "CONCLUSO")}
-                      >
-                        Ho ricevuto l'oggetto indietro
-                      </button>
-                    )}
-                    {r.stato === "CONCLUSO" && <p>Conclusione</p>}
-                    {r.stato === "CONCLUSO" &&
-                      r.valutazioneAlNoleggiante ===
-                        false(
-                          <div>
-                            <button
-                              className="pulsante"
-                              onClick={() =>
-                                handleOpenValutazioneUtente(
-                                  r.noleggiante,
-                                  idUser
-                                )
+                    <div className="rentalItem">
+                      <h3>Annuncio</h3>
+                      {
+                        <p>
+                          {
+                            getAdById(r.annuncio).then((response) => {
+                              if (response.ok) {
+                                response.json().then((ad) => {
+                                  return ad;
+                                });
+                              } else {
+                                response.json().then((result) => {
+                                  console.log(result.message);
+                                });
                               }
-                            >
-                              Valuta l'utente
-                            </button>
-                            <ValutazioneUtente
-                              trigger={buttonValutazioneUtente}
-                              setTrigger={setButtonValutazioneUtente}
-                              idValutato={valutazioneUtenteParams.idValutato}
-                              idValutatore={
-                                valutazioneUtenteParams.idValutatore
-                              }
-                            ></ValutazioneUtente>
-                          </div>
-                        )}
-                    {r.stato === "CONCLUSOCONVALUTAZIONE" && (
-                      <p>Noleggio Concluso</p>
-                    )}
+                            })?.titolo
+                          }
+                        </p>
+                      }
+                      <div className="pulsante">
+                        <Link to={`/dettagli/${r.annuncio}`}>
+                          Vai all'annuncio
+                        </Link>
+                      </div>
+                    </div>
+                    <div className="rentalItem">
+                      <h3>Autore dell'annuncio</h3>
+                      <p>
+                        {
+                          getUserById(r.noleggiante).then((response) => {
+                            if (response.ok) {
+                              response.json().then((user) => {
+                                return user;
+                              });
+                            } else {
+                              response.json().then((result) => {
+                                console.log(result.message);
+                              });
+                            }
+                          })?.username
+                        }
+                      </p>
+                      <div>
+                        <button
+                          className="pulsante"
+                          onClick={() => {
+                            handleOpenChat(r.noleggiatore, r.noleggiante);
+                          }}
+                        >
+                          Contatta
+                        </button>
+                        <Chat
+                          trigger={chatVisibility}
+                          setTrigger={setChatVisibility}
+                          idEmittente={chatParams.idEmittente}
+                          idRicevente={chatParams.idRicevente}
+                        />
+                      </div>
+                    </div>
+                    <div className="rentalItem">
+                      <h3>Intervallo noleggio</h3>
+                      <p>{r.dataInizio}</p>
+                      <p>{r.dataFine}</p>
+                    </div>
+                    <div className="rentalItem">
+                      <h3>Stato</h3>
+                      {r.stato === "INIZIO" && <p>Inizio</p>}
+                      {r.stato === "IN CORSO" && <p>In corso...</p>}
+                      {r.stato === "FINE" && <p>Fine</p>}
+                      {r.stato === "FINE" && (
+                        <button
+                          className="pulsante"
+                          onClick={() => handleModifyState(r.id, "CONCLUSO")}
+                        >
+                          Ho ricevuto l'oggetto indietro
+                        </button>
+                      )}
+                      {r.stato === "CONCLUSO" && <p>Conclusione</p>}
+                      {r.stato === "CONCLUSO" &&
+                        r.valutazioneAlNoleggiante ===
+                          false(
+                            <div>
+                              <button
+                                className="pulsante"
+                                onClick={() =>
+                                  handleOpenValutazioneUtente(
+                                    r.noleggiante,
+                                    idUser
+                                  )
+                                }
+                              >
+                                Valuta l'utente
+                              </button>
+                              <ValutazioneUtente
+                                trigger={buttonValutazioneUtente}
+                                setTrigger={setButtonValutazioneUtente}
+                                idValutato={valutazioneUtenteParams.idValutato}
+                                idValutatore={
+                                  valutazioneUtenteParams.idValutatore
+                                }
+                              ></ValutazioneUtente>
+                            </div>
+                          )}
+                      {r.stato === "CONCLUSOCONVALUTAZIONE" && (
+                        <p>Noleggio Concluso</p>
+                      )}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
+      <div className="divisore"></div>
       <Footer />
     </div>
   );

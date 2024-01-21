@@ -1,0 +1,50 @@
+.topSection {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+    background-color: var(--chiaro);
+    border-radius: 10px;
+    padding: 10px 10px 10px 20px;
+}
+
+.contactUserArea {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}
+
+.contactUserButton {
+    width: 200px;
+    height: 3em;
+    margin-right: 5px;
+    background-color: var(--scuro);
+    border-radius: 0.625rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+    border: 1px solid var(--scuro);
+    color: var(--bianco);
+    font-size: var(--font-size);
+    font-family: var(--font), sans-serif;
+    font-weight: 500;
+    line-height: 1.5rem;
+}
+
+.contactUserButton:hover {
+    background-color: var(--bianco);
+    color: var(--scuro);
+}
+
+.listaAnnunciProfilo {
+    display: flex;
+    flex-direction: row;
+    padding: 10rem;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: space-between;
+    align-self: stretch;
+    gap: 5%;
+    flex-wrap: wrap;
+  }

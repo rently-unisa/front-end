@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import SendRoundedIcon from "@mui/icons-material/SendRounded";
 import { addMessage, getMessagesByUserId } from "../services/messaggi";
 import "../style/Chat.css";
 
@@ -39,9 +38,9 @@ function Chat(props) {
           </button>
           <p>Chat con utente</p>
         </div>
-        <div>
+        <div className="messageList">
           {messages.map((message) => (
-            <p
+            <p style={{wordWrap: "break-word"}}
               className={`message ${
                 message.idUtente1 === props.idEmittente
                   ? "my-message"
@@ -52,16 +51,14 @@ function Chat(props) {
             </p>
           ))}
         </div>
-        <div>
-          <textarea
+        <div className="bottomMessageArea">
+          <textarea className="messageBox"
             type="textarea"
             value={newText}
             onChange={(e) => setNewText(e.target.value)}
             placeholder="Scrivi un messaggio"
           />
-          <button onClick={handleSubmitMessage}>
-            <SendRoundedIcon fontSize="medium" />
-          </button>
+          <button className="sendMessage" onClick={handleSubmitMessage}></button>
         </div>
       </div>
     </div>

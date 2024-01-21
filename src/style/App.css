@@ -51,6 +51,7 @@ body.blue {
   align-items: center;
   z-index: 0;
   flex: 1;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import "../style/ProfiloUtente.css";
 import { Link, useParams } from "react-router-dom";
 import { getUserById } from "../services/utenti";
 import { getAdsByUserId } from "../services/annunciNoleggio";
@@ -58,18 +59,18 @@ const ProfiloUtente = () => {
       {User ? (
         <div className="container">
           <h1>Profilo utente</h1>
-          <div className="contact">
-            <div className="contactUser">
+          <div className="topSection">
+            <div className="contactUserArea">
               <AccountCircleIcon fontSize="large" className="contactIcon" />
               <p>{User.username}</p>
               <p>{User.nome}</p>
               <p>{User.cognome}</p>
             </div>
-            <div className="contactButton">
-              <button>Contatta</button>
+            <div>
+              <button className="contactUserButton">Contatta</button>
             </div>
           </div>
-          <div className="listaAnnunciCatalogo">
+          <div className="listaAnnunciProfilo">
             {userAds.map((ad) => (
               <Link to={`/dettagli/${ad.id}`} key={ad.id}>
                 <div className={`card `}>

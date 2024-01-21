@@ -1,5 +1,24 @@
+.pulsanteCreaAnnuncio {
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+  margin-left: 42.5%;
+}
+
+.pulsanteCreaAnnuncio:hover {
+  background: var(--bianco);
+  color: var(--nero);
+}
+
 .listPageContainer {
-  width: 87%;
+  width: 90%;
 }
 
 .switchDescriptionContainer {
@@ -30,6 +49,8 @@
   border-radius: 0.625rem;
   border: 1px solid var(--scuro);
   background: var(--chiaro);
+  padding-bottom: 1rem;
+  padding-right: 1rem;
 }
 
 .rentalItem {
@@ -40,10 +61,149 @@
   width: 100%;
 }
 
+.rentalItem img {
+  max-width: 15rem;
+  max-height: 15rem;
+  margin-top: 1.5rem;
+  margin-left: 1.5rem;
+  border-radius: 10px;
+  border: 3px solid var(--scuro);
+}
+
 .rentalTitleContainer {
   display: flex;
   flex-direction: column;
   margin-top: 2%;
   margin-bottom: 4%;
   gap: 0.25rem;
+}
+
+.pulsanteModifica {
+  width: 8rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.pulsanteModifica:hover {
+  background: var(--bianco);
+  color: var(--nero);
+}
+
+.pulsanteElimina {
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+}
+
+.pulsanteElimina:hover {
+  background: var(--bianco);
+  color: var(--nero);
+}
+
+.divisore {
+  width: 100%;
+  margin: 1.5rem;
+} 
+
+@media screen and (max-width: 768px) {
+
+.pulsanteCreaAnnuncio {
+  width: 10rem;
+  padding: 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+  font-weight: 500;
+  line-height: 1.5rem;
+  margin-left: 23.5%;
+}
+
+.pulsanteCreaAnnuncio:hover {
+  background: var(--bianco);
+  color: var(--nero);
+}
+
+.listPageContainer {
+  width: 90%;
+  margin: 0 auto; /* Centra il contenuto orizzontalmente */
+}
+
+.switchDescriptionContainer,
+.switchContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rentalList {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem; /* Riduci lo spazio tra gli elementi */
+}
+
+.rental {
+  display: flex;
+  flex-direction: column; /* Cambiato da 'row' a 'column' */
+  gap: 2.5rem;
+  justify-content: center;
+  align-items: center; /* Cambiato da 'flex-start' a 'center' */
+  border-radius: 0.625rem;
+  border: 1px solid var(--scuro);
+  background: var(--chiaro);
+  padding-bottom: 1rem;
+  padding-right: 1rem;
+}
+
+.rentalItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2.125rem;
+  align-items: center;
+  width: 100%;
+}
+
+.rentalItem img {
+  max-width: 100%;
+  height: auto;
+  margin-top: 1.5rem;
+  margin-left: 1.5rem;
+  border-radius: 10px;
+  border: 3px solid var(--scuro);
+}
+
+.rentalTitleContainer {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+  margin-bottom: 4%;
+  gap: 0.25rem;
+}
+
+.pulsanteModifica,
+.pulsanteElimina {
+  margin-top: 1rem;
+}
+
+.divisore {
+  width: 100%;
+  margin: 1.5rem;
+}
+
 }

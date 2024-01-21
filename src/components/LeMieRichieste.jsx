@@ -98,7 +98,7 @@ const LeMieRichieste = () => {
                 <p>{getAdById(r.idAnnuncio).titolo}</p>
               )}
               <div className="pulsante">
-                <Link to="/">Vai all'annuncio</Link>
+                <Link to="/" style={{textDecoration: "none", color: "inherit"}}>Vai all'annuncio</Link>
               </div>
             </div>
             <div className="rentalItem">
@@ -244,6 +244,7 @@ const LeMieRichieste = () => {
         </div>
         {requests}
       </div>
+      <div className="divisore"></div>
       <Footer />
     </div>
   );

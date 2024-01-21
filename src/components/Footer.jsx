@@ -57,7 +57,7 @@ const Footer = () => {
           <img src={insta} alt="Social Icon" />
         </div>
       </div>
-      <div className="info-box">
+      <div className="info-box-servizi">
         <div className="info-header">Servizi</div>
         {userLink}
         <Link to="/assistenza">

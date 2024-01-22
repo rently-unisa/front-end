@@ -201,6 +201,7 @@ const CreaAnnuncio = () => {
                     value={titolo}
                     placeholder="Inserisci il titolo dell'annuncio"
                     onChange={(e) => setTitolo(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="annunciFields">
@@ -211,6 +212,7 @@ const CreaAnnuncio = () => {
                     value={cap}
                     placeholder="Inserisci il CAP"
                     onChange={(e) => setCap(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="annunciFields">
@@ -221,6 +223,7 @@ const CreaAnnuncio = () => {
                     value={strada}
                     placeholder="Inserisci la strada"
                     onChange={(e) => setStrada(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="annunciFields">
@@ -231,6 +234,7 @@ const CreaAnnuncio = () => {
                     value={citta}
                     placeholder="Inserisci la città"
                     onChange={(e) => setCitta(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="annunciFields">
@@ -240,6 +244,7 @@ const CreaAnnuncio = () => {
                     value={descrizione}
                     placeholder="Inserisci la descrizione"
                     onChange={(e) => setDescrizione(e.target.value)}
+                    required
                   />
                 </div>
                 <div className="annunciFields">
@@ -250,6 +255,7 @@ const CreaAnnuncio = () => {
                     value={prezzo}
                     placeholder="Inserisci il prezzo/giorno"
                     onChange={(e) => setPrezzo(e.target.value)}
+                    required
                   />
                 </div>
               </div>

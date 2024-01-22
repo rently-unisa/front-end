@@ -76,14 +76,76 @@ const IMieiNoleggi = () => {
   );
   const [noleggianteRentals, setNoleggianteRentals] = useState();
   const [noleggiatoreRentals, setNoleggiatoreRentals] = useState();
+  const [noleggianteAds, setNoleggianteAds] = useState();
+  const [noleggianteUsernames, setNoleggianteUsernames] = useState();
+  const [noleggiatoreAds, setNoleggiatoreAds] = useState();
+  const [noleggiatoreUsernames, setNoleggiatoreUsernames] = useState();
+
+  const getAdsDate = async (id) => {
+    try {
+      const response = await getAdById(id);
+      if (response.ok) {
+        const rentals = await response.json();
+        return { id, titolo: rentals.nome, immagine: rentals.immagine };
+      } else {
+        const result = await response.json();
+        return { id, titolo: "", immagine: "" };
+      }
+    } catch (error) {
+      console.error("Error fetching average:", error);
+      return { id, titolo: "", immagine: "" };
+    }
+  };
+
+  const getUsersDate = async (id) => {
+    try {
+      const response = await getUserById(id);
+      if (response.ok) {
+        const rentals = await response.json();
+        return { id, username: rentals.username };
+      } else {
+        const result = await response.json();
+        return { id, username: "" };
+      }
+    } catch (error) {
+      console.error("Error fetching average:", error);
+      return { id, username: "" };
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const noleggianteResponse = await getRentalsByNoleggiante(idUser);
         if (noleggianteResponse.ok) {
-          const noleggianteData = await noleggianteResponse.json();
-          setNoleggianteRentals(noleggianteData);
+          noleggianteResponse.json().then(async (noleggianteData) => {
+            const adPromises = noleggianteData.map((rental) =>
+              getAdsDate(rental.annuncio)
+            );
+            const adsData = await Promise.all(adPromises);
+            const newAdsMapping = {};
+            adsData.forEach((adData) => {
+              newAdsMapping[adData.id] = {
+                titolo: adData.titolo,
+                immagine: adData.immagine,
+              };
+            });
+
+            const userPromises = noleggianteData.map((rental) =>
+              getUsersDate(rental.noleggiatore)
+            );
+            const usersData = await Promise.all(userPromises);
+            const newUsersMapping = {};
+            usersData.forEach((userData) => {
+              newUsersMapping[userData.id] = {
+                username: userData.username,
+              };
+            });
+
+            setNoleggianteRentals(noleggianteData);
+            setNoleggianteAds(newAdsMapping);
+            setNoleggianteUsernames(newUsersMapping);
+          });
         } else {
           const result = await noleggianteResponse.json();
           console.log(result.message);
@@ -91,8 +153,34 @@ const IMieiNoleggi = () => {
 
         const noleggiatoreResponse = await getRentalsByNoleggiatore(idUser);
         if (noleggiatoreResponse.ok) {
-          const noleggiatoreData = await noleggiatoreResponse.json();
-          setNoleggiatoreRentals(noleggiatoreData);
+          await noleggiatoreResponse.json().then(async (noleggiatoreData) => {
+            const adPromises = noleggiatoreData.map((rental) =>
+              getAdsDate(rental.annuncio)
+            );
+            const adsData = await Promise.all(adPromises);
+            const newAdsMapping = {};
+            adsData.forEach((rentalData) => {
+              newAdsMapping[rentalData.id] = {
+                titolo: rentalData.titolo,
+                immagine: rentalData.immagine,
+              };
+            });
+
+            const userPromises = noleggiatoreData.map((rental) =>
+              getUsersDate(rental.noleggiante)
+            );
+            const usersData = await Promise.all(userPromises);
+            const newUsersMapping = {};
+            usersData.forEach((userData) => {
+              newUsersMapping[userData.id] = {
+                username: userData.username,
+              };
+            });
+
+            setNoleggiatoreRentals(noleggiatoreData);
+            setNoleggiatoreAds(newAdsMapping);
+            setNoleggiatoreUsernames(newUsersMapping);
+          });
         } else {
           const result = await noleggiatoreResponse.json();
           console.log(result.message);
@@ -151,7 +239,7 @@ const IMieiNoleggi = () => {
         });
       } else {
         response.json().then((result) => {
-          console.log(result.message);
+          alert(result.message);
         });
       }
     });
@@ -163,7 +251,7 @@ const IMieiNoleggi = () => {
         });
       } else {
         response.json().then((result) => {
-          console.log(result.message);
+          alert(result.message);
         });
       }
     });
@@ -264,42 +352,14 @@ const IMieiNoleggi = () => {
                   >
                     <div className="rentalItem">
                       <img
-                        src={
-                          getAdById(r.annuncio).then((response) => {
-                            console.log(r);
-                            if (response.ok) {
-                              response.json().then((ad) => {
-                                return ad;
-                              });
-                            } else {
-                              response.json().then((result) => {
-                                console.log(result.message);
-                              });
-                            }
-                          })?.immagine
-                        }
+                        src={noleggianteAds[r.annuncio]?.immagine}
                         alt="Immagine annuncio"
+                        loading="lazy"
                       />
                     </div>
                     <div className="rentalItem">
                       <h3>Annuncio</h3>
-                      {
-                        <p>
-                          {
-                            getAdById(r.annuncio).then((response) => {
-                              if (response.ok) {
-                                response.json().then((ad) => {
-                                  return ad;
-                                });
-                              } else {
-                                response.json().then((result) => {
-                                  console.log(result.message);
-                                });
-                              }
-                            })?.titolo
-                          }
-                        </p>
-                      }
+                      {<p>{noleggianteAds[r.annuncio].titolo}</p>}
                       <div className="pulsante">
                         <Link to={`/dettagli/${r.annuncio}`}>
                           Vai all'annuncio
@@ -307,22 +367,10 @@ const IMieiNoleggi = () => {
                       </div>
                     </div>
                     <div className="rentalItem">
-                      <h3>Autore dell'annuncio</h3>
-                      <p>
-                        {
-                          getUserById(r.noleggiatore).then((response) => {
-                            if (response.ok) {
-                              response.json().then((user) => {
-                                return user;
-                              });
-                            } else {
-                              response.json().then((result) => {
-                                console.log(result.message);
-                              });
-                            }
-                          })?.username
-                        }
-                      </p>
+                      <h3>Noleggiatore</h3>
+                      <Link to={`/utente/${r.noleggiatore}`}>
+                        <p>{noleggianteUsernames[r.noleggiatore]?.username}</p>
+                      </Link>
                       <div>
                         <button
                           className="pulsante"
@@ -373,7 +421,7 @@ const IMieiNoleggi = () => {
                                 )
                               }
                             >
-                              Valuta l'autore
+                              Valuta il noleggiatore
                             </button>
                             <ValutazioneUtente
                               trigger={buttonValutazioneUtente}
@@ -437,41 +485,14 @@ const IMieiNoleggi = () => {
                   <div className="rental">
                     <div className="rentalItem">
                       <img
-                        src={
-                          getAdById(r.annuncio).then((response) => {
-                            if (response.ok) {
-                              response.json().then((ad) => {
-                                return ad;
-                              });
-                            } else {
-                              response.json().then((result) => {
-                                console.log(result.message);
-                              });
-                            }
-                          })?.immagine
-                        }
+                        src={noleggiatoreAds[r.annuncio]?.immagine}
                         alt="Immagine annuncio"
+                        loading="lazy"
                       />
                     </div>
                     <div className="rentalItem">
                       <h3>Annuncio</h3>
-                      {
-                        <p>
-                          {
-                            getAdById(r.annuncio).then((response) => {
-                              if (response.ok) {
-                                response.json().then((ad) => {
-                                  return ad;
-                                });
-                              } else {
-                                response.json().then((result) => {
-                                  console.log(result.message);
-                                });
-                              }
-                            })?.titolo
-                          }
-                        </p>
-                      }
+                      {<p>{noleggiatoreAds[r.annuncio]?.titolo}</p>}
                       <div className="pulsante">
                         <Link to={`/dettagli/${r.annuncio}`}>
                           Vai all'annuncio
@@ -479,20 +500,14 @@ const IMieiNoleggi = () => {
                       </div>
                     </div>
                     <div className="rentalItem">
-                      <h3>Autore dell'annuncio</h3>
+                      <h3>Noleggiante</h3>
                       <p>
                         {
-                          getUserById(r.noleggiante).then((response) => {
-                            if (response.ok) {
-                              response.json().then((user) => {
-                                return user;
-                              });
-                            } else {
-                              response.json().then((result) => {
-                                console.log(result.message);
-                              });
-                            }
-                          })?.username
+                          <Link to={`/utente/${r.noleggiante}`}>
+                            <p>
+                              {noleggiatoreUsernames[r.noleggiante]?.username}
+                            </p>
+                          </Link>
                         }
                       </p>
                       <div>

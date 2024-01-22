@@ -175,7 +175,7 @@ const LeMieRichieste = () => {
                 </div>
               </div>
               <div className="rentalItem">
-                <h3>Autore dell'annuncio</h3>
+                <h3>Noleggiatore</h3>
                 {/*<p>{getUserById(r.noleggiatore).username}</p>*/}
                 <div>
                   <button
@@ -258,7 +258,7 @@ const LeMieRichieste = () => {
                 </div>
               </div>
               <div className="rentalItem">
-                <h3>Richiedente</h3>
+                <h3>Possibile noleggiante</h3>
                 {/*<p>{getUserById(r.noleggiante).username}</p>*/}
                 <div>
                   <button

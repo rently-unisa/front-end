@@ -114,7 +114,11 @@ const Home = () => {
                     key={ad.id}
                   >
                     <div key={ad.id} className={`card`}>
-                      <img src={ad.immagine} alt="Immgagine annuncio" />
+                      <img
+                        src={ad.immagine}
+                        alt="Immgagine annuncio"
+                        loading="lazy"
+                      />
                       <div className="card-description">
                         <p>{ad.nome}</p>
                         <h6>€ {ad.prezzo}/giorno</h6>

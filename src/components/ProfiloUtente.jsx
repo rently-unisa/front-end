@@ -154,7 +154,11 @@ const ProfiloUtente = () => {
             {userAds.map((ad) => (
               <Link to={`/dettagli/${ad.id}`} key={ad.id}>
                 <div className={`card `}>
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
+                  <img
+                    src={ad.immagine}
+                    alt="Immgagine annuncio"
+                    loading="lazy"
+                  />
                   <div className="card-description">
                     <p>{ad.nome}</p>
                     <h6>€ {ad.prezzo}/giorno</h6>

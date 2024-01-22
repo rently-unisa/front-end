@@ -268,36 +268,58 @@ const AreaPersonale = () => {
                 </div>
                 <div className="overallRating">Overall rating</div>
                 <div className="ratingMedium">
-                  <div className="averageRating">
-                    {ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                      (ratings.length * 2) ===
-                    0
-                      ? "Nessuna recensione"
-                      : ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                        (ratings.length * 2)}
-                  </div>
-                  <div className="ratingStars">
-                    <Rating
-                      name="read-only"
-                      style={{ color: "#282a28" }}
-                      value={
-                        ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                        (ratings.length * 2)
-                      }
-                      precision={0.5}
-                      readOnly
-                    />
-                  </div>
+                  {ratings.reduce((sum, rating) => sum + rating.voto, 0) /
+                    (ratings.length * 2) >=
+                  0 ? (
+                    <div>
+                      <div className="averageRating">
+                        {ratings.reduce((sum, rating) => sum + rating.voto, 0) /
+                          (ratings.length * 2) >=
+                        0
+                          ? ratings.reduce(
+                              (sum, rating) => sum + rating.voto,
+                              0
+                            ) /
+                            (ratings.length * 2)
+                          : "Nessuna recensione"}
+                      </div>
+                      <div className="ratingStars">
+                        <Rating
+                          name="read-only"
+                          style={{ color: "#282a28" }}
+                          value={
+                            ratings.reduce(
+                              (sum, rating) => sum + rating.voto,
+                              0
+                            ) /
+                            (ratings.length * 2)
+                          }
+                          precision={0.5}
+                          readOnly
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    "Nessuna recensione"
+                  )}
                 </div>
                 <Box sx={{ width: 150 }}>
                   <div className="SliderBox">
                     <span className="RatingNumber">5</span>{" "}
                     <Slider
-                      defaultValue={ratings.reduce(
-                        (count, rating) =>
-                          rating.voto >= 9 ? count + 1 : count + 0,
-                        0
-                      )}
+                      defaultValue={
+                        ratings.reduce(
+                          (count, rating) =>
+                            rating.voto >= 9 ? count + 1 : count + 0,
+                          0
+                        ) >= 0
+                          ? ratings.reduce(
+                              (count, rating) =>
+                                rating.voto >= 9 ? count + 1 : count + 0,
+                              0
+                            )
+                          : 0
+                      }
                       max={ratings.length}
                       size="small"
                       disabled
@@ -313,13 +335,19 @@ const AreaPersonale = () => {
                   <div className="SliderBox">
                     <span className="RatingNumber">4</span>{" "}
                     <Slider
-                      defaultValue={ratings.reduce(
-                        (count, rating) =>
-                          7 <= rating.voto && rating.voto < 9
-                            ? count + 1
-                            : count + 0,
-                        0
-                      )}
+                      defaultValue={
+                        ratings.reduce(
+                          (count, rating) =>
+                            rating.voto >= 9 ? count + 1 : count + 0,
+                          0
+                        ) >= 0
+                          ? ratings.reduce(
+                              (count, rating) =>
+                                rating.voto >= 9 ? count + 1 : count + 0,
+                              0
+                            )
+                          : 0
+                      }
                       max={ratings.length}
                       size="small"
                       disabled
@@ -337,13 +365,19 @@ const AreaPersonale = () => {
                   <div className="SliderBox">
                     <span className="RatingNumber">3</span>{" "}
                     <Slider
-                      defaultValue={ratings.reduce(
-                        (count, rating) =>
-                          5 <= rating.voto && rating.voto < 7
-                            ? count + 1
-                            : count + 0,
-                        0
-                      )}
+                      defaultValue={
+                        ratings.reduce(
+                          (count, rating) =>
+                            rating.voto >= 9 ? count + 1 : count + 0,
+                          0
+                        ) >= 0
+                          ? ratings.reduce(
+                              (count, rating) =>
+                                rating.voto >= 9 ? count + 1 : count + 0,
+                              0
+                            )
+                          : 0
+                      }
                       max={ratings.length}
                       size="small"
                       disabled
@@ -361,13 +395,19 @@ const AreaPersonale = () => {
                   <div className="SliderBox">
                     <span className="RatingNumber">2</span>{" "}
                     <Slider
-                      defaultValue={ratings.reduce(
-                        (count, rating) =>
-                          3 <= rating.voto && rating.voto < 5
-                            ? count + 1
-                            : count + 0,
-                        0
-                      )}
+                      defaultValue={
+                        ratings.reduce(
+                          (count, rating) =>
+                            rating.voto >= 9 ? count + 1 : count + 0,
+                          0
+                        ) >= 0
+                          ? ratings.reduce(
+                              (count, rating) =>
+                                rating.voto >= 9 ? count + 1 : count + 0,
+                              0
+                            )
+                          : 0
+                      }
                       max={ratings.length}
                       size="small"
                       disabled
@@ -385,13 +425,19 @@ const AreaPersonale = () => {
                   <div className="SliderBox">
                     <span className="RatingNumber">1</span>{" "}
                     <Slider
-                      defaultValue={ratings.reduce(
-                        (count, rating) =>
-                          1 <= rating.voto && rating.voto < 3
-                            ? count + 1
-                            : count + 0,
-                        0
-                      )}
+                      defaultValue={
+                        ratings.reduce(
+                          (count, rating) =>
+                            rating.voto >= 9 ? count + 1 : count + 0,
+                          0
+                        ) >= 0
+                          ? ratings.reduce(
+                              (count, rating) =>
+                                rating.voto >= 9 ? count + 1 : count + 0,
+                              0
+                            )
+                          : 0
+                      }
                       max={ratings.length}
                       size="small"
                       disabled
@@ -418,7 +464,7 @@ const AreaPersonale = () => {
                       <Rating
                         name="read-only"
                         style={{ color: "#282a28", fontSize: "1.2rem" }}
-                        value={rating.voto / 2}
+                        value={rating.voto / 2 > 0 ? rating.voto / 2 : 0}
                         precision={0.5}
                         readOnly
                       />

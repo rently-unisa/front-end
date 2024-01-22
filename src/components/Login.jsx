@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { getUserByEmailAndPassword } from "../services/utenti";
-import logo from "../image/Logo.png";
+import logoNonDaltonici from "../image/Logo.png";
+import logoDaltonici from "../image/RentlyFinaleDaltonici.png";
 import "../style/Login.css";
 import image1 from "../image/ondinaprova1.svg";
 import image2 from "../image/ondinaprova2.svg";
@@ -12,8 +13,13 @@ import image4 from "../image/ondadoppia2.svg";
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuth();
+  const { login, daltonico } = useAuth();
   const navigate = useNavigate();
+  const [logo, setLogo] = useState(logoNonDaltonici);
+
+  useEffect(() => {
+    setLogo(daltonico ? logoDaltonici : logoNonDaltonici);
+  }, [daltonico]);
 
   const handleLogin = () => {
     getUserByEmailAndPassword(username, password).then((response) => {
@@ -56,6 +62,7 @@ const Login = () => {
             value={username}
             placeholder="Inserisci la tua email"
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
         </div>
         <div className="parametro">
@@ -65,6 +72,7 @@ const Login = () => {
             value={password}
             placeholder="Inserisci la tua password"
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </div>
         <button className="pulsante" onClick={handleLogin}>

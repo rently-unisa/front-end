@@ -131,7 +131,7 @@ const Dettagli = () => {
               <div className="leftSection">
                 <div className="adDescription">
                   <p>{Annuncio.descrizione}</p>
-                  <p>
+                  <label>
                     <p style={{ textAlign: "left" }}>
                       <span>Data di fine disponibilità: </span>
                       {Annuncio.dataFine}
@@ -140,7 +140,7 @@ const Dettagli = () => {
                       <span>Condizioni: </span>
                       {Annuncio.condizione}
                     </p>
-                  </p>
+                  </label>
                 </div>
                 <div className="actionButtons">
                   <div className="requestButton">
@@ -169,27 +169,25 @@ const Dettagli = () => {
                       <Link to={`/utente/${adUser.id}`}>{adUser.username}</Link>
                     </div>
                     <div className="contactButton">
-                      <div>
-                        <button
-                          className="contactButton2"
-                          onClick={() =>
-                            isLoggedIn
-                              ? handleOpenChat(Cookies.get("id"), adUser.id)
-                              : alert(
-                                  "Fare l'accesso per poter fare una richiesta"
-                                )
-                          }
-                        >
-                          Contatta
-                        </button>
-                        <Chat
-                          trigger={chatVisibility}
-                          setTrigger={setChatVisibility}
-                          idEmittente={chatParams.idEmittente}
-                          idRicevente={chatParams.idRicevente}
-                          messages={chatParams.messages}
-                        />
-                      </div>
+                      <button
+                        className="contactButton2"
+                        onClick={() =>
+                          isLoggedIn
+                            ? handleOpenChat(Cookies.get("id"), adUser.id)
+                            : alert(
+                                "Fare l'accesso per poter fare una richiesta"
+                              )
+                        }
+                      >
+                        Contatta
+                      </button>
+                      <Chat
+                        trigger={chatVisibility}
+                        setTrigger={setChatVisibility}
+                        idEmittente={chatParams.idEmittente}
+                        idRicevente={chatParams.idRicevente}
+                        messages={chatParams.messages}
+                      />
                     </div>
                   </div>
                 </div>

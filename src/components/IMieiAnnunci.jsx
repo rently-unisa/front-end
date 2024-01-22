@@ -58,7 +58,11 @@ const IMieiAnnunci = () => {
             {userAds.map((a) => (
               <div className="rental">
                 <div className="rentalItem">
-                  <img src={a.immagine} alt="Immagine annuncio" />
+                  <img
+                    src={a.immagine}
+                    alt="Immagine annuncio"
+                    loading="lazy"
+                  />
                 </div>
                 <div className="rentalItem">
                   <h3>Annuncio</h3>

@@ -41,7 +41,7 @@
   padding: 1.375rem 1.125rem 1.125rem 1.1875rem;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   border-radius: 0.625rem;
   background-color: var(--chiaro);
   gap: 10px;
@@ -119,7 +119,6 @@
 }
 
 .contactUser a {
-  text-decoration: none;
   font-size: var(--font-size2);
   color: var(--nero);
   align-self: center;

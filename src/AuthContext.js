@@ -7,6 +7,7 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [daltonico, setDaltonico] = useState(false);
 
   useEffect(() => {
     const savedUsername = Cookies.get("username");
@@ -33,9 +34,13 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
   };
 
+  const toggleDaltonico = () => {
+    setDaltonico(!daltonico);
+  };
+
   const contextValue = useMemo(
-    () => ({ isLoggedIn, username, login, logout }),
-    [isLoggedIn, username]
+    () => ({ isLoggedIn, username, daltonico, login, logout, toggleDaltonico }),
+    [isLoggedIn, username, daltonico]
   );
 
   return (

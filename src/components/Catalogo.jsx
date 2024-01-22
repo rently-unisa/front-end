@@ -78,7 +78,6 @@ const Catalogo = () => {
         return { id, media: rental };
       } else {
         const result = await response.json();
-        console.log(result.message);
         return { id, media: 0 };
       }
     } catch (error) {
@@ -108,7 +107,6 @@ const Catalogo = () => {
           });
 
           setAllAds(ads);
-          console.log(rentalsData);
           setRatings(newRentalsMapping);
         });
       }
@@ -479,7 +477,11 @@ const Catalogo = () => {
                   key={ad.id}
                 >
                   <div className="card">
-                    <img src={ad.immagine} alt="Immgagine annuncio" />
+                    <img
+                      src={ad.immagine}
+                      alt="Immgagine annuncio"
+                      loading="lazy"
+                    />
                     <div className="card-description">
                       <p>{ad.nome}</p>
                       <h6>€ {ad.prezzo}/giorno</h6>

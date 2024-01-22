@@ -126,6 +126,11 @@
   gap: 1%;
 }
 
+.listaAnnunciCatalogo a {
+  text-decoration: none;
+  color: var(--nero);
+}
+
 .dropdown-content1 {
   display: none;
   width: 100%;

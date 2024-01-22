@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { addUser } from "../services/utenti";
-import logo from "../image/Logo.png";
+import logoNonDaltonici from "../image/Logo.png";
+import logoDaltonici from "../image/RentlyFinaleDaltonici.png";
 import image1 from "../image/ondina1.svg";
 import image2 from "../image/onda3.svg";
 import image3 from "../image/onda4.svg";
@@ -15,8 +16,13 @@ const Signup = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confPassword, setConfPassword] = useState("");
-  const { login } = useAuth();
+  const [logo, setLogo] = useState(logoNonDaltonici);
+  const { login, daltonico } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setLogo(daltonico ? logoDaltonici : logoNonDaltonici);
+  }, [daltonico]);
 
   const handleSignup = () => {
     if (password === confPassword) {
@@ -88,6 +94,7 @@ const Signup = () => {
               value={nome}
               placeholder="Inserisci il tuo nome"
               onChange={(e) => setNome(e.target.value)}
+              required
             />
           </div>
           <div className="parametro1">
@@ -97,6 +104,7 @@ const Signup = () => {
               value={cognome}
               placeholder="Inserisci il tuo cognome"
               onChange={(e) => setCognome(e.target.value)}
+              required
             />
           </div>
           <div className="parametro1">
@@ -106,6 +114,7 @@ const Signup = () => {
               value={username}
               placeholder="Inserisci il tuo username"
               onChange={(e) => setUsername(e.target.value)}
+              required
             />
           </div>
           <div className="parametro1">
@@ -115,6 +124,7 @@ const Signup = () => {
               value={email}
               placeholder="Inserisci la tua email"
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <div className="parametro1">
@@ -124,6 +134,7 @@ const Signup = () => {
               value={password}
               placeholder="Inserisci la tua password"
               onChange={(e) => setPassword(e.target.value)}
+              required
             />
           </div>
           <div className="parametro1">
@@ -133,6 +144,7 @@ const Signup = () => {
               value={confPassword}
               placeholder="Conferma la tua password"
               onChange={(e) => setConfPassword(e.target.value)}
+              required
             />
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../style/Assistenza.css";
@@ -8,41 +8,67 @@ import image3 from "../image/assistenzaOndaDX.svg";
 import { addSegnalazione } from "../services/assistenza.js";
 import { getUserByEmail } from "../services/utenti.js";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthContext.js";
+import { getRentalsByNoleggiante } from "../services/noleggi.js";
+import Cookies from "js-cookie";
 
 const Assistenza = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const [tipo, setTipo] = useState(null);
   const [contenuto, setContenuto] = useState("");
   const [email, setEmail] = useState("");
+  const [rentals, setRentals] = useState();
 
   const handleTipoChange = (event) => {
     setTipo(event.target.value);
   };
 
-  const handleSubmit = () => {
-    if (tipo !== null) {
-      const user = getUserByEmail(email);
-      if (user) {
-        if (contenuto !== "") {
-          const newSegnalazione = {
-            tipo: tipo,
-            contenuto: contenuto,
-            idSegnalatore: user.id,
-          };
-          addSegnalazione(newSegnalazione).then((response) => {
-            if (response.ok) {
-              alert("La segnalazione è stata inviata correttamente");
-              navigate("/");
-            } else {
-              alert(
-                "Errore durante la richiesta di segnalazione: ",
-                response.text()
-              );
-            }
+  useEffect(() => {
+    getRentalsByNoleggiante(Cookies.get("id")).then((response) => {
+      if (response.status !== 403) {
+        if (response.ok) {
+          response.json().then((rental) => {
+            setRentals(rental);
           });
-        } else alert("Il messaggio non può essere vuoto");
-      } else alert("L'email inserita non è valida");
-    } else alert("Inserisci un tipo di segnalazione");
+        } else {
+          response.json().then((result) => {
+            alert(result.message);
+          });
+        }
+      }
+    });
+  }, []);
+
+  const handleSubmit = () => {
+    if (rentals !== undefined) {
+      if (tipo !== null) {
+        const user = getUserByEmail(email);
+        if (user) {
+          if (contenuto !== "") {
+            const newSegnalazione = {
+              tipo: tipo,
+              contenuto: contenuto,
+              idSegnalatore: user.id,
+            };
+            addSegnalazione(newSegnalazione).then((response) => {
+              if (response.ok) {
+                alert("La segnalazione è stata inviata correttamente");
+                navigate("/");
+              } else {
+                alert(
+                  "Errore durante la richiesta di segnalazione: ",
+                  response.text()
+                );
+              }
+            });
+          } else alert("Il messaggio non può essere vuoto");
+        } else alert("L'email inserita non è valida");
+      } else alert("Inserisci un tipo di segnalazione");
+    } else
+      alert(
+        "Non è possibie segnalare problemi senza aver mai effettuato un noleggio"
+      );
   };
 
   return (
@@ -122,7 +148,16 @@ const Assistenza = () => {
               placeholder="Inserisci il tuo messaggio"
             />
           </div>
-          <button className="button" onClick={handleSubmit}>
+          <button
+            className="button"
+            onClick={() =>
+              isLoggedIn
+                ? handleSubmit()
+                : alert(
+                    "Effettuare l'accesso per poter effettuare una segnalazione"
+                  )
+            }
+          >
             Invia messaggio
           </button>
         </div>

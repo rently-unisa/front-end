@@ -178,6 +178,11 @@
   gap: 0.625rem 2.5rem;
 }
 
+.listaAnnunciHome a {
+  text-decoration: none;
+  color: var(--nero);
+}
+
 .card {
   display: flex;
   width: 20.375rem;

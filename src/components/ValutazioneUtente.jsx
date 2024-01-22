@@ -50,6 +50,7 @@ function ValutazioneUtente(props) {
                 name="rating-input"
                 value={rating}
                 onChange={handleRatingChange}
+                required
               />
             </div>
           </div>
@@ -62,6 +63,7 @@ function ValutazioneUtente(props) {
             value={contenuto}
             onChange={(e) => setContenuto(e.target.value)}
             placeholder="Scrivi la tua recensione"
+            required
           />
         </div>
         <button className="valutazione-confirm" onClick={handleSubmitUtente}>

@@ -76,13 +76,13 @@ const ModificaAnnuncio = () => {
 
   const handleModify = () => {
     const modifiedAd = {
+      id: idAnnuncio,
       idUtente,
       nome: titolo,
       strada,
       citta,
       cap,
       descrizione,
-      immagine,
       prezzo,
       categoria,
       dataFine,

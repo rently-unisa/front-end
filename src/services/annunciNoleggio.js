@@ -322,7 +322,10 @@ const modifyAd = async (modifiedAd, image) => {
     for (let key in modifiedAd) {
       formData.append(key, modifiedAd[key]);
     }
-    formData.append("image", image);
+    if (image !== undefined || image !== null) formData.append("image", image);
+    else formData.append("image", null);
+
+    console.log(formData);
     const response = await axios.post(
       "http://localhost:4000/api/annuncio/modifica-annuncio",
       formData,

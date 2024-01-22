@@ -13,8 +13,11 @@ import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import Chat from "./Chat";
 import Cookies from "js-cookie";
+import { useAuth } from "../AuthContext";
+import { getMessagesByUsersId } from "../services/messaggi";
 
 const ProfiloUtente = () => {
+  const { isLoggedIn } = useAuth();
   const userId = parseInt(useParams().id, 10);
   const [User, setUser] = useState();
   const [userAds, setUserAds] = useState();
@@ -26,7 +29,13 @@ const ProfiloUtente = () => {
   });
   const [chatVisibility, setChatVisibility] = useState(false);
   const handleOpenChat = (idEmittente, idRicevente) => {
-    setChatParams({ idEmittente, idRicevente });
+    getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
+      if (response.ok) {
+        response.json().then((messages) => {
+          setChatParams({ idEmittente, idRicevente, messages });
+        });
+      }
+    });
     setChatVisibility(true);
   };
 
@@ -122,10 +131,12 @@ const ProfiloUtente = () => {
             <div>
               <div>
                 <button
-                  className="contactUserButton"
-                  onClick={() => {
-                    handleOpenChat(Cookies.get("id"), userId);
-                  }}
+                  className="contactButton2"
+                  onClick={() =>
+                    isLoggedIn
+                      ? handleOpenChat(Cookies.get("id"), userId)
+                      : alert("Fare l'accesso per poter fare una richiesta")
+                  }
                 >
                   Contatta
                 </button>
@@ -134,6 +145,7 @@ const ProfiloUtente = () => {
                   setTrigger={setChatVisibility}
                   idEmittente={chatParams.idEmittente}
                   idRicevente={chatParams.idRicevente}
+                  messages={chatParams.messages}
                 />
               </div>
             </div>

@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Loader from "./Loader";
+import dayjs from "dayjs";
 import { useAuth } from "../AuthContext";
 import RichiestaNoleggio from "./RichiestaNoleggio";
 import { getAdById } from "../services/annunciNoleggio";
@@ -143,15 +144,21 @@ const Dettagli = () => {
                 </div>
                 <div className="actionButtons">
                   <div className="requestButton">
-                    <button
-                      onClick={() =>
-                        isLoggedIn
-                          ? setPopupVisible(true)
-                          : alert("Fare l'accesso per poter fare una richiesta")
-                      }
-                    >
-                      Richiedi il noleggio
-                    </button>
+                    {dayjs().isAfter(Annuncio.dataFine, "day") ? (
+                      <button>Annuncio scaduto</button>
+                    ) : (
+                      <button
+                        onClick={() =>
+                          isLoggedIn
+                            ? setPopupVisible(true)
+                            : alert(
+                                "Fare l'accesso per poter fare una richiesta"
+                              )
+                        }
+                      >
+                        Richiedi il noleggio
+                      </button>
+                    )}
                   </div>
                   <div className="contact">
                     <div className="contactUser">
@@ -165,9 +172,13 @@ const Dettagli = () => {
                       <div>
                         <button
                           className="contactButton2"
-                          onClick={() => {
-                            handleOpenChat(Cookies.get("id"), adUser.id);
-                          }}
+                          onClick={() =>
+                            isLoggedIn
+                              ? handleOpenChat(Cookies.get("id"), adUser.id)
+                              : alert(
+                                  "Fare l'accesso per poter fare una richiesta"
+                                )
+                          }
                         >
                           Contatta
                         </button>

@@ -19,6 +19,7 @@ import Chat from "./Chat";
 import Cookies from "js-cookie";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { getMessagesByUsersId } from "../services/messaggi.js";
 
 const IMieiNoleggi = () => {
   //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
@@ -31,7 +32,13 @@ const IMieiNoleggi = () => {
   });
   const [chatVisibility, setChatVisibility] = useState(false);
   const handleOpenChat = (idEmittente, idRicevente) => {
-    setChatParams({ idEmittente, idRicevente });
+    getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
+      if (response.ok) {
+        response.json().then((messages) => {
+          setChatParams({ idEmittente, idRicevente, messages });
+        });
+      }
+    });
     setChatVisibility(true);
   };
 
@@ -319,9 +326,9 @@ const IMieiNoleggi = () => {
                       <div>
                         <button
                           className="pulsante"
-                          onClick={() => {
-                            handleOpenChat(r.noleggiante, r.noleggiatore);
-                          }}
+                          onClick={() =>
+                            handleOpenChat(r.noleggiante, r.noleggiatore)
+                          }
                         >
                           Contatta
                         </button>
@@ -330,6 +337,7 @@ const IMieiNoleggi = () => {
                           setTrigger={setChatVisibility}
                           idEmittente={chatParams.idEmittente}
                           idRicevente={chatParams.idRicevente}
+                          messages={chatParams.messages}
                         />
                       </div>
                     </div>
@@ -490,9 +498,9 @@ const IMieiNoleggi = () => {
                       <div>
                         <button
                           className="pulsante"
-                          onClick={() => {
-                            handleOpenChat(r.noleggiatore, r.noleggiante);
-                          }}
+                          onClick={() =>
+                            handleOpenChat(r.noleggiante, r.noleggiatore)
+                          }
                         >
                           Contatta
                         </button>
@@ -501,6 +509,7 @@ const IMieiNoleggi = () => {
                           setTrigger={setChatVisibility}
                           idEmittente={chatParams.idEmittente}
                           idRicevente={chatParams.idRicevente}
+                          messages={chatParams.messages}
                         />
                       </div>
                     </div>

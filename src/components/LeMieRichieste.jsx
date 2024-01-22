@@ -16,6 +16,7 @@ import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
 import Chat from "./Chat";
 import Cookies from "js-cookie";
+import { getMessagesByUsersId } from "../services/messaggi";
 
 const LeMieRichieste = () => {
   const idUser = Cookies.get("id");
@@ -27,7 +28,13 @@ const LeMieRichieste = () => {
   });
   const [chatVisibility, setChatVisibility] = useState(false);
   const handleOpenChat = (idEmittente, idRicevente) => {
-    setChatParams({ idEmittente, idRicevente });
+    getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
+      if (response.ok) {
+        response.json().then((messages) => {
+          setChatParams({ idEmittente, idRicevente, messages });
+        });
+      }
+    });
     setChatVisibility(true);
   };
 
@@ -173,9 +180,9 @@ const LeMieRichieste = () => {
                 <div>
                   <button
                     className="pulsante"
-                    onClick={() => {
-                      handleOpenChat(r.noleggiante, r.noleggiatore);
-                    }}
+                    onClick={() =>
+                      handleOpenChat(r.noleggiante, r.noleggiatore)
+                    }
                   >
                     Contatta
                   </button>
@@ -184,6 +191,7 @@ const LeMieRichieste = () => {
                     setTrigger={setChatVisibility}
                     idEmittente={chatParams.idEmittente}
                     idRicevente={chatParams.idRicevente}
+                    messages={chatParams.messages}
                   />
                 </div>
               </div>
@@ -255,9 +263,9 @@ const LeMieRichieste = () => {
                 <div>
                   <button
                     className="pulsante"
-                    onClick={() => {
-                      handleOpenChat(r.noleggiatore, r.noleggiante);
-                    }}
+                    onClick={() =>
+                      handleOpenChat(r.noleggiante, r.noleggiatore)
+                    }
                   >
                     Contatta
                   </button>
@@ -266,6 +274,7 @@ const LeMieRichieste = () => {
                     setTrigger={setChatVisibility}
                     idEmittente={chatParams.idEmittente}
                     idRicevente={chatParams.idRicevente}
+                    messages={chatParams.messages}
                   />
                 </div>
               </div>

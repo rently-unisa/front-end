@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 const usersData = [
   {
     id: 1,
@@ -214,6 +215,7 @@ const modifyUser = async (newUserData) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(newUserData),
       }

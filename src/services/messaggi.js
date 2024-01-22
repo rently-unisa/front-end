@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 /*const messagesData = [
   {
     id: 1,
@@ -32,11 +33,12 @@
 const addMessage = async (newMessageData) => {
   try {
     const response = await fetch(
-      "http://localhost:4000/api/valutazione/aggiungi-valutazione-utente",
+      "http://localhost:4000/api/chat/aggiungi-messaggio",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(newMessageData),
       }
@@ -59,10 +61,22 @@ const addMessage = async (newMessageData) => {
 
 const getMessagesByUsersId = async (userId1, userId2) => {
   try {
+    const data = {
+      id: 0,
+      descrizione: "",
+      orarioInvio: "",
+      mittente: userId1,
+      destinatario: userId2,
+    };
     const response = await fetch(
-      `http://localhost:4000/api/chat/visualizza-chat?userId1=${userId1}&userId2=${userId2}`,
+      `http://localhost:4000/api/chat/visualizza-chat`,
       {
-        method: "GET",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(data),
       }
     );
 

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 const rentalsData = [
   {
     id: 1,
@@ -232,7 +233,13 @@ const rentalsData = [
 const getRentalById = async (rentalId) => {
   try {
     const response = await fetch(
-      `http://localhost:4000/api/noleggio/visualizza-noleggio?idNoleggio=${rentalId}`
+      `http://localhost:4000/api/noleggio/visualizza-noleggio?idNoleggio=${rentalId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
     );
 
     return response;
@@ -266,6 +273,9 @@ const getRentalsByNoleggiante = async (noleggianteId) => {
       `http://localhost:4000/api/noleggio/noleggiante?idUtente=${noleggianteId}`,
       {
         method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
       }
     );
 
@@ -295,6 +305,9 @@ const getRentalsByNoleggiatore = async (noleggiatoreId) => {
       `http://localhost:4000/api/noleggio/noleggiatore?idUtente=${noleggiatoreId}`,
       {
         method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
       }
     );
 
@@ -318,6 +331,9 @@ const getRentalsRequestsByNoleggiante = async (noleggianteId) => {
       `http://localhost:4000/api/noleggio/richieste/noleggiante?idUtente=${noleggianteId}`,
       {
         method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
       }
     );
 
@@ -341,6 +357,9 @@ const getRentalsRequestsByNoleggiatore = async (noleggiatoreId) => {
       `http://localhost:4000/api/noleggio/richieste/noleggiatore?idUtente=${noleggiatoreId}`,
       {
         method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
       }
     );
 
@@ -362,6 +381,7 @@ const addRental = async (newRental) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(newRental),
       }
@@ -387,6 +407,7 @@ const modifyRental = async (modifiedRental) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(modifiedRental),
       }

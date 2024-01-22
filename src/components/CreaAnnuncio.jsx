@@ -253,12 +253,12 @@ const CreaAnnuncio = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="rightAnnunciContainer">
-              <div className="imageAnnunciContainer">
-                <img src={immagine} alt="Immagine dell'annuncio" />
+              <div className="rightAnnunciContainer">
+                <div className="imageAnnunciContainer">
+                  <img src={immagine} alt="Immagine dell'annuncio" />
+                </div>
+                {Imagebox}
               </div>
-              {Imagebox}
             </div>
           </div>
           <div className="containerSezione2">

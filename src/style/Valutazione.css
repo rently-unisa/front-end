@@ -109,3 +109,8 @@
     font-weight: 500;
     line-height: 24px;
 }
+
+.valutazione-confirm:hover {
+  color: var(--nero);
+  background-color: var(--bianco);
+}

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 //const segnalazioni = [];
 
 /*const addSegnalazione = (newSegnalazione) => {
@@ -18,6 +19,7 @@ const addSegnalazione = async (newSegnalazione) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(newSegnalazione),
       }

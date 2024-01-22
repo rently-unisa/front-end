@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 /*const userValutationData = [
   {
     id: 1,
@@ -60,6 +61,7 @@ const addUserValutation = async (newValutationData) => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
         },
         body: JSON.stringify(newValutationData),
       }

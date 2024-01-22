@@ -23,38 +23,41 @@ const ModificaAnnuncio = () => {
   const [descrizione, setDescrizione] = useState();
   const [prezzo, setPrezzo] = useState();
   const [strada, setStrada] = useState();
-  const [civico, setCivico] = useState();
-  const [città, setCittà] = useState();
+  const [citta, setCitta] = useState();
   const [cap, setCap] = useState();
   const [immagine, setImmagine] = useState();
   const [dataFine, setDataFine] = useState();
   const [categoria, setCategoria] = useState();
-  const [condizioni, setCondizioni] = useState();
+  const [condizione, setCondizioni] = useState();
   const [open, setOpen] = useState(false);
+  const [immaginiCaricate, setImmaginiCaricate] = useState([]);
 
   useEffect(() => {
     const fetchAd = async () => {
-      const adData = await getAdById(idAnnuncio);
-      setTitolo(adData.titolo);
-      setDescrizione(adData.descrizione);
-      setPrezzo(adData.prezzo);
-      setStrada(adData.strada);
-      setCivico(adData.civico);
-      setCittà(adData.città);
-      setCap(adData.cap);
-      setImmagine(adData.immagine);
-      setDataFine(adData.dataFine);
-      setCategoria(adData.categoria);
-      setCondizioni(adData.condizioni);
-
-      if (
-        dataFine &&
-        dayjs(dataFine).isValid() &&
-        dayjs(dataFine).isBefore(dayjs(), "day")
-      ) {
-        // Se la data è precedente alla data attuale, reimposta a null
-        setDataFine(null);
-      }
+      await getAdById(idAnnuncio).then((response) => {
+        if (response.ok) {
+          response.json().then((ad) => {
+            setTitolo(ad.nome);
+            setDescrizione(ad.descrizione);
+            setPrezzo(ad.prezzo);
+            setStrada(ad.strada);
+            setCitta(ad.citta);
+            setCap(ad.cap);
+            setImmagine(ad.immagine);
+            setDataFine(ad.dataFine);
+            setCategoria(ad.categoria);
+            setCondizioni(ad.condizione);
+            if (
+              dataFine &&
+              dayjs(dataFine).isValid() &&
+              dayjs(dataFine).isBefore(dayjs(), "day")
+            ) {
+              // Se la data è precedente alla data attuale, reimposta a null
+              setDataFine(null);
+            }
+          });
+        }
+      });
     };
     fetchAd();
   }, [idAnnuncio, dataFine]);
@@ -74,18 +77,18 @@ const ModificaAnnuncio = () => {
   const handleModify = () => {
     const modifiedAd = {
       idUtente,
-      titolo,
+      nome: titolo,
       strada,
-      città,
+      citta,
       cap,
       descrizione,
       immagine,
       prezzo,
       categoria,
       dataFine,
-      condizioni,
+      condizione,
     };
-    modifyAd(modifiedAd).then((response) => {
+    modifyAd(modifiedAd, immaginiCaricate).then((response) => {
       if (!response || response.status !== 201) {
         handleClick({ vertical: "top", horizontal: "center" });
       } else {
@@ -104,6 +107,7 @@ const ModificaAnnuncio = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    setImmaginiCaricate(file);
     if (file) {
       // Leggi il file come array di byte
       const reader = new FileReader();
@@ -241,9 +245,9 @@ const ModificaAnnuncio = () => {
                   <input
                     className="input"
                     type="text"
-                    value={città}
+                    value={citta}
                     placeholder="Inserisci la città"
-                    onChange={(e) => setCittà(e.target.value)}
+                    onChange={(e) => setCitta(e.target.value)}
                   />
                 </div>
                 <div className="annunciFields">
@@ -281,7 +285,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Elettronica"
-                      checked={categoria === "Elettronica"}
+                      checked={categoria === "ELETTRONICA"}
                       onChange={handleCategoriaChange}
                     />
                     Elettronica
@@ -290,7 +294,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Libri"
-                      checked={categoria === "Libri"}
+                      checked={categoria === "LIBRI"}
                       onChange={handleCategoriaChange}
                     />
                     Libri
@@ -299,7 +303,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Elettrodomestici"
-                      checked={categoria === "Elettrodomestici"}
+                      checked={categoria === "ELETTRODOMESTICI"}
                       onChange={handleCategoriaChange}
                     />
                     Elettrodomestici
@@ -308,7 +312,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Giardino e giardinaggio"
-                      checked={categoria === "Giardino e giardinaggio"}
+                      checked={categoria === "GIARDINO"}
                       onChange={handleCategoriaChange}
                     />
                     Giardino e giardinaggio
@@ -317,7 +321,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Arte e musica"
-                      checked={categoria === "Arte e musica"}
+                      checked={categoria === "ARTE"}
                       onChange={handleCategoriaChange}
                     />
                     Arte e musica
@@ -326,7 +330,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Casa e cucina"
-                      checked={categoria === "Casa e cucina"}
+                      checked={categoria === "CASAECUCINA"}
                       onChange={handleCategoriaChange}
                     />
                     Casa e cucina
@@ -335,7 +339,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Oggettistica professionale"
-                      checked={categoria === "Oggettistica professionale"}
+                      checked={categoria === "OGGETTISTICAPROFESSIONALE"}
                       onChange={handleCategoriaChange}
                     />
                     Oggettistica professionale
@@ -344,7 +348,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Sport"
-                      checked={condizioni === "Sport"}
+                      checked={condizione === "SPORT"}
                       onChange={handleCategoriaChange}
                     />
                     Sport
@@ -358,7 +362,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Discreta"
-                      checked={condizioni === "Discreta"}
+                      checked={condizione === "DISCRETA"}
                       onChange={handleCondizioneChange}
                     />
                     Discreta
@@ -367,7 +371,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Buona"
-                      checked={condizioni === "Buona"}
+                      checked={condizione === "BUONA"}
                       onChange={handleCondizioneChange}
                     />
                     Buona
@@ -376,7 +380,7 @@ const ModificaAnnuncio = () => {
                     <input
                       type="radio"
                       value="Ottima"
-                      checked={condizioni === "Ottima"}
+                      checked={condizione === "OTTIMA"}
                       onChange={handleCondizioneChange}
                     />
                     Ottima

@@ -139,7 +139,7 @@
   border: 1px solid var(--scuro);
 }
 
-.contactButton button {
+.contactButton2 {
   width: 100%;
   height: 100%;
   color: var(--bianco);
@@ -156,7 +156,7 @@
   background-color: var(--bianco);
 }
 
-.contactButton button:hover {
+.contactButton2:hover {
   color: var(--scuro);
 }
 

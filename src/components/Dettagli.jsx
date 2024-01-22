@@ -15,6 +15,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "../style/Dettagli.css";
 import Chat from "./Chat";
 import Cookies from "js-cookie";
+import { getMessagesByUsersId } from "../services/messaggi";
 
 const Dettagli = () => {
   const idAnnuncio = parseInt(useParams().id, 10);
@@ -29,8 +30,15 @@ const Dettagli = () => {
     idRicevente: null,
   });
   const [chatVisibility, setChatVisibility] = useState(false);
+
   const handleOpenChat = (idEmittente, idRicevente) => {
-    setChatParams({ idEmittente, idRicevente });
+    getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
+      if (response.ok) {
+        response.json().then((messages) => {
+          setChatParams({ idEmittente, idRicevente, messages });
+        });
+      }
+    });
     setChatVisibility(true);
   };
 
@@ -156,6 +164,7 @@ const Dettagli = () => {
                     <div className="contactButton">
                       <div>
                         <button
+                          className="contactButton2"
                           onClick={() => {
                             handleOpenChat(Cookies.get("id"), adUser.id);
                           }}
@@ -167,6 +176,7 @@ const Dettagli = () => {
                           setTrigger={setChatVisibility}
                           idEmittente={chatParams.idEmittente}
                           idRicevente={chatParams.idRicevente}
+                          messages={chatParams.messages}
                         />
                       </div>
                     </div>

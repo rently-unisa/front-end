@@ -186,9 +186,6 @@ const getPremiumAds = async () => {
   try {
     const response = await fetch(`http://localhost:4000/api/ricerca/premium`, {
       method: "GET",
-      headers: {
-        Authorization: Cookies.get("token"),
-      },
     });
 
     return response;
@@ -260,7 +257,12 @@ const addAd = async (newAdData, image) => {
     const response = await axios.post(
       "http://localhost:4000/api/annuncio/aggiungi-annuncio",
       formData,
-      { headers: { "Content-Type": "multipart/form-data" } }
+      {
+        headers: {
+          Authorization: Cookies.get("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
 
     console.log(response);
@@ -290,6 +292,9 @@ const deleteAdById = async (id) => {
       `http://localhost:4000/api/annuncio/delete-annuncio?id=${id}`,
       {
         method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
       }
     );
 
@@ -311,26 +316,31 @@ const deleteAdById = async (id) => {
   return false;
 };*/
 
-const modifyAd = async (modifiedAd) => {
+const modifyAd = async (modifiedAd, image) => {
   try {
-    const response = await fetch(
+    const formData = new FormData();
+    for (let key in modifiedAd) {
+      formData.append(key, modifiedAd[key]);
+    }
+    formData.append("image", image);
+    const response = await axios.post(
       "http://localhost:4000/api/annuncio/modifica-annuncio",
+      formData,
       {
-        method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+          "Content-Type": "multipart/form-data",
         },
-        body: JSON.stringify(modifiedAd),
       }
     );
 
+    console.log(response);
     return response;
   } catch (error) {
     console.error(
-      "Errore durante la richiesta di modifica dell'utente:",
+      "Errore durante la richiesta di registrazione:",
       error.message
     );
-    return false;
   }
 };
 

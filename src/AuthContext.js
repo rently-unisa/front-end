@@ -34,14 +34,12 @@ export const AuthProvider = ({ children }) => {
     Cookies.remove("token");
   };
 
-  const toggleDaltonico = () => {
-    setDaltonico(!daltonico);
-  };
-
-  const contextValue = useMemo(
-    () => ({ isLoggedIn, username, daltonico, login, logout, toggleDaltonico }),
-    [isLoggedIn, username, daltonico]
-  );
+  const contextValue = useMemo(() => {
+    const toggleDaltonico = () => {
+      setDaltonico(!daltonico);
+    };
+    return { isLoggedIn, username, daltonico, login, logout, toggleDaltonico };
+  }, [isLoggedIn, username, daltonico]);
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

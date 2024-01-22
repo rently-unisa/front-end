@@ -1,58 +1,80 @@
 .topSection {
-    display: flex;
-    flex-direction: row;
-    gap: 2rem;
-    background-color: var(--chiaro);
-    border-radius: 10px;
-    padding: 0.625rem 0.625rem 0.625rem 1.25rem;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  background-color: var(--chiaro);
+  border-radius: 10px;
+  padding: 0.625rem 0.625rem 0.625rem 1.25rem;
 }
 
 .contactUserArea {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-content: center;
-    gap: 2rem;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: center;
+  gap: 2rem;
 }
 
 .contactUserArea p {
-    display: flex;
-    align-content: center;
-    flex-wrap: wrap;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
 }
 
 .contactUserButton {
-    width: 12.5rem;
-    height: 3em;
-    margin-right: 5px;
-    background-color: var(--scuro);
-    border-radius: 0.625rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    border: 1px solid var(--scuro);
-    color: var(--bianco);
-    font-size: var(--font-size);
-    font-family: var(--font), sans-serif;
-    font-weight: 500;
-    line-height: 1.5rem;
+  width: 12.5rem;
+  height: 3em;
+  margin-right: 5px;
+  background-color: var(--scuro);
+  border-radius: 0.625rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  border: 1px solid var(--scuro);
+  color: var(--bianco);
+  font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
+  font-weight: 500;
+  line-height: 1.5rem;
 }
 
 .contactUserButton:hover {
-    background-color: var(--bianco);
-    color: var(--scuro);
+  background-color: var(--bianco);
+  color: var(--scuro);
 }
 
 .listaAnnunciProfilo {
-    display: flex;
-    flex-direction: row;
-    padding: 8rem;
-    justify-content: flex-start;
-    align-items: center;
-    align-content: space-between;
-    align-self: stretch;
-    gap: 5%;
-    flex-wrap: wrap;
+  display: flex;
+  flex-direction: row;
+  padding: 8rem;
+  justify-content: flex-start;
+  align-items: center;
+  align-content: space-between;
+  align-self: stretch;
+  gap: 5%;
+  flex-wrap: wrap;
+}
+
+.listaAnnunciProfilo a {
+  text-decoration: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .topSection {
+    flex-direction: column;
+    padding: 1rem;
   }
+  .contactUserArea {
+    flex-direction: column;
+  }
+  .contactIcon {
+    align-self: center;
+  }
+  .listaAnnunciProfilo {
+    flex-direction: column;
+    padding: 0;
+    align-self: center;
+  }
+}

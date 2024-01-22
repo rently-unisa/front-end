@@ -9,6 +9,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import CloseIcon from "@mui/icons-material/Close";
 import "../style/RichiestaNoleggio.css";
 import Cookies from "js-cookie";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const RichiestaNoleggio = ({
   idAnnuncio,
@@ -20,6 +21,27 @@ const RichiestaNoleggio = ({
   const [start, setStart] = useState(null);
   const [end, setEnd] = useState(null);
   const [user, setUser] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const hendleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -58,17 +80,21 @@ const RichiestaNoleggio = ({
       dayjs(end).isBefore(dayjs(), "day") ||
       (start && dayjs(end).isBefore(dayjs(start), "day"))
     ) {
-      alert("Inserite date non valide");
+      hendleAlert("error", "Inserite date non valide");
     } else {
       addRental(newRequest).then((response) => {
         if (response.status === 500) {
-          alert(
+          hendleAlert(
+            "error",
             "È presente una prenotazione dell'oggetto durante le date selezionate, selezionare un'arco temporale diverso"
           );
         } else if (!response.ok) {
-          alert("Errore sconosciuto durante la richiesta di noleggio");
+          hendleAlert(
+            "error",
+            "Errore sconosciuto durante la richiesta di noleggio"
+          );
         } else {
-          alert("Richiesta creata con successo");
+          hendleAlert("success", "Richiesta creata con successo");
           onClose();
         }
       });
@@ -77,6 +103,23 @@ const RichiestaNoleggio = ({
 
   return (
     <div className="popupContainer">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="popupContent">
         <div className="popupHeader">
           <div className="popupTitle">Richiedi il noleggio</div>

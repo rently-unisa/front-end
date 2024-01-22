@@ -166,7 +166,7 @@
     border: 1px solid var(--scuro);
     background: var(--chiaro);
     padding-bottom: 1rem;
-    padding-right: 1rem;
+    padding-right: 0;
   }
 
   .rentalItem {

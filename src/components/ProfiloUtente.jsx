@@ -131,7 +131,7 @@ const ProfiloUtente = () => {
             <div>
               <div>
                 <button
-                  className="contactButton2"
+                  className="contactUserButton"
                   onClick={() =>
                     isLoggedIn
                       ? handleOpenChat(Cookies.get("id"), userId)

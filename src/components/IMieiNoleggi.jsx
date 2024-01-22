@@ -51,6 +51,7 @@ const IMieiNoleggi = () => {
     }
   };
   const [isFiltraStatoOpen, setIsFiltraStatoOpen] = useState(false);
+
   const stati = [
     "RICHIESTA",
     "ACCETTATA",
@@ -61,6 +62,7 @@ const IMieiNoleggi = () => {
     "CONCLUSO",
     "CONCLUSOCONVALUTAZIONE",
   ];
+
   const handleFiltraStato = () => {
     isFiltraStatoOpen
       ? setIsFiltraStatoOpen(false)
@@ -88,11 +90,9 @@ const IMieiNoleggi = () => {
         const rentals = await response.json();
         return { id, titolo: rentals.nome, immagine: rentals.immagine };
       } else {
-        const result = await response.json();
         return { id, titolo: "", immagine: "" };
       }
     } catch (error) {
-      console.error("Error fetching average:", error);
       return { id, titolo: "", immagine: "" };
     }
   };
@@ -104,11 +104,9 @@ const IMieiNoleggi = () => {
         const rentals = await response.json();
         return { id, username: rentals.username };
       } else {
-        const result = await response.json();
         return { id, username: "" };
       }
     } catch (error) {
-      console.error("Error fetching average:", error);
       return { id, username: "" };
     }
   };
@@ -311,7 +309,10 @@ const IMieiNoleggi = () => {
               <p>Seleziona un filtro:</p>
               {isFiltraStatoOpen ? (
                 <div className="CheckboxContainer">
-                  <button onClick={handleFiltraStato}>
+                  <button
+                    className="checkboxButton"
+                    onClick={handleFiltraStato}
+                  >
                     Filtra per stato
                     <KeyboardArrowDownIcon />
                   </button>
@@ -337,7 +338,10 @@ const IMieiNoleggi = () => {
                 </div>
               ) : (
                 <div className="CheckboxContainer">
-                  <button onClick={handleFiltraStato}>
+                  <button
+                    className="checkboxButton"
+                    onClick={handleFiltraStato}
+                  >
                     Filtra per stato
                     <KeyboardArrowRightIcon />
                   </button>

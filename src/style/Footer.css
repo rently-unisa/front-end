@@ -89,22 +89,23 @@
     position: relative;
     bottom: 0;
   }
-  .social,
-  .info-box {
+  .social {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-  }
-  .info-box {
-    padding: 1rem;
   }
   .info-box-servizi {
     visibility: hidden;
     position: absolute;
   }
+  .info-box:nth-child(4) {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
   .info-header {
     font-size: 1.5rem;
     height: auto;
+    width: 100%;
   }
   .social-info {
     width: 2.5rem;

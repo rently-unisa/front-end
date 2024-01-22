@@ -77,7 +77,6 @@ const Catalogo = () => {
           rentals.length;
         return { id, media: rental };
       } else {
-        const result = await response.json();
         return { id, media: 0 };
       }
     } catch (error) {

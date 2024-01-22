@@ -9,7 +9,7 @@ import RichiestaNoleggio from "./RichiestaNoleggio";
 import { getAdById } from "../services/annunciNoleggio";
 import { getUserById } from "../services/utenti";
 import { getObjectValutationsByAnnuncioId } from "../services/valutazioneOggetto";
-import { Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -31,6 +31,27 @@ const Dettagli = () => {
     idRicevente: null,
   });
   const [chatVisibility, setChatVisibility] = useState(false);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const hendleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
 
   const handleOpenChat = (idEmittente, idRicevente) => {
     getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
@@ -51,11 +72,9 @@ const Dettagli = () => {
         return { id, username: user.username };
       } else {
         const result = await response.json();
-        alert(result.message);
         return { id, username: "Utente sconosciuto" };
       }
     } catch (error) {
-      console.error("Error fetching username:", error);
       return { id, username: "Utente sconosciuto" };
     }
   };
@@ -72,7 +91,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            hendleAlert("error", result.message);
           });
         }
       });
@@ -86,7 +105,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            hendleAlert("error", result.message);
           });
         }
       });
@@ -111,7 +130,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            hendleAlert("error", result.message);
           });
         }
       });
@@ -123,6 +142,23 @@ const Dettagli = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       {Annuncio && adUser && ratings ? (
         <>
           <div className="container">
@@ -148,13 +184,24 @@ const Dettagli = () => {
                       <button>Annuncio scaduto</button>
                     ) : (
                       <button
-                        onClick={() =>
-                          isLoggedIn
-                            ? setPopupVisible(true)
-                            : alert(
-                                "Fare l'accesso per poter fare una richiesta"
-                              )
-                        }
+                        onClick={() => {
+                          if (
+                            isLoggedIn &&
+                            Cookies.get("id") !== adUser.id.toString()
+                          ) {
+                            setPopupVisible(true);
+                          } else if (!isLoggedIn) {
+                            hendleAlert(
+                              "error",
+                              "Fare l'accesso per poter fare una richiesta di noleggio"
+                            );
+                          } else {
+                            hendleAlert(
+                              "error",
+                              "Impossibile noleggiare un proprio oggetto"
+                            );
+                          }
+                        }}
                       >
                         Richiedi il noleggio
                       </button>
@@ -171,13 +218,24 @@ const Dettagli = () => {
                     <div className="contactButton">
                       <button
                         className="contactButton2"
-                        onClick={() =>
-                          isLoggedIn
-                            ? handleOpenChat(Cookies.get("id"), adUser.id)
-                            : alert(
-                                "Fare l'accesso per poter fare una richiesta"
-                              )
-                        }
+                        onClick={() => {
+                          if (
+                            isLoggedIn &&
+                            Cookies.get("id") !== adUser.id.toString()
+                          ) {
+                            handleOpenChat(Cookies.get("id"), adUser.id);
+                          } else if (!isLoggedIn) {
+                            hendleAlert(
+                              "error",
+                              "Fare l'accesso per poter avviare una conversazione"
+                            );
+                          } else {
+                            hendleAlert(
+                              "error",
+                              "Impossibile creare una chat con se stessi"
+                            );
+                          }
+                        }}
                       >
                         Contatta
                       </button>

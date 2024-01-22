@@ -8,6 +8,7 @@ import image1 from "../image/ondina1.svg";
 import image2 from "../image/onda3.svg";
 import image3 from "../image/onda4.svg";
 import "../style/Signup.css";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const Signup = () => {
   const [nome, setNome] = useState("");
@@ -19,49 +20,102 @@ const Signup = () => {
   const [logo, setLogo] = useState(logoNonDaltonici);
   const { login, daltonico } = useAuth();
   const navigate = useNavigate();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const hendleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
 
   useEffect(() => {
     setLogo(daltonico ? logoDaltonici : logoNonDaltonici);
   }, [daltonico]);
 
   const handleSignup = () => {
-    if (password === confPassword) {
-      const newUser = {
-        nome,
-        cognome,
-        email,
-        username,
-        password,
-        premium: false,
-      };
-      addUser(newUser).then((response) => {
-        try {
-          if (response.ok) {
-            response.json().then((newUser) => {
-              if (newUser) {
-                login(newUser);
-                navigate("/");
-              } else {
-                alert("Credenziali non valide");
-              }
-            });
-          } else {
-            const errorMessage = response.text();
-            throw new Error(
-              errorMessage || "Errore sconosciuto durante la registrazione"
+    if (
+      nome === "" ||
+      cognome === "" ||
+      email === "" ||
+      username === "" ||
+      password === "" ||
+      confPassword === ""
+    ) {
+      hendleAlert("error", "Inserire tutti i campi");
+    } else {
+      if (password === confPassword) {
+        const newUser = {
+          nome,
+          cognome,
+          email,
+          username,
+          password,
+          premium: false,
+        };
+        addUser(newUser).then((response) => {
+          try {
+            if (response.ok) {
+              response.json().then((newUser) => {
+                if (newUser) {
+                  login(newUser);
+                  navigate("/");
+                } else {
+                  hendleAlert("error", "Credenziali non valide");
+                }
+              });
+            } else {
+              const errorMessage = response.text();
+              throw new Error(
+                errorMessage || "Errore sconosciuto durante la registrazione"
+              );
+            }
+          } catch (error) {
+            hendleAlert(
+              "error",
+              "Errore durante la richiesta di registrazione",
+              error.message
             );
           }
-        } catch (error) {
-          alert("Errore durante la richiesta di registrazione", error.message);
-        }
-      });
-    } else {
-      alert("Password non coincidenti");
+        });
+      } else {
+        hendleAlert("error", "Password non coincidenti");
+      }
     }
   };
 
   return (
     <div style={{ justifyContent: "center" }} className="Page">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <img className="topr" src={image3} alt="Immagine decorativa" />
       <div className="box1">
         <div className="image-box1">
@@ -86,8 +140,8 @@ const Signup = () => {
           </p>{" "}
           <p>noleggio intelligente, guadagno costante.</p>
         </div>
-        <div className="parametri">
-          <div className="parametro1">
+        <div className="params">
+          <div className="param">
             <p>Nome</p>
             <input
               type="text"
@@ -97,7 +151,7 @@ const Signup = () => {
               required
             />
           </div>
-          <div className="parametro1">
+          <div className="param">
             <p>Cognome</p>
             <input
               type="text"
@@ -107,7 +161,7 @@ const Signup = () => {
               required
             />
           </div>
-          <div className="parametro1">
+          <div className="param">
             <p>Username</p>
             <input
               type="text"
@@ -117,7 +171,7 @@ const Signup = () => {
               required
             />
           </div>
-          <div className="parametro1">
+          <div className="param">
             <p>Email</p>
             <input
               type="email"
@@ -127,7 +181,7 @@ const Signup = () => {
               required
             />
           </div>
-          <div className="parametro1">
+          <div className="param">
             <p>Password</p>
             <input
               type="password"
@@ -137,7 +191,7 @@ const Signup = () => {
               required
             />
           </div>
-          <div className="parametro1">
+          <div className="param">
             <p>Conferma Password</p>
             <input
               type="password"

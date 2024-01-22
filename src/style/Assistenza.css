@@ -39,13 +39,12 @@
     gap: 1.6875rem;
     border-radius: 1.875rem;
     background: var(--chiaro);
-    z-index: 2;
     padding: 4rem;
     margin: 5rem;
 }
 
 .title {
-    color: --nero;
+    color: var(--nero);
     text-align: center;
     font-size: 2.5rem;
     font-style: normal;
@@ -135,23 +134,23 @@
     }
   
     .boxForm {
-      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
-      margin: 2rem 0; /* Margini superiori e inferiori più piccoli */
+      width: 100%;
+      margin: 2rem 0;
       align-items: flex-start;
     }
   
     .title {
-      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
-      font-size: 2rem; /* Riduzione della dimensione del font */
+      width: 100%;
+      font-size: var(--font-size4);
     }
   
     .description {
-      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
-      font-size: 1.25rem; /* Riduzione della dimensione del font */
+      width: 100%;
+      font-size: var(--font-size2);
     }
   
     .textBox {
-      width: 100%; /* Utilizza l'intera larghezza del contenitore genitore */
+      width: 100%;
     }
     .button {
         align-self: center;

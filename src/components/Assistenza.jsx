@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext.js";
 import { getRentalsByNoleggiante } from "../services/noleggi.js";
 import Cookies from "js-cookie";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const Assistenza = () => {
   const navigate = useNavigate();
@@ -19,6 +20,21 @@ const Assistenza = () => {
   const [contenuto, setContenuto] = useState("");
   const [email, setEmail] = useState("");
   const [rentals, setRentals] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleTipoChange = (event) => {
     setTipo(event.target.value);
@@ -33,46 +49,85 @@ const Assistenza = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            setAlertState("error");
+            setAlertMessage(result.message);
+            handleClick({ vertical: "top", horizontal: "center" });
           });
         }
       }
     });
   }, []);
 
+  const hendleAlert = () => {
+    setAlertState("error");
+    setAlertMessage(
+      "Effettuare l'accesso per poter effettuare una segnalazione"
+    );
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
   const handleSubmit = () => {
-    if (rentals !== undefined) {
+    if (rentals[0] !== undefined) {
       if (tipo !== null) {
-        const user = getUserByEmail(email);
-        if (user) {
-          if (contenuto !== "") {
-            const newSegnalazione = {
-              tipo: tipo,
-              contenuto: contenuto,
-              idSegnalatore: user.id,
-            };
-            addSegnalazione(newSegnalazione).then((response) => {
-              if (response.ok) {
-                alert("La segnalazione è stata inviata correttamente");
-                navigate("/");
-              } else {
-                alert(
-                  "Errore durante la richiesta di segnalazione: ",
-                  response.text()
-                );
-              }
-            });
-          } else alert("Il messaggio non può essere vuoto");
-        } else alert("L'email inserita non è valida");
-      } else alert("Inserisci un tipo di segnalazione");
-    } else
-      alert(
+        if (contenuto !== "") {
+          const newSegnalazione = {
+            tipo: tipo,
+            contenuto: contenuto,
+            idSegnalatore: Cookies.get("id"),
+          };
+          addSegnalazione(newSegnalazione).then((response) => {
+            if (response.ok) {
+              setAlertState("success");
+              setAlertMessage("La segnalazione è stata inviata correttamente");
+              handleClick({ vertical: "top", horizontal: "center" });
+              navigate("/");
+            } else {
+              setAlertState("error");
+              setAlertMessage(
+                "Errore durante la richiesta di segnalazione: ",
+                response.text()
+              );
+              handleClick({ vertical: "top", horizontal: "center" });
+            }
+          });
+        } else {
+          setAlertState("error");
+          setAlertMessage("Il messaggio non può essere vuoto");
+          handleClick({ vertical: "top", horizontal: "center" });
+        }
+      } else {
+        setAlertState("error");
+        setAlertMessage("Inserisci un tipo di segnalazione");
+        handleClick({ vertical: "top", horizontal: "center" });
+      }
+    } else {
+      setAlertState("error");
+      setAlertMessage(
         "Non è possibie segnalare problemi senza aver mai effettuato un noleggio"
       );
+      handleClick({ vertical: "top", horizontal: "center" });
+    }
   };
 
   return (
     <div className="Page">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <Navbar />
       <div className="onde">
         <img className="ondaSX" src={image2} alt="Immagine decorativa" />
@@ -150,13 +205,7 @@ const Assistenza = () => {
           </div>
           <button
             className="button"
-            onClick={() =>
-              isLoggedIn
-                ? handleSubmit()
-                : alert(
-                    "Effettuare l'accesso per poter effettuare una segnalazione"
-                  )
-            }
+            onClick={() => (isLoggedIn ? handleSubmit() : hendleAlert())}
           >
             Invia messaggio
           </button>

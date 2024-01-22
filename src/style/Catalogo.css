@@ -184,3 +184,16 @@
 .Ricerca .dropdown-content1 {
   display: block;
 }
+
+@media only screen and (max-width: 768px) {
+  .catalogInside {
+    flex-direction: column;
+  }
+  .cercaFiltra {
+    width: auto;
+  }
+  .listaAnnunciCatalogo {
+    padding-left: 1rem;
+    align-self: center;
+  }
+}

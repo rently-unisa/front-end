@@ -192,7 +192,6 @@ const ModificaAnnuncio = () => {
           open={open}
           autoHideDuration={4000}
           onClose={handleClose}
-          message="I love snacks"
         >
           <Alert
             onClose={handleClose}
@@ -200,7 +199,7 @@ const ModificaAnnuncio = () => {
             variant="filled"
             sx={{ width: "100%" }}
           >
-            Problemi nella creazione dell'annuncio
+            Problemi nella modifica dell'annuncio
           </Alert>
         </Snackbar>
       </Box>
@@ -270,129 +269,129 @@ const ModificaAnnuncio = () => {
                   />
                 </div>
               </div>
-              <div className="rightAnnunciContainer">
-                <div className="imageAnnunciContainer">
-                  <img src={immagine} alt="Immagine dell'annuncio" />
+              <div className="containerSezione2">
+                <div className="fields">
+                  Seleziona una categoria
+                  <div className="annunciRadioButton">
+                    <label>
+                      <input
+                        type="radio"
+                        value="Elettronica"
+                        checked={categoria === "ELETTRONICA"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Elettronica
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Libri"
+                        checked={categoria === "LIBRI"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Libri
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Elettrodomestici"
+                        checked={categoria === "ELETTRODOMESTICI"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Elettrodomestici
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Giardino e giardinaggio"
+                        checked={categoria === "GIARDINO"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Giardino e giardinaggio
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Arte e musica"
+                        checked={categoria === "ARTE"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Arte e musica
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Casa e cucina"
+                        checked={categoria === "CASAECUCINA"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Casa e cucina
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Oggettistica professionale"
+                        checked={categoria === "OGGETTISTICAPROFESSIONALE"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Oggettistica professionale
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Sport"
+                        checked={condizione === "SPORT"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Sport
+                    </label>
+                  </div>
                 </div>
-                {Imagebox}
+                <div className="fields">
+                  Seleziona una condizione
+                  <div className="annunciRadioButton">
+                    <label>
+                      <input
+                        type="radio"
+                        value="Discreta"
+                        checked={condizione === "DISCRETA"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Discreta
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Buona"
+                        checked={condizione === "BUONA"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Buona
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Ottima"
+                        checked={condizione === "OTTIMA"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Ottima
+                    </label>
+                  </div>
+                </div>
+                {Databox}
               </div>
             </div>
-            <div className="containerSezione2">
-              <div className="fields">
-                Seleziona una categoria
-                <div className="annunciRadioButton">
-                  <label>
-                    <input
-                      type="radio"
-                      value="Elettronica"
-                      checked={categoria === "ELETTRONICA"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Elettronica
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Libri"
-                      checked={categoria === "LIBRI"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Libri
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Elettrodomestici"
-                      checked={categoria === "ELETTRODOMESTICI"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Elettrodomestici
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Giardino e giardinaggio"
-                      checked={categoria === "GIARDINO"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Giardino e giardinaggio
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Arte e musica"
-                      checked={categoria === "ARTE"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Arte e musica
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Casa e cucina"
-                      checked={categoria === "CASAECUCINA"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Casa e cucina
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Oggettistica professionale"
-                      checked={categoria === "OGGETTISTICAPROFESSIONALE"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Oggettistica professionale
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Sport"
-                      checked={condizione === "SPORT"}
-                      onChange={handleCategoriaChange}
-                    />
-                    Sport
-                  </label>
-                </div>
+            <div className="rightAnnunciContainer">
+              <div className="imageAnnunciContainer">
+                <img src={immagine} alt="Immagine dell'annuncio" />
               </div>
-              <div className="fields">
-                Seleziona una condizione
-                <div className="annunciRadioButton">
-                  <label>
-                    <input
-                      type="radio"
-                      value="Discreta"
-                      checked={condizione === "DISCRETA"}
-                      onChange={handleCondizioneChange}
-                    />
-                    Discreta
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Buona"
-                      checked={condizione === "BUONA"}
-                      onChange={handleCondizioneChange}
-                    />
-                    Buona
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      value="Ottima"
-                      checked={condizione === "OTTIMA"}
-                      onChange={handleCondizioneChange}
-                    />
-                    Ottima
-                  </label>
-                </div>
-              </div>
-              {Databox}
+              {Imagebox}
             </div>
-            <button className="creaAnnuncioButton" onClick={handleModify}>
-              Conferma
-            </button>
           </div>
+          <button className="creaAnnuncioButton" onClick={handleModify}>
+            Conferma
+          </button>
         </div>
       </div>
       <Footer />

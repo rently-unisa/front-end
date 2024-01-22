@@ -12,6 +12,8 @@ import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
 import { Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
+import Snackbar from "@mui/material/Snackbar";
+import Alert from "@mui/material/Alert";
 
 const AreaPersonale = () => {
   const idUsername = Cookies.get("id");
@@ -26,6 +28,19 @@ const AreaPersonale = () => {
   const [confPassword, setConfPassword] = useState("");
   const [ratings, setRatings] = useState();
   const [usernames, setUsernames] = useState();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const getRatingUsername = async (id) => {
     try {
@@ -33,13 +48,8 @@ const AreaPersonale = () => {
       if (response.ok) {
         const user = await response.json();
         return { id, username: user.username };
-      } else {
-        const result = await response.json();
-        alert(result.message);
-        return { id, username: "Utente sconosciuto" };
       }
     } catch (error) {
-      console.error("Error fetching username:", error);
       return { id, username: "Utente sconosciuto" };
     }
   };
@@ -53,8 +63,8 @@ const AreaPersonale = () => {
             setUser(utente);
           });
         } else {
-          response.json().then((result) => {
-            alert(result.message);
+          response.json().then(() => {
+            handleClick({ vertical: "top", horizontal: "center" });
           });
         }
       });
@@ -78,8 +88,8 @@ const AreaPersonale = () => {
             setUsernames(newUsernameMapping);
           });
         } else {
-          response.json().then((result) => {
-            alert(result.message);
+          response.json().then(() => {
+            handleClick({ vertical: "top", horizontal: "center" });
           });
         }
       });
@@ -117,8 +127,8 @@ const AreaPersonale = () => {
       if (response.ok) {
         response.json().then((utente) => setUser(utente));
       } else {
-        response.json().then((result) => {
-          alert(result.message);
+        response.json().then(() => {
+          handleClick({ vertical: "top", horizontal: "center" });
         });
       }
     });
@@ -152,6 +162,23 @@ const AreaPersonale = () => {
 
   return (
     <div className="Page">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity="error"
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            Problemi nella visualizzazione dell'area personale
+          </Alert>
+        </Snackbar>
+      </Box>
       <Navbar />
       <div className="container">
         <h1 className="titolo">Area Personale</h1>

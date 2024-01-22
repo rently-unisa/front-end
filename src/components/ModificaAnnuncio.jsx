@@ -231,15 +231,7 @@ const ModificaAnnuncio = () => {
                   />
                 </div>
               </div>
-            </div>
-            <div className="rightAnnunciContainer">
-              <div className="imageAnnunciContainer">
-                <img src={immagine} alt="Immagine dell'annuncio" />
-              </div>
-              {Imagebox}
-            </div>
-          </div>
-          <div className="containerSezione2">
+              <div className="containerSezione2">
             <div className="fields">
               Seleziona una categoria
               <div className="annunciRadioButton">
@@ -350,6 +342,14 @@ const ModificaAnnuncio = () => {
               </div>
             </div>
             {Databox}
+          </div>
+            </div>
+            <div className="rightAnnunciContainer">
+              <div className="imageAnnunciContainer">
+                <img src={immagine} alt="Immagine dell'annuncio" />
+              </div>
+              {Imagebox}
+            </div>
           </div>
           <button className="creaAnnuncioButton" onClick={handleModify}>Conferma</button>
         </div>

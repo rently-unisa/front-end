@@ -56,3 +56,20 @@
     gap: 5%;
     flex-wrap: wrap;
   }
+
+  @media only screen and (max-width: 768px) {
+    .topSection {
+        flex-direction: column;
+        padding: 1rem;
+    }
+    .contactUserArea {
+        flex-direction: column;
+    }
+    .contactIcon {
+        align-self: center;
+    }
+    .listaAnnunciProfilo {
+        flex-direction: column;
+        padding: 0;
+    }
+  }

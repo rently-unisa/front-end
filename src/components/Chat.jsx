@@ -39,7 +39,7 @@ function Chat(props) {
         </div>
         <div className="messageList">
           {messages.map((message) => (
-            <p style={{wordWrap: "break-word"}}
+            <p style={{overflowWrap: "anywhere"}}
               className={`message ${
                 message.idUtente1 === props.idEmittente
                   ? "my-message"

@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   width: 90%;
-  height: 62.5rem;
+  height: 50rem;
   padding: 24px 0px 36px 41px;
   gap: 1rem;
   border-radius: 30px;
@@ -32,8 +32,7 @@
 
 .parametriAnnunci {
   display: flex;
-  width: 50rem;
-  height: 32rem;
+  width: 40rem;
   padding: 12px 9px;
   align-items: center;
   align-content: flex-start;
@@ -48,7 +47,7 @@
 
 .annunciFields input {
   display: flex;
-  width: 20rem;
+  width: 17rem;
   height: 2rem;
   padding: 8px 12px;
   align-items: center;
@@ -62,7 +61,7 @@
 
 .annunciFields textarea {
   display: flex;
-  width: 20rem;
+  width: 17rem;
   height: 8rem;
   padding: 8px 12px;
   gap: 0.25rem;
@@ -76,6 +75,7 @@
   font-size: var(--font-size);
   font-weight: 400;
   line-height: 20px;
+  overflow-y: scroll;
 }
 
 .rightAnnunciContainer {
@@ -112,7 +112,7 @@
   display: flex;
   flex-direction: row;
   align-items: flex-start;
-  gap: 18rem;
+  gap: 1rem;
 }
 
 .annunciRadioButton {
@@ -121,10 +121,6 @@
   font-size: var(--font-size2);
   flex-direction: column;
   align-items: flex-start;
-}
-
-.datePicker {
-  width: 50rem;
 }
 
 .creaAnnuncioButton {
@@ -140,10 +136,37 @@
   font-size: var(--font-size);
   font-weight: 500;
   line-height: 1.5rem;
-  margin-left: 35rem;
+  align-self: center;
 }
 
 .creaAnnuncioButton:hover {
   background: var(--bianco);
   color: var(--nero);
+}
+
+@media screen and (max-width: 768px) {
+  .annunciBody {
+    height: auto;
+    padding: 3rem;
+  }
+  .containerSezione1 {
+    flex-direction: column;
+    align-items: center;
+  }
+  .leftAnnunciContainer {
+    flex: 0;
+  }
+  .parametriAnnunci {
+    width: 100%;
+  }
+  .containerSezione2 {
+    flex-direction: column;
+  }
+  .rightAnnunciContainer {
+    flex: 0;
+  }
+  .imageAnnunciContainer {
+    height: 20rem;
+    width: 20rem;
+  }
 }

@@ -192,7 +192,7 @@
   display: flex;
   padding: 0.5rem 5rem;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   box-sizing: border-box;
 }
 
@@ -245,6 +245,7 @@
   align-items: center;
   align-content: center;
   flex-wrap: wrap;
+  gap: 2rem;
 }
 
 .containerUserReviews {
@@ -269,4 +270,42 @@
   border-top: 1px solid var(--nero);
   gap: 0.625rem;
   overflow: auto;
+}
+
+@media only screen and (max-width: 768px) {
+  .detailsContainer {
+    flex-direction: column;
+    gap: 4rem;
+  }
+  .leftSection {
+    gap: 3rem;
+    width: 100%;
+  }
+  .adDescription {
+    width: 90%;
+  }
+  .actionButtons {
+    flex-direction: column;
+  }
+  .requestButton {
+    width: auto;
+    padding: 1rem;
+  }
+  .imageContainer {
+    width: 18rem;
+  }
+  .reviewsContainer1 {
+    flex-direction: column;
+    width: 125%;
+  }
+  .reviewsStats {
+    width: auto;
+    align-self: center;
+  }
+  .userReviews {
+    width: auto;
+  }
+  .containerUserReviews {
+    width: auto;
+  }
 }

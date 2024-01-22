@@ -82,3 +82,21 @@
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
+
+@media screen and (max-width: 768px) {
+  .topr {
+    display: none;
+  }
+  .bottoml {
+    display: none;
+  }
+  .box1 {
+    width: 90%;
+    height: 55rem;
+    position: relative;
+    top: 0;
+  }
+  .parametro1 input {
+    width: 90%;
+  }
+}

@@ -36,7 +36,7 @@ const Signup = () => {
     setOpen(false);
   };
 
-  const hendleAlert = (state, message) => {
+  const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
     handleClick({ vertical: "top", horizontal: "center" });
@@ -55,7 +55,7 @@ const Signup = () => {
       password === "" ||
       confPassword === ""
     ) {
-      hendleAlert("error", "Inserire tutti i campi");
+      handleAlert("error", "Inserire tutti i campi");
     } else {
       if (password === confPassword) {
         const newUser = {
@@ -67,32 +67,23 @@ const Signup = () => {
           premium: false,
         };
         addUser(newUser).then((response) => {
-          try {
-            if (response.ok) {
-              response.json().then((newUser) => {
-                if (newUser) {
-                  login(newUser);
-                  navigate("/");
-                } else {
-                  hendleAlert("error", "Credenziali non valide");
-                }
-              });
-            } else {
-              const errorMessage = response.text();
-              throw new Error(
-                errorMessage || "Errore sconosciuto durante la registrazione"
-              );
-            }
-          } catch (error) {
-            hendleAlert(
-              "error",
-              "Errore durante la richiesta di registrazione",
-              error.message
-            );
+          if (response.ok) {
+            response.json().then((newUser) => {
+              if (newUser) {
+                login(newUser);
+                navigate("/");
+              } else {
+                handleAlert("error", "Credenziali non valide");
+              }
+            });
+          } else {
+            response.json().then((errorMessage) => {
+              handleAlert("error", errorMessage.message);
+            });
           }
         });
       } else {
-        hendleAlert("error", "Password non coincidenti");
+        handleAlert("error", "Password non coincidenti");
       }
     }
   };

@@ -104,6 +104,7 @@
   align-items: center;
   border-radius: 0.625rem;
   font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
   border: 1px solid var(--nero);
 }
 

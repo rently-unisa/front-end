@@ -3,10 +3,32 @@ import CloseIcon from "@mui/icons-material/Close";
 import { addMessage, getMessagesByUsersId } from "../services/messaggi";
 import dayjs from "dayjs";
 import "../style/Chat.css";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 function Chat(props) {
   const [newText, setNewText] = useState("");
   const [messages, setMessages] = useState(props.messages);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
 
   useEffect(() => {
     setMessages(props.messages);
@@ -23,7 +45,7 @@ function Chat(props) {
       };
       addMessage(newMessage).then((response) => {
         if (!response || response.status !== 201) {
-          alert("C'è stato un problema nel caricare la chat");
+          handleAlert("error", "C'è stato un problema nel caricare la chat");
         } else {
           getMessagesByUsersId(props.idEmittente, props.idRicevente).then(
             (response) => {
@@ -43,6 +65,23 @@ function Chat(props) {
   return (
     props.trigger && (
       <div className="chat">
+        <Box sx={{ width: 500 }}>
+          <Snackbar
+            anchorOrigin={{ vertical: "top", horizontal: "center" }}
+            open={open}
+            autoHideDuration={4000}
+            onClose={handleClose}
+          >
+            <Alert
+              onClose={handleClose}
+              severity={alertState}
+              variant="filled"
+              sx={{ width: "100%" }}
+            >
+              {alertMessage}
+            </Alert>
+          </Snackbar>
+        </Box>
         <div className="chat-body">
           <div>
             <button

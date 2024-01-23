@@ -1,0 +1,74 @@
+.errorBody {
+  margin-top: 3rem;
+  width: 80%;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  background-color: var(--chiaro);
+  gap: 3rem;
+  padding: 2rem;
+}
+
+.topError {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.errorLeft {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-family: var(--font);
+  font-size: var(--font-size4);
+}
+
+.errorImage {
+  height: 30rem;
+}
+
+.bottomError {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.homeButton {
+  width: 30rem;
+  text-align: center;
+  padding: 1rem 0.75rem;
+  border-radius: 0.625rem;
+  border: 3px solid var(--nero);
+  background: var(--nero);
+  color: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size2);
+  font-weight: 500;
+  line-height: 1.5rem;
+  text-decoration: none;
+}
+
+.homeButton:hover {
+  background: var(--bianco);
+  color: var(--nero);
+}
+
+@media only screen and (max-width: 768px) {
+  .errorBody {
+    width: 90%;
+  }
+  .topError {
+    flex-direction: column;
+  }
+  .errorImage {
+    justify-self: center;
+    height: 10rem;
+    width: 10rem;
+  }
+  .homeButton {
+    justify-self: center;
+  }
+}

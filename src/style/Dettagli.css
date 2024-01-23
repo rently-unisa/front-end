@@ -254,6 +254,7 @@
 
 .containerUserReviews {
   width: 30%;
+  min-width: 12em;
   height: 12em;
   display: flex;
   padding: 1rem 0.875rem;
@@ -264,6 +265,7 @@
   border-radius: 0.625rem;
   background: var(--chiaro);
   overflow-wrap: anywhere;
+  align-self: center;
 }
 
 .review-textUserReviews {
@@ -301,6 +303,7 @@
   }
   .reviewsContainer1 {
     flex-direction: column;
+    align-items: center;
     width: 125%;
   }
   .reviewsStats {

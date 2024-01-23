@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Switch from "@mui/material/Switch";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getUserById } from "../services/utenti";
 import {
   getRentalsRequestsByNoleggiante,
@@ -17,9 +17,11 @@ import "../style/ListPage.css";
 import Chat from "./Chat";
 import Cookies from "js-cookie";
 import { getMessagesByUsersId } from "../services/messaggi";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const LeMieRichieste = () => {
   const idUser = Cookies.get("id");
+  const navigate = useNavigate();
   const param = useParams();
   const defaultChecked = true;
   const [chatParams, setChatParams] = useState({
@@ -36,6 +38,28 @@ const LeMieRichieste = () => {
       }
     });
     setChatVisibility(true);
+  };
+
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
   };
 
   const [checked, setChecked] = useState(
@@ -85,6 +109,14 @@ const LeMieRichieste = () => {
   };
 
   useEffect(() => {
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
+
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     const fetchData = () => {
       getRentalsRequestsByNoleggiante(idUser).then(
         async (noleggianteResponse) => {
@@ -119,7 +151,7 @@ const LeMieRichieste = () => {
             });
           } else {
             noleggianteResponse.json().then((result) => {
-              alert(result.message);
+              handleAlert("error", result.message);
             });
           }
         }
@@ -157,14 +189,14 @@ const LeMieRichieste = () => {
           });
         } else {
           noleggiatoreResponse.json().then((result) => {
-            alert(result.message);
+            handleAlert("error", result.message);
           });
         }
       });
     };
 
     fetchData();
-  }, [idUser]);
+  }, [idUser, navigate]);
 
   const handleChange = (event) => {
     setChecked(event.target.checked);
@@ -177,7 +209,7 @@ const LeMieRichieste = () => {
           noleggio.stato = stato;
           modifyRental(noleggio).then((response) => {
             if (!response || response.status !== 201) {
-              alert("Modifica non effettuata");
+              handleAlert("error", "Modifica non effettuata");
             } else {
               getRentalsRequestsByNoleggiante(idUser).then((response) => {
                 if (response.ok) {
@@ -186,7 +218,7 @@ const LeMieRichieste = () => {
                   });
                 } else {
                   response.json().then((result) => {
-                    alert(result.message);
+                    handleAlert("error", result.message);
                   });
                 }
               });
@@ -197,7 +229,7 @@ const LeMieRichieste = () => {
                   });
                 } else {
                   response.json().then((result) => {
-                    alert(result.message);
+                    handleAlert("error", result.message);
                   });
                 }
               });
@@ -206,7 +238,7 @@ const LeMieRichieste = () => {
         });
       } else {
         response.json().then((result) => {
-          alert(result.message);
+          handleAlert("error", result.message);
         });
       }
     });
@@ -215,7 +247,7 @@ const LeMieRichieste = () => {
   const handlePayment = (id) => {
     //va chiamata l'API per il pagamento
     handleModifyState(id, "INIZIO");
-    //pop-up eventualmente (?)
+    handleAlert("success", "Pagamento effettuato con successo");
   };
 
   const handleDelete = (id) => {
@@ -228,12 +260,12 @@ const LeMieRichieste = () => {
             });
           } else {
             response.json().then((result) => {
-              alert(result.message);
+              handleAlert("error", result.message);
             });
           }
         });
       } else {
-        alert("Errore");
+        handleAlert("error", "Errore");
       }
     });
   };
@@ -417,6 +449,23 @@ const LeMieRichieste = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="listPageContainer">
         <div className="switchContainer">
           <div className="switchDescriptionContainer">

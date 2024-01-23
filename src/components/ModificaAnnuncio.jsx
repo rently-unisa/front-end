@@ -29,38 +29,35 @@ const ModificaAnnuncio = () => {
   const [dataFine, setDataFine] = useState();
   const [categoria, setCategoria] = useState();
   const [condizione, setCondizioni] = useState();
-  const [open, setOpen] = useState(false);
   const [immaginiCaricate, setImmaginiCaricate] = useState([]);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
 
-  useEffect(() => {
-    const fetchAd = async () => {
-      await getAdById(idAnnuncio).then((response) => {
-        if (response.ok) {
-          response.json().then((ad) => {
-            setTitolo(ad.nome);
-            setDescrizione(ad.descrizione);
-            setPrezzo(ad.prezzo);
-            setStrada(ad.strada);
-            setCitta(ad.citta);
-            setCap(ad.cap);
-            setImmagine(ad.immagine);
-            setDataFine(ad.dataFine);
-            setCategoria(ad.categoria);
-            setCondizioni(ad.condizione);
-            if (
-              dataFine &&
-              dayjs(dataFine).isValid() &&
-              dayjs(dataFine).isBefore(dayjs(), "day")
-            ) {
-              // Se la data è precedente alla data attuale, reimposta a null
-              setDataFine(null);
-            }
-          });
-        }
-      });
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      Elettronica: "ELETTRONICA",
+      Libri: "LIBRI",
+      Elettrodomestici: "ELETTRODOMESTICI",
+      "Giardino e giardinaggio": "GIARDINO",
+      "Arte e musica": "ARTE",
+      "Casa e cucina": "CASAECUCINA",
+      "Oggettistica professionale": "OGGETTISTICAPROFESSIONALE",
+      Sport: "SPORT",
     };
-    fetchAd();
-  }, [idAnnuncio, dataFine]);
+
+    return categoriaMappings[selectedCategoria];
+  };
+
+  const mapCondizioneToValue = (selectedCondizione) => {
+    const condizioneMappings = {
+      Buona: "BUONA",
+      Ottima: "OTTIMA",
+      Discreta: "DISCRETA",
+    };
+
+    return condizioneMappings[selectedCondizione];
+  };
 
   const handleClick = () => {
     setOpen(true);
@@ -74,27 +71,89 @@ const ModificaAnnuncio = () => {
     setOpen(false);
   };
 
-  const handleModify = () => {
-    const modifiedAd = {
-      id: idAnnuncio,
-      idUtente,
-      nome: titolo,
-      strada,
-      citta,
-      cap,
-      descrizione,
-      prezzo,
-      categoria,
-      dataFine,
-      condizione,
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
+  useEffect(() => {
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
+
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
     };
-    modifyAd(modifiedAd, immaginiCaricate).then((response) => {
-      if (!response || response.status !== 201) {
-        handleClick({ vertical: "top", horizontal: "center" });
+
+    const fetchAd = async () => {
+      await getAdById(idAnnuncio).then((response) => {
+        if (response.ok) {
+          response.json().then((ad) => {
+            if (ad.idUtente === Cookies.get("id")) {
+              setTitolo(ad.nome);
+              setDescrizione(ad.descrizione);
+              setPrezzo(ad.prezzo);
+              setStrada(ad.strada);
+              setCitta(ad.citta);
+              setCap(ad.cap);
+              setImmagine(ad.immagine);
+              setDataFine(ad.dataFine);
+              setCategoria(ad.categoria);
+              setCondizioni(ad.condizione);
+            } else navigate("/forbidden");
+          });
+        } else {
+          handleAlert("error", "problemi a recuperare l'annuncio");
+        }
+      });
+    };
+    fetchAd();
+  }, [idAnnuncio, navigate]);
+
+  const handleModify = () => {
+    if (/.*\s.*\s.*./.test(strada)) {
+      if (
+        titolo !== "" &&
+        strada !== "" &&
+        titolo !== "" &&
+        citta !== "" &&
+        cap !== "" &&
+        descrizione !== "" &&
+        prezzo !== "" &&
+        categoria !== undefined &&
+        dataFine !== undefined &&
+        condizione !== undefined
+      ) {
+        const modifiedAd = {
+          id: idAnnuncio,
+          idUtente,
+          nome: titolo,
+          strada,
+          citta,
+          cap,
+          descrizione,
+          prezzo: parseFloat(prezzo).toFixed(2),
+          categoria: mapCategoriaToValue(categoria),
+          dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
+          condizione: mapCondizioneToValue(condizione),
+        };
+        modifyAd(modifiedAd, immaginiCaricate).then((response) => {
+          if (!response || response.status !== 201) {
+            handleAlert("error", "Problemi nella modifica dell'annuncio");
+          } else {
+            navigate("/annunci");
+          }
+        });
       } else {
-        navigate("/annunci");
+        handleAlert(
+          "error",
+          "Non è possibile creare un annuncio senza riempire tutti i parametri"
+        );
       }
-    });
+    } else {
+      handleAlert("error", "Inserire l'indirizzo correttamente");
+    }
   };
 
   const handleCondizioneChange = (e) => {
@@ -161,7 +220,7 @@ const ModificaAnnuncio = () => {
   const buttonStyle = {
     backgroundColor: "#282A28",
     fontFamily: "Fredoka",
-    textTransform: "capitalize",
+    textTransform: "initial",
     fontSize: "1rem",
     "&:hover": {
       backgroundColor: "#FFFDF8",
@@ -195,11 +254,11 @@ const ModificaAnnuncio = () => {
         >
           <Alert
             onClose={handleClose}
-            severity="error"
+            severity={alertState}
             variant="filled"
             sx={{ width: "100%" }}
           >
-            Problemi nella modifica dell'annuncio
+            {alertMessage}
           </Alert>
         </Snackbar>
       </Box>
@@ -277,7 +336,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Elettronica"
-                        checked={categoria === "ELETTRONICA"}
+                        checked={categoria === "Elettronica"}
                         onChange={handleCategoriaChange}
                       />
                       Elettronica
@@ -286,7 +345,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Libri"
-                        checked={categoria === "LIBRI"}
+                        checked={categoria === "Libri"}
                         onChange={handleCategoriaChange}
                       />
                       Libri
@@ -295,7 +354,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Elettrodomestici"
-                        checked={categoria === "ELETTRODOMESTICI"}
+                        checked={categoria === "Elettrodomestici"}
                         onChange={handleCategoriaChange}
                       />
                       Elettrodomestici
@@ -304,7 +363,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Giardino e giardinaggio"
-                        checked={categoria === "GIARDINO"}
+                        checked={categoria === "Giardino e giardinaggio"}
                         onChange={handleCategoriaChange}
                       />
                       Giardino e giardinaggio
@@ -313,7 +372,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Arte e musica"
-                        checked={categoria === "ARTE"}
+                        checked={categoria === "Arte e musica"}
                         onChange={handleCategoriaChange}
                       />
                       Arte e musica
@@ -322,7 +381,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Casa e cucina"
-                        checked={categoria === "CASAECUCINA"}
+                        checked={categoria === "Casa e cucina"}
                         onChange={handleCategoriaChange}
                       />
                       Casa e cucina
@@ -331,7 +390,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Oggettistica professionale"
-                        checked={categoria === "OGGETTISTICAPROFESSIONALE"}
+                        checked={categoria === "Oggettistica professionale"}
                         onChange={handleCategoriaChange}
                       />
                       Oggettistica professionale
@@ -340,7 +399,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Sport"
-                        checked={condizione === "SPORT"}
+                        checked={categoria === "Sport"}
                         onChange={handleCategoriaChange}
                       />
                       Sport
@@ -354,7 +413,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Discreta"
-                        checked={condizione === "DISCRETA"}
+                        checked={condizione === "Discreta"}
                         onChange={handleCondizioneChange}
                       />
                       Discreta
@@ -363,7 +422,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Buona"
-                        checked={condizione === "BUONA"}
+                        checked={condizione === "Buona"}
                         onChange={handleCondizioneChange}
                       />
                       Buona
@@ -372,7 +431,7 @@ const ModificaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Ottima"
-                        checked={condizione === "OTTIMA"}
+                        checked={condizione === "Ottima"}
                         onChange={handleCondizioneChange}
                       />
                       Ottima

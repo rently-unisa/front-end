@@ -48,7 +48,7 @@
 .listaAnnunciProfilo {
   display: flex;
   flex-direction: row;
-  padding: 8rem;
+  padding: 2rem 8rem;
   justify-content: flex-start;
   align-items: center;
   align-content: space-between;

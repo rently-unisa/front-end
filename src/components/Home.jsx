@@ -10,6 +10,7 @@ import image2 from "../image/ondinaprova2.svg";
 import image3 from "../image/onda2nuovo1.svg";
 import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -18,8 +19,29 @@ const Home = () => {
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
   const [searchTerm, setSearchTerm] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     getPremiumAds().then((response) => {
       if (response.ok) {
         response.json().then((ad) => {
@@ -27,7 +49,7 @@ const Home = () => {
         });
       } else {
         response.json().then((result) => {
-          alert(result.message);
+          handleAlert("error", result.message);
         });
       }
     });
@@ -54,6 +76,23 @@ const Home = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="sezioneh">
         <img className="imaget" src={image4} alt="Immagine decorativa" />
         <div className="intestazione">

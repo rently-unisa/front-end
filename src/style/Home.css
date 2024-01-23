@@ -174,7 +174,7 @@
   height: 28.75rem;
   padding: 1.25rem 0rem;
   align-items: center;
-  align-content: center;
+  justify-content: center;
   gap: 0.625rem 2.5rem;
 }
 

@@ -37,13 +37,19 @@ const RichiestaNoleggio = ({
     setOpen(false);
   };
 
-  const hendleAlert = (state, message) => {
+  const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
     handleClick({ vertical: "top", horizontal: "center" });
   };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     const fetchUser = async () => {
       getUserById(idUtente).then((response) => {
         if (response.ok) {
@@ -52,7 +58,7 @@ const RichiestaNoleggio = ({
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -62,39 +68,40 @@ const RichiestaNoleggio = ({
   }, [idUtente]);
 
   const handleAddRental = () => {
-    const newRequest = {
-      dataInizio: dayjs(start).format("YYYY-MM-DD"),
-      dataFine: dayjs(end).format("YYYY-MM-DD"),
-      dataRichiesta: dayjs().format("YYYY-MM-DD"),
-      noleggiante: user.id,
-      noleggiatore: idCreatore,
-      prezzoTotale: end.diff(start, "day") * prezzoAnnuncio,
-      annuncio: idAnnuncio,
-    };
-
     if (
       start === null ||
       end === null ||
       dayjs(start).isBefore(dayjs(), "day") ||
-      (end && dayjs(start).isAfter(dayjs(end), "day")) ||
+      dayjs(start).isAfter(dayjs(end), "day") ||
+      dayjs(end).isSame(dayjs(), "day") ||
       dayjs(end).isBefore(dayjs(), "day") ||
-      (start && dayjs(end).isBefore(dayjs(start), "day"))
+      dayjs(end).isBefore(dayjs(start), "day") ||
+      dayjs(start).isSame(dayjs(end), "day")
     ) {
-      hendleAlert("error", "Inserite date non valide");
+      handleAlert("error", "Inserite date non valide");
     } else {
+      const newRequest = {
+        dataInizio: dayjs(start).format("YYYY-MM-DD"),
+        dataFine: dayjs(end).format("YYYY-MM-DD"),
+        dataRichiesta: dayjs().format("YYYY-MM-DD"),
+        noleggiante: user.id,
+        noleggiatore: idCreatore,
+        prezzoTotale: end.diff(start, "day") * prezzoAnnuncio,
+        annuncio: idAnnuncio,
+      };
       addRental(newRequest).then((response) => {
         if (response.status === 500) {
-          hendleAlert(
+          handleAlert(
             "error",
             "È presente una prenotazione dell'oggetto durante le date selezionate, selezionare un'arco temporale diverso"
           );
         } else if (!response.ok) {
-          hendleAlert(
+          handleAlert(
             "error",
             "Errore sconosciuto durante la richiesta di noleggio"
           );
         } else {
-          hendleAlert("success", "Richiesta creata con successo");
+          handleAlert("success", "Richiesta creata con successo");
           onClose();
         }
       });

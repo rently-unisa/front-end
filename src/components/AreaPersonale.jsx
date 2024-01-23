@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { getUserById, modifyUser } from "../services/utenti";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../style/AreaPersonale.css";
 import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
 import { Box } from "@mui/material";
@@ -29,6 +29,7 @@ const AreaPersonale = () => {
   const [ratings, setRatings] = useState();
   const [usernames, setUsernames] = useState();
   const [open, setOpen] = React.useState(false);
+  const navigate = useNavigate();
 
   const handleClick = () => {
     setOpen(true);
@@ -63,9 +64,8 @@ const AreaPersonale = () => {
             setUser(utente);
           });
         } else {
-          response.json().then(() => {
-            handleClick({ vertical: "top", horizontal: "center" });
-          });
+          if (response.status === 403) navigate("/forbidden");
+          else handleClick({ vertical: "top", horizontal: "center" });
         }
       });
     };
@@ -88,15 +88,13 @@ const AreaPersonale = () => {
             setUsernames(newUsernameMapping);
           });
         } else {
-          response.json().then(() => {
-            handleClick({ vertical: "top", horizontal: "center" });
-          });
+          handleClick({ vertical: "top", horizontal: "center" });
         }
       });
     };
 
     fetchUser();
-  }, [idUsername]);
+  }, [idUsername, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -301,14 +299,16 @@ const AreaPersonale = () => {
                     <div>
                       <div className="averageRating">
                         {ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                          (ratings.length * 2) >=
+                          (ratings.length * 2) ===
                         0
-                          ? ratings.reduce(
-                              (sum, rating) => sum + rating.voto,
-                              0
-                            ) /
-                            (ratings.length * 2)
-                          : "Nessuna recensione"}
+                          ? "Nessuna recensione"
+                          : (
+                              ratings.reduce(
+                                (sum, rating) => sum + rating.voto,
+                                0
+                              ) /
+                              (ratings.length * 2)
+                            ).toFixed(2)}
                       </div>
                       <div className="ratingStars">
                         <Rating
@@ -365,12 +365,16 @@ const AreaPersonale = () => {
                       defaultValue={
                         ratings.reduce(
                           (count, rating) =>
-                            rating.voto >= 9 ? count + 1 : count + 0,
+                            rating.voto >= 7 && rating.voto < 9
+                              ? count + 1
+                              : count + 0,
                           0
                         ) >= 0
                           ? ratings.reduce(
                               (count, rating) =>
-                                rating.voto >= 9 ? count + 1 : count + 0,
+                                rating.voto >= 7 && rating.voto < 9
+                                  ? count + 1
+                                  : count + 0,
                               0
                             )
                           : 0
@@ -382,7 +386,7 @@ const AreaPersonale = () => {
                     <span className="RatingNumber">
                       {ratings.reduce(
                         (count, rating) =>
-                          7 <= rating.voto && rating.voto < 9
+                          rating.voto >= 7 && rating.voto < 9
                             ? count + 1
                             : count + 0,
                         0
@@ -395,12 +399,16 @@ const AreaPersonale = () => {
                       defaultValue={
                         ratings.reduce(
                           (count, rating) =>
-                            rating.voto >= 9 ? count + 1 : count + 0,
+                            rating.voto >= 5 && rating.voto < 7
+                              ? count + 1
+                              : count + 0,
                           0
                         ) >= 0
                           ? ratings.reduce(
                               (count, rating) =>
-                                rating.voto >= 9 ? count + 1 : count + 0,
+                                rating.voto >= 5 && rating.voto < 7
+                                  ? count + 1
+                                  : count + 0,
                               0
                             )
                           : 0
@@ -412,7 +420,7 @@ const AreaPersonale = () => {
                     <span className="RatingNumber">
                       {ratings.reduce(
                         (count, rating) =>
-                          5 <= rating.voto && rating.voto < 7
+                          rating.voto >= 5 && rating.voto < 7
                             ? count + 1
                             : count + 0,
                         0
@@ -425,12 +433,16 @@ const AreaPersonale = () => {
                       defaultValue={
                         ratings.reduce(
                           (count, rating) =>
-                            rating.voto >= 9 ? count + 1 : count + 0,
+                            rating.voto >= 3 && rating.voto < 5
+                              ? count + 1
+                              : count + 0,
                           0
                         ) >= 0
                           ? ratings.reduce(
                               (count, rating) =>
-                                rating.voto >= 9 ? count + 1 : count + 0,
+                                rating.voto >= 3 && rating.voto < 5
+                                  ? count + 1
+                                  : count + 0,
                               0
                             )
                           : 0
@@ -442,7 +454,7 @@ const AreaPersonale = () => {
                     <span className="RatingNumber">
                       {ratings.reduce(
                         (count, rating) =>
-                          3 <= rating.voto && rating.voto < 5
+                          rating.voto >= 3 && rating.voto < 5
                             ? count + 1
                             : count + 0,
                         0
@@ -455,12 +467,16 @@ const AreaPersonale = () => {
                       defaultValue={
                         ratings.reduce(
                           (count, rating) =>
-                            rating.voto >= 9 ? count + 1 : count + 0,
+                            rating.voto >= 1 && rating.voto < 3
+                              ? count + 1
+                              : count + 0,
                           0
                         ) >= 0
                           ? ratings.reduce(
                               (count, rating) =>
-                                rating.voto >= 9 ? count + 1 : count + 0,
+                                rating.voto >= 1 && rating.voto < 3
+                                  ? count + 1
+                                  : count + 0,
                               0
                             )
                           : 0
@@ -472,7 +488,7 @@ const AreaPersonale = () => {
                     <span className="RatingNumber">
                       {ratings.reduce(
                         (count, rating) =>
-                          1 <= rating.voto && rating.voto < 3
+                          rating.voto >= 1 && rating.voto < 3
                             ? count + 1
                             : count + 0,
                         0

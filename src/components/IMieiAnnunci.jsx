@@ -1,14 +1,66 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Cookies from "js-cookie";
 import "../style/ListPage.css";
 import { getAdsByUserId, deleteAdById } from "../services/annunciNoleggio";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const IMieiAnnunci = () => {
   const idUsername = Cookies.get("id");
   const [userAds, setAds] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
+  }, [navigate]);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      ELETTRONICA: "Elettronica",
+      LIBRI: "Libri",
+      ELETTRODOMESTICI: "Elettrodomestici",
+      GIARDINO: "Giardino e giardinaggio",
+      ARTE: "Arte e musica",
+      CASAECUCINA: "Casa e cucina",
+      OGGETTISTICAPROFESSIONALE: "Oggettistica professionale",
+      SPORT: "Sport",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
+
+  const mapCondizioneToValue = (selectedCondizione) => {
+    const condizioneMappings = {
+      BUONA: "Buona",
+      OTTIMA: "Ottima",
+      DISCRETA: "Discreta",
+    };
+
+    return condizioneMappings[selectedCondizione];
+  };
 
   const getAnnunciUtente = (id) => {
     getAdsByUserId(id).then((response) => {
@@ -18,13 +70,33 @@ const IMieiAnnunci = () => {
         });
       } else {
         response.json().then((result) => {
-          alert(result.message);
+          handleAlert("error", result.message);
         });
       }
     });
   };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
+    const getAnnunciUtente = (id) => {
+      getAdsByUserId(id).then((response) => {
+        if (response.ok) {
+          response.json().then((ad) => {
+            setAds(ad);
+          });
+        } else {
+          response.json().then((result) => {
+            handleAlert("error", result.message);
+          });
+        }
+      });
+    };
+
     getAnnunciUtente(idUsername);
   }, [idUsername]);
 
@@ -33,7 +105,7 @@ const IMieiAnnunci = () => {
       if (response.ok) {
         getAnnunciUtente(idUsername);
       } else {
-        alert("Errore");
+        handleAlert("error", "Errore nella cancellazione dell'annuncio");
       }
     });
   };
@@ -41,6 +113,23 @@ const IMieiAnnunci = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="listPageContainer">
         <div className="rentalTitleContainer">
           <h1>I miei annunci</h1>
@@ -82,8 +171,8 @@ const IMieiAnnunci = () => {
                 </div>
                 <div className="rentalItem">
                   <h3>Informazioni aggiuntive</h3>
-                  <p>{a.condizioni}</p>
-                  <p>{a.categoria}</p>
+                  <p>{mapCondizioneToValue(a.condizione)}</p>
+                  <p>{mapCategoriaToValue(a.categoria)}</p>
                 </div>
                 <div className="rentalItem">
                   <h3>Operazioni</h3>

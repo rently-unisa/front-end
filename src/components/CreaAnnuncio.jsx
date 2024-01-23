@@ -20,7 +20,9 @@ import "../style/FormAnnunci.css";
 const CreaAnnuncio = () => {
   const navigate = useNavigate();
   const idUtente = Cookies.get("id");
-  const [open, setOpen] = React.useState(false);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -33,6 +35,16 @@ const CreaAnnuncio = () => {
 
     setOpen(false);
   };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
+  useEffect(() => {
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
+  }, [navigate]);
 
   const [titolo, setTitolo] = useState("");
   const [descrizione, setDescrizione] = useState("");
@@ -61,27 +73,59 @@ const CreaAnnuncio = () => {
     return categoriaMappings[selectedCategoria];
   };
 
-  const handleCreation = () => {
-    const newAd = {
-      id: 0,
-      idUtente,
-      nome: titolo,
-      strada,
-      citta,
-      cap,
-      descrizione,
-      prezzo,
-      categoria: mapCategoriaToValue(categoria),
-      dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
-      condizione: condizioni,
+  const mapCondizioneToValue = (selectedCondizione) => {
+    const condizioneMappings = {
+      Buona: "BUONA",
+      Ottima: "OTTIMA",
+      Discreta: "DISCRETA",
     };
-    addAd(newAd, immaginiCaricate).then((response) => {
-      if (!response || response.status !== 201) {
-        handleClick({ vertical: "top", horizontal: "center" });
+
+    return condizioneMappings[selectedCondizione];
+  };
+
+  const handleCreation = () => {
+    if (/.*\s.*\s.*/.test(strada)) {
+      if (
+        titolo !== "" &&
+        strada !== "" &&
+        titolo !== "" &&
+        citta !== "" &&
+        cap !== "" &&
+        descrizione !== "" &&
+        prezzo !== "" &&
+        categoria !== undefined &&
+        dataFine !== undefined &&
+        condizioni !== undefined
+      ) {
+        const newAd = {
+          id: 0,
+          idUtente,
+          nome: titolo,
+          strada,
+          citta,
+          cap,
+          descrizione,
+          prezzo: parseFloat(prezzo).toFixed(2),
+          categoria: mapCategoriaToValue(categoria),
+          dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
+          condizione: mapCondizioneToValue(condizioni),
+        };
+        addAd(newAd, immaginiCaricate).then((response) => {
+          if (!response || response.status !== 201) {
+            handleAlert("error", "Problemi nella creazione dell'annuncio");
+          } else {
+            navigate("/annunci");
+          }
+        });
       } else {
-        navigate("/annunci");
+        handleAlert(
+          "error",
+          "Non è possibile creare un annuncio senza riempire tutti i parametri"
+        );
       }
-    });
+    } else {
+      handleAlert("error", "Inserire l'indirizzo correttamente");
+    }
   };
 
   const handleCondizioneChange = (e) => {
@@ -144,7 +188,7 @@ const CreaAnnuncio = () => {
   const buttonStyle = {
     backgroundColor: "#282A28",
     fontFamily: "Fredoka",
-    textTransform: "capitalize",
+    textTransform: "initial",
     fontSize: "1rem",
     "&:hover": {
       backgroundColor: "#FFFDF8",
@@ -177,11 +221,11 @@ const CreaAnnuncio = () => {
         >
           <Alert
             onClose={handleClose}
-            severity="error"
+            severity={alertState}
             variant="filled"
             sx={{ width: "100%" }}
           >
-            Problemi nella creazione dell'annuncio
+            {alertMessage}
           </Alert>
         </Snackbar>
       </Box>
@@ -329,7 +373,7 @@ const CreaAnnuncio = () => {
                       <input
                         type="radio"
                         value="Sport"
-                        checked={condizioni === "Sport"}
+                        checked={categoria === "Sport"}
                         onChange={handleCategoriaChange}
                       />
                       Sport

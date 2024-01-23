@@ -7,7 +7,7 @@ import { getUserById } from "../services/utenti";
 import { getAdsByUserId } from "../services/annunciNoleggio";
 import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
 import Loader from "./Loader";
-import { Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
@@ -28,6 +28,28 @@ const ProfiloUtente = () => {
     idRicevente: null,
   });
   const [chatVisibility, setChatVisibility] = useState(false);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
   const handleOpenChat = (idEmittente, idRicevente) => {
     getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
       if (response.ok) {
@@ -46,17 +68,20 @@ const ProfiloUtente = () => {
         const user = await response.json();
         return { id, username: user.username };
       } else {
-        const result = await response.json();
-        alert(result.message);
         return { id, username: "Utente sconosciuto" };
       }
     } catch (error) {
-      console.error("Error fetching username:", error);
       return { id, username: "Utente sconosciuto" };
     }
   };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     const fetchUser = async () => {
       getUserById(userId).then((response) => {
         if (response.ok) {
@@ -67,7 +92,7 @@ const ProfiloUtente = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -81,7 +106,7 @@ const ProfiloUtente = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -106,7 +131,7 @@ const ProfiloUtente = () => {
           });
         } else {
           response.json().then((result) => {
-            alert(result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -118,7 +143,24 @@ const ProfiloUtente = () => {
   return (
     <div className="Page">
       <Navbar />
-      {User && ratings ? (
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+      {User && userAds && ratings ? (
         <div className="container">
           <h1>Profilo utente</h1>
           <div className="topSection">
@@ -135,7 +177,10 @@ const ProfiloUtente = () => {
                   onClick={() =>
                     isLoggedIn
                       ? handleOpenChat(Cookies.get("id"), userId)
-                      : alert("Fare l'accesso per poter fare una richiesta")
+                      : handleAlert(
+                          "error",
+                          "Fare l'accesso per poter fare una richiesta"
+                        )
                   }
                 >
                   Contatta
@@ -183,8 +228,13 @@ const ProfiloUtente = () => {
                       (ratings.length * 2) ===
                     0
                       ? "Nessuna recensione"
-                      : ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                        (ratings.length * 2)}
+                      : (
+                          ratings.reduce(
+                            (sum, rating) => sum + rating.voto,
+                            0
+                          ) /
+                          (ratings.length * 2)
+                        ).toFixed(2)}
                   </div>
                   <div className="ratingStars">
                     <Rating

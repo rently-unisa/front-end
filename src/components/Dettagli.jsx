@@ -47,7 +47,7 @@ const Dettagli = () => {
     setOpen(false);
   };
 
-  const hendleAlert = (state, message) => {
+  const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
     handleClick({ vertical: "top", horizontal: "center" });
@@ -71,7 +71,6 @@ const Dettagli = () => {
         const user = await response.json();
         return { id, username: user.username };
       } else {
-        const result = await response.json();
         return { id, username: "Utente sconosciuto" };
       }
     } catch (error) {
@@ -80,8 +79,14 @@ const Dettagli = () => {
   };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     const fetchAd = async () => {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       getAdById(idAnnuncio).then((response) => {
         if (response.ok) {
           response.json().then((ad) => {
@@ -91,7 +96,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            hendleAlert("error", result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -105,7 +110,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            hendleAlert("error", result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -130,7 +135,7 @@ const Dettagli = () => {
           });
         } else {
           response.json().then((result) => {
-            hendleAlert("error", result.message);
+            handleAlert("error", result.message);
           });
         }
       });
@@ -191,12 +196,12 @@ const Dettagli = () => {
                           ) {
                             setPopupVisible(true);
                           } else if (!isLoggedIn) {
-                            hendleAlert(
+                            handleAlert(
                               "error",
                               "Fare l'accesso per poter fare una richiesta di noleggio"
                             );
                           } else {
-                            hendleAlert(
+                            handleAlert(
                               "error",
                               "Impossibile noleggiare un proprio oggetto"
                             );
@@ -225,12 +230,12 @@ const Dettagli = () => {
                           ) {
                             handleOpenChat(Cookies.get("id"), adUser.id);
                           } else if (!isLoggedIn) {
-                            hendleAlert(
+                            handleAlert(
                               "error",
                               "Fare l'accesso per poter avviare una conversazione"
                             );
                           } else {
-                            hendleAlert(
+                            handleAlert(
                               "error",
                               "Impossibile creare una chat con se stessi"
                             );
@@ -273,11 +278,13 @@ const Dettagli = () => {
                         (ratings.length * 2) ===
                       0
                         ? "Nessuna recensione"
-                        : ratings.reduce(
-                            (sum, rating) => sum + rating.voto,
-                            0
-                          ) /
-                          (ratings.length * 2)}
+                        : (
+                            ratings.reduce(
+                              (sum, rating) => sum + rating.voto,
+                              0
+                            ) /
+                            (ratings.length * 2)
+                          ).toFixed(2)}
                     </div>
                     <div className="ratingStars">
                       <Rating
@@ -449,8 +456,106 @@ const Dettagli = () => {
           )}
         </>
       ) : (
-        <div className="Loading">
-          <Loader />
+        <div className="container">
+          <div className="title"></div>
+          <div className="detailsContainer">
+            <div className="leftSection">
+              <div className="adDescription">
+                <p></p>
+                <label>
+                  <p style={{ textAlign: "left" }}>
+                    <span>Data di fine disponibilità: </span>
+                  </p>
+                  <p style={{ textAlign: "left" }}>
+                    <span>Condizioni: </span>
+                  </p>
+                </label>
+              </div>
+              <div className="actionButtons">
+                <div className="requestButton">
+                  <button>Richiedi il noleggio</button>
+                </div>
+                <div className="contact">
+                  <div className="contactUser">
+                    <AccountCircleIcon
+                      fontSize="large"
+                      className="contactIcon"
+                    />
+                  </div>
+                  <div className="contactButton">
+                    <button className="contactButton2">Contatta</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="imageContainer"></div>
+          </div>
+          <div className="reviewsContainer">
+            <div className="reviewsTitle">Recensioni sull'articolo</div>
+            <div className="reviewsContainer1">
+              <div className="reviewsStats">
+                <div className="reviewsNumber"></div>
+                <div className="overallRating">Overall rating</div>
+                <div className="ratingMedium">
+                  <div className="averageRating"></div>
+                  <div className="ratingStars">
+                    <Rating
+                      name="read-only"
+                      style={{ color: "#282a28" }}
+                      precision={0.5}
+                      readOnly
+                    />
+                  </div>
+                </div>
+                <Box sx={{ width: 150 }}>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">5</span>{" "}
+                    <Slider size="small" disabled />
+                    <span className="RatingNumber"></span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">4</span>{" "}
+                    <Slider size="small" disabled />
+                    <span className="RatingNumber"></span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">3</span>{" "}
+                    <Slider size="small" disabled />
+                    <span className="RatingNumber"></span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">2</span>{" "}
+                    <Slider size="small" disabled />
+                    <span className="RatingNumber"></span>
+                  </div>
+                  <div className="SliderBox">
+                    <span className="RatingNumber">1</span>{" "}
+                    <Slider size="small" disabled />
+                    <span className="RatingNumber"></span>
+                  </div>
+                </Box>
+              </div>
+              <div className="userReviews">
+                {Array.from({ length: 3 }, (_, index) => (
+                  <div className="containerUserReviews">
+                    <div className="usernameUserReviews"></div>
+                    <div className="iconsUserReviews">
+                      <Rating
+                        name="read-only"
+                        style={{ color: "#282a28", fontSize: "1.2rem" }}
+                        precision={0.5}
+                        readOnly
+                      />
+                    </div>
+                    <div className="review-textUserReviews"></div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+          <div className="Loading">
+            <Loader />
+          </div>
         </div>
       )}
       <Footer />

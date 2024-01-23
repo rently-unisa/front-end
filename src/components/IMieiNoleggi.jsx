@@ -3,7 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import Switch from "@mui/material/Switch";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   getRentalsByNoleggiante,
   getRentalsByNoleggiatore,
@@ -20,9 +20,11 @@ import Cookies from "js-cookie";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { getMessagesByUsersId } from "../services/messaggi.js";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const IMieiNoleggi = () => {
   //questa pagina viene acceduta dal noleggiante o noleggiatore che vuole vedere le sue richieste di noleggio
+  const navigate = useNavigate();
   const idUser = Cookies.get("id");
   const param = useParams();
   const defaultChecked = true;
@@ -42,6 +44,28 @@ const IMieiNoleggi = () => {
     setChatVisibility(true);
   };
 
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
   const [selectedStati, setSelectedStati] = useState([]);
   const handleStatiChange = (itemName) => {
     if (selectedStati.includes(itemName)) {
@@ -50,7 +74,9 @@ const IMieiNoleggi = () => {
       setSelectedStati([...selectedStati, itemName]);
     }
   };
+
   const [isFiltraStatoOpen, setIsFiltraStatoOpen] = useState(false);
+  const [isFiltraStatoOpen2, setIsFiltraStatoOpen2] = useState(false);
 
   const stati = [
     "RICHIESTA",
@@ -63,10 +89,42 @@ const IMieiNoleggi = () => {
     "CONCLUSOCONVALUTAZIONE",
   ];
 
+  const stati2 = [
+    "RICHIESTA",
+    "ACCETTATA",
+    "RIFIUTATA",
+    "INIZIO",
+    "IN_CORSO",
+    "FINE",
+    "CONCLUSO",
+    "CONCLUSOCONVALUTAZIONE",
+  ];
+
+  const mapStatoToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      RICHIESTA: "Richiesta",
+      ACCETTATA: "Accettata",
+      RIFIUTATA: "Rifiutata",
+      INIZIO: "Inizio",
+      IN_CORSO: "In corso",
+      FINE: "Fine",
+      CONCLUSO: "Concluso",
+      CONCLUSOCONVALUTAZIONE: "Concluso con valutazione",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
+
   const handleFiltraStato = () => {
     isFiltraStatoOpen
       ? setIsFiltraStatoOpen(false)
       : setIsFiltraStatoOpen(true);
+  };
+
+  const handleFiltraStato2 = () => {
+    isFiltraStatoOpen2
+      ? setIsFiltraStatoOpen2(false)
+      : setIsFiltraStatoOpen2(true);
   };
 
   const [checked, setChecked] = useState(
@@ -112,6 +170,8 @@ const IMieiNoleggi = () => {
   };
 
   useEffect(() => {
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
+
     const fetchData = async () => {
       try {
         const noleggianteResponse = await getRentalsByNoleggiante(idUser);
@@ -189,7 +249,7 @@ const IMieiNoleggi = () => {
     };
 
     fetchData();
-  }, [idUser]);
+  }, [idUser, navigate]);
 
   const [valutazioneOggettoParams, setValutazioneOggettoParams] = useState({
     idAnnuncio: null,
@@ -233,35 +293,35 @@ const IMieiNoleggi = () => {
       if (response.ok) {
         response.json().then((rental) => {
           rental.stato = stato;
-          modifyRental(rental);
-        });
-      } else {
-        response.json().then((result) => {
-          alert(result.message);
-        });
-      }
-    });
+          modifyRental(rental).then(() => {
+            getRentalsByNoleggiante(idUser).then((response) => {
+              if (response.ok) {
+                response.json().then((rental) => {
+                  setNoleggianteRentals(rental);
+                });
+              } else {
+                response.json().then((result) => {
+                  handleAlert("error", result.message);
+                });
+              }
+            });
 
-    getRentalsByNoleggiante(idUser).then((response) => {
-      if (response.ok) {
-        response.json().then((rental) => {
-          setNoleggianteRentals(rental);
+            getRentalsByNoleggiatore(idUser).then((response) => {
+              if (response.ok) {
+                response.json().then((rental) => {
+                  setNoleggiatoreRentals(rental);
+                });
+              } else {
+                response.json().then((result) => {
+                  console.log(result.message);
+                });
+              }
+            });
+          });
         });
       } else {
         response.json().then((result) => {
-          alert(result.message);
-        });
-      }
-    });
-
-    getRentalsByNoleggiatore(idUser).then((response) => {
-      if (response.ok) {
-        response.json().then((rental) => {
-          setNoleggiatoreRentals(rental);
-        });
-      } else {
-        response.json().then((result) => {
-          console.log(result.message);
+          handleAlert("error", result.message);
         });
       }
     });
@@ -282,6 +342,23 @@ const IMieiNoleggi = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="listPageContainer">
         <div className="switchContainer">
           <div className="switchDescriptionContainer">
@@ -331,7 +408,7 @@ const IMieiNoleggi = () => {
                           checked={selectedStati.includes(item)}
                           onChange={() => handleStatiChange(item)}
                         />
-                        <label>{item}</label>
+                        <label>{mapStatoToValue(item)}</label>
                       </div>
                     ))}
                   </div>
@@ -465,7 +542,7 @@ const IMieiNoleggi = () => {
                           </div>
                         )}
                       {r.stato === "CONCLUSOCONVALUTAZIONE" && (
-                        <p>Noleggio Concluso</p>
+                        <p>Concluso con valutazione</p>
                       )}
                     </div>
                   </div>
@@ -482,6 +559,49 @@ const IMieiNoleggi = () => {
                   Vai alla pagina "Le richieste dei miei annunci"
                 </Link>
               </div>
+            </div>
+            <div>
+              <p>Seleziona un filtro:</p>
+              {isFiltraStatoOpen2 ? (
+                <div className="CheckboxContainer">
+                  <button
+                    className="checkboxButton"
+                    onClick={handleFiltraStato2}
+                  >
+                    Filtra per stato
+                    <KeyboardArrowDownIcon />
+                  </button>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    {stati2.map((item) => (
+                      <div key={item + 2}>
+                        <input
+                          type="checkbox"
+                          id={item + 2}
+                          checked={selectedStati.includes(item + 2)}
+                          onChange={() => handleStatiChange(item + 2)}
+                        />
+                        <label>{mapStatoToValue(item)}</label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <div className="CheckboxContainer">
+                  <button
+                    className="checkboxButton"
+                    onClick={handleFiltraStato2}
+                  >
+                    Filtra per stato
+                    <KeyboardArrowRightIcon />
+                  </button>
+                </div>
+              )}
             </div>
             {noleggiatoreRentals && (
               <div className="rentalList">
@@ -564,7 +684,7 @@ const IMieiNoleggi = () => {
                                 )
                               }
                             >
-                              Valuta l'utente
+                              Valuta il noleggiante
                             </button>
                             <ValutazioneUtente
                               trigger={buttonValutazioneUtente}
@@ -578,7 +698,7 @@ const IMieiNoleggi = () => {
                           </div>
                         )}
                       {r.stato === "CONCLUSOCONVALUTAZIONE" && (
-                        <p>Noleggio Concluso</p>
+                        <p>Concluso con valutazione</p>
                       )}
                     </div>
                   </div>

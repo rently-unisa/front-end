@@ -24,7 +24,7 @@ function ValutazioneOggetto(props) {
     setOpen(false);
   };
 
-  const hendleAlert = (state, message) => {
+  const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
     handleClick({ vertical: "top", horizontal: "center" });
@@ -45,12 +45,12 @@ function ValutazioneOggetto(props) {
       };
       addObjectValutations(newValutazione).then((response) => {
         if (!response || response.status !== 201) {
-          hendleAlert(
+          handleAlert(
             "error",
             "C'è stato un problema nel salvare la recensione"
           );
         } else {
-          hendleAlert(
+          handleAlert(
             "success",
             "La valutazione è stata inviata correttamente"
           );
@@ -58,7 +58,7 @@ function ValutazioneOggetto(props) {
         }
       });
     } else {
-      hendleAlert("error", "Inserisci una recensione");
+      handleAlert("error", "Inserisci una recensione");
     }
   };
 

@@ -6,7 +6,6 @@ import image1 from "../image/assistenza.svg";
 import image2 from "../image/assistenzaOndaSX.svg";
 import image3 from "../image/assistenzaOndaDX.svg";
 import { addSegnalazione } from "../services/assistenza.js";
-import { getUserByEmail } from "../services/utenti.js";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext.js";
 import { getRentalsByNoleggiante } from "../services/noleggi.js";
@@ -58,7 +57,7 @@ const Assistenza = () => {
     });
   }, []);
 
-  const hendleAlert = () => {
+  const handleAlert = () => {
     setAlertState("error");
     setAlertMessage(
       "Effettuare l'accesso per poter effettuare una segnalazione"
@@ -205,7 +204,7 @@ const Assistenza = () => {
           </div>
           <button
             className="button"
-            onClick={() => (isLoggedIn ? handleSubmit() : hendleAlert())}
+            onClick={() => (isLoggedIn ? handleSubmit() : handleAlert())}
           >
             Invia messaggio
           </button>

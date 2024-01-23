@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../style/Assistenza.css";
@@ -6,45 +6,127 @@ import image1 from "../image/assistenza.svg";
 import image2 from "../image/assistenzaOndaSX.svg";
 import image3 from "../image/assistenzaOndaDX.svg";
 import { addSegnalazione } from "../services/assistenza.js";
-import { getUserByEmail } from "../services/utenti.js";
 import { useNavigate } from "react-router-dom";
-import ValutazioneOggetto from "./ValutazioneOggetto.jsx";
-import ValutazioneUtente from "./ValutazioneUtente.jsx";
+import { useAuth } from "../AuthContext.js";
+import { getRentalsByNoleggiante } from "../services/noleggi.js";
+import Cookies from "js-cookie";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const Assistenza = () => {
   const navigate = useNavigate();
+  const { isLoggedIn } = useAuth();
   const [tipo, setTipo] = useState(null);
   const [contenuto, setContenuto] = useState("");
   const [email, setEmail] = useState("");
+  const [rentals, setRentals] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
 
-  const [buttonValutazioneUtente, setButtonValutazioneUtente] = useState(false);
-  const [buttonValutazioneOggetto, setButtonValutazioneOggetto] =
-    useState(false);
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const handleTipoChange = (event) => {
     setTipo(event.target.value);
   };
 
+  useEffect(() => {
+    getRentalsByNoleggiante(Cookies.get("id")).then((response) => {
+      if (response.status !== 403) {
+        if (response.ok) {
+          response.json().then((rental) => {
+            setRentals(rental);
+          });
+        } else {
+          response.json().then((result) => {
+            setAlertState("error");
+            setAlertMessage(result.message);
+            handleClick({ vertical: "top", horizontal: "center" });
+          });
+        }
+      }
+    });
+  }, []);
+
+  const handleAlert = () => {
+    setAlertState("error");
+    setAlertMessage(
+      "Effettuare l'accesso per poter effettuare una segnalazione"
+    );
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
   const handleSubmit = () => {
-    if (tipo !== null) {
-      const user = getUserByEmail(email);
-      if (user) {
+    if (rentals[0] !== undefined) {
+      if (tipo !== null) {
         if (contenuto !== "") {
           const newSegnalazione = {
             tipo: tipo,
             contenuto: contenuto,
-            idSegnalatore: user.id,
+            idSegnalatore: Cookies.get("id"),
           };
-          addSegnalazione(newSegnalazione);
-          alert("La segnalazione è stata inviata correttamente");
-          navigate("/");
-        } else alert("Il messaggio non può essere vuoto");
-      } else alert("L'email inserita non è valida");
-    } else alert("Inserisci un tipo di segnalazione");
+          addSegnalazione(newSegnalazione).then((response) => {
+            if (response.ok) {
+              setAlertState("success");
+              setAlertMessage("La segnalazione è stata inviata correttamente");
+              handleClick({ vertical: "top", horizontal: "center" });
+              navigate("/");
+            } else {
+              setAlertState("error");
+              setAlertMessage(
+                "Errore durante la richiesta di segnalazione: ",
+                response.text()
+              );
+              handleClick({ vertical: "top", horizontal: "center" });
+            }
+          });
+        } else {
+          setAlertState("error");
+          setAlertMessage("Il messaggio non può essere vuoto");
+          handleClick({ vertical: "top", horizontal: "center" });
+        }
+      } else {
+        setAlertState("error");
+        setAlertMessage("Inserisci un tipo di segnalazione");
+        handleClick({ vertical: "top", horizontal: "center" });
+      }
+    } else {
+      setAlertState("error");
+      setAlertMessage(
+        "Non è possibie segnalare problemi senza aver mai effettuato un noleggio"
+      );
+      handleClick({ vertical: "top", horizontal: "center" });
+    }
   };
 
   return (
     <div className="Page">
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <Navbar />
       <div className="onde">
         <img className="ondaSX" src={image2} alt="Immagine decorativa" />
@@ -120,31 +202,12 @@ const Assistenza = () => {
               placeholder="Inserisci il tuo messaggio"
             />
           </div>
-          <button className="button" onClick={handleSubmit}>
+          <button
+            className="button"
+            onClick={() => (isLoggedIn ? handleSubmit() : handleAlert())}
+          >
             Invia messaggio
           </button>
-          <div>
-            <button
-              className="valutazione-button"
-              onClick={() => setButtonValutazioneOggetto(true)}
-            >
-              Valutazione oggetto
-            </button>
-            <ValutazioneOggetto
-              trigger={buttonValutazioneOggetto}
-              setTrigger={setButtonValutazioneOggetto}
-            ></ValutazioneOggetto>
-            <button
-              className="valutazione-button"
-              onClick={() => setButtonValutazioneUtente(true)}
-            >
-              Valutazione utente
-            </button>
-            <ValutazioneUtente
-              trigger={buttonValutazioneUtente}
-              setTrigger={setButtonValutazioneUtente}
-            ></ValutazioneUtente>
-          </div>
         </div>
         <div className="assistenzaImg">
           <img src={image1} alt="Immagine decorativa" />

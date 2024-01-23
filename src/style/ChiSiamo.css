@@ -175,9 +175,9 @@
   
   .sezionec {
     position: relative;
-    width: 90%;
+    width: 100%;
     min-height: 85.2vh;
-    padding: 4rem 0 8rem 0;
+    padding-right: 1rem;
   }
   
   .container {

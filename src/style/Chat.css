@@ -21,16 +21,98 @@
   align-items: center;
   border-radius: 10px;
   background: var(--chiaro);
+  max-width: 25rem;
+  overflow-x: hidden;
+}
+
+.messageList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 25rem;
+  overflow-y: scroll;
 }
 
 .my-message {
-  /* DA CAMBIARE */
-  background-color: #4caf50; /* Colore di sfondo per i tuoi messaggi */
-  color: white; /* Colore del testo per i tuoi messaggi */
+  align-self: flex-end;
+  padding: 0.5rem;
+  margin: 0.25rem;
+  border-radius: 10px;
+  background-color: var(--medio);
+  color: white;
 }
 
 .other-message {
-  /* DA CAMBIARE */
-  background-color: #2196f3; /* Colore di sfondo per i messaggi dell'interlocutore */
-  color: white; /* Colore del testo per i messaggi dell'interlocutore */
+  align-self: flex-start;
+  padding: 0.5rem;
+  margin: 0.25rem;
+  border-radius: 10px;
+  background-color: var(--nero);
+  color: white;
+}
+
+.bottomMessageArea {
+  display: inline-flex;
+  width: 95.5%;
+  padding: 0.625rem 1.5rem;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 3rem;
+  border: 1px solid var(--scuro);
+  background: var(--scuro);
+  margin-bottom: -1rem;
+  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.messageBox {
+  display: flex;
+  width: 15.625rem;
+  height: 2rem;
+  padding: 0.5rem 0.75rem;
+  align-items: center;
+  gap: 0.25rem;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: var(--bianco);
+  font-family: var(--font);
+  font-size: var(--font-size);
+}
+
+.sendMessage {
+  background-image: url(../image/sendMessage.png);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 3rem;
+  width: 3rem;
+  background-color: transparent;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .chat {
+    align-items: center;
+  }
+
+  .chat-body {
+    position: relative;
+    right: auto;
+    width: 90%;
+    max-width: none;
+  }
+
+  .messageList {
+    max-height: 15rem;
+  }
+
+  .bottomMessageArea {
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .messageBox {
+    width: 75%;
+  }
 }

@@ -1,12 +1,13 @@
-import { getPremiumUsers } from "./utenti";
+//import { getPremiumUsers } from "./utenti";
+import axios from "axios";
+import Cookies from "js-cookie";
 
-const adsData = [
+/*const adsData = [
   {
     id: 1,
     idUtente: 1,
     titolo: "Annuncio 1",
     strada: "Via Example 1",
-    civico: "123",
     città: "Città1",
     cap: "12345",
     descrizione: "Descrizione dell'annuncio 1.",
@@ -21,7 +22,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Annuncio 2",
     strada: "Via Example 2",
-    civico: "456",
     città: "Città2",
     cap: "67890",
     descrizione: "Descrizione dell'annuncio 2.",
@@ -36,7 +36,6 @@ const adsData = [
     idUtente: 3,
     titolo: "Annuncio 3",
     strada: "Via Nuova 3",
-    civico: "789",
     città: "Città1",
     cap: "54321",
     descrizione: "Descrizione dell'annuncio 3.",
@@ -51,7 +50,6 @@ const adsData = [
     idUtente: 5,
     titolo: "Annuncio 4",
     strada: "Via Vecchia 7",
-    civico: "101",
     città: "Città2",
     cap: "112233",
     descrizione: "Descrizione dell'annuncio 4.",
@@ -66,7 +64,6 @@ const adsData = [
     idUtente: 5,
     titolo: "Annuncio 5",
     strada: "Via Nuova 5",
-    civico: "999",
     città: "Città2",
     cap: "54321",
     descrizione: "Descrizione dell'annuncio 5.",
@@ -81,7 +78,6 @@ const adsData = [
     idUtente: 6,
     titolo: "Annuncio 6",
     strada: "Via Antica 10",
-    civico: "777",
     città: "Città2",
     cap: "112233",
     descrizione: "Descrizione dell'annuncio 6.",
@@ -96,7 +92,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Annuncio 7",
     strada: "Via Moderna 3",
-    civico: "888",
     città: "Città2",
     cap: "12345",
     descrizione: "Descrizione dell'annuncio 7.",
@@ -111,7 +106,6 @@ const adsData = [
     idUtente: 4,
     titolo: "Smartphone Samsung Galaxy S21",
     strada: "Via Tecnologica 42",
-    civico: "789",
     città: "Città1",
     cap: "98765",
     descrizione: "Vendo smartphone Samsung Galaxy S21 in ottime condizioni.",
@@ -126,7 +120,6 @@ const adsData = [
     idUtente: 7,
     titolo: "Tavolo da Pranzo Moderno",
     strada: "Via Arredamento 13",
-    civico: "222",
     città: "Città1",
     cap: "13579",
     descrizione:
@@ -142,7 +135,6 @@ const adsData = [
     idUtente: 2,
     titolo: "Giacca in Pelle da Uomo",
     strada: "Via Fashion 7",
-    civico: "777",
     città: "Città2",
     cap: "24680",
     descrizione: "Giacca in pelle da uomo, taglia M, colore nero.",
@@ -157,7 +149,6 @@ const adsData = [
     idUtente: 1,
     titolo: "Libro: Il Signore degli Anelli",
     strada: "Via Libreria 8",
-    civico: "888",
     città: "Città1",
     cap: "54321",
     descrizione:
@@ -168,26 +159,82 @@ const adsData = [
     dataFine: "2024-05-20",
     condizioni: "Nuovo",
   },
-];
+];*/
 
-const getAllAds = () => {
+/*const getAllAds = () => {
   return adsData;
+};*/
+
+const getAllAds = async () => {
+  try {
+    const response = await fetch(`http://localhost:4000/api/ricerca/all`, {
+      method: "GET",
+    });
+
+    return response;
+  } catch (error) {
+    return error;
+  }
 };
 
-const getPremiumAds = () => {
+/*const getPremiumAds = () => {
   const users = getPremiumUsers();
   return adsData.filter((ad) => users.some((user) => user.id === ad.idUtente));
+};*/
+
+const getPremiumAds = async () => {
+  try {
+    const response = await fetch(`http://localhost:4000/api/ricerca/premium`, {
+      method: "GET",
+    });
+
+    return response;
+  } catch (error) {
+    return "Errore nella richiesta degli annunci";
+  }
 };
 
-const getAdById = (id) => {
+/*const getAdById = (id) => {
   return adsData.find((ad) => ad.id === id);
+}; */
+
+const getAdById = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/annuncio/visualizza-annuncio?id=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di login");
+    return "Credenziali non valide";
+  }
 };
 
-const getAdsByUserId = (userId) => {
+/*const getAdsByUserId = (userId) => {
   return adsData.filter((ad) => ad.idUtente === userId);
+}; */
+
+const getAdsByUserId = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/annuncio/visualizza-annunci-utente?id=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di login");
+    return "Credenziali non valide";
+  }
 };
 
-const addAd = (newAdData) => {
+/*const addAd = (newAdData) => {
   const newAdId = adsData.length + 1;
 
   const newAd = {
@@ -198,32 +245,106 @@ const addAd = (newAdData) => {
   adsData.push(newAd);
 
   return newAd;
+};*/
+
+const addAd = async (newAdData, image) => {
+  try {
+    const formData = new FormData();
+    for (let key in newAdData) {
+      formData.append(key, newAdData[key]);
+    }
+    formData.append("image", image);
+    const response = await axios.post(
+      "http://localhost:4000/api/annuncio/aggiungi-annuncio",
+      formData,
+      {
+        headers: {
+          Authorization: Cookies.get("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di registrazione:",
+      error.message
+    );
+  }
 };
 
-const deleteAdById = (id) => {
+/*const deleteAdById = (id) => {
   const indexToDelete = adsData.findIndex((ad) => ad.id === id);
 
   if (indexToDelete !== -1) {
     adsData.splice(indexToDelete, 1);
-    return true; // Indica che l'eliminazione è avvenuta con successo
+    return true;
   }
 
-  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+  return false;
+}; */
+
+const deleteAdById = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/annuncio/delete-annuncio?id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Credenziali non valide";
+  }
 };
 
-const modifyAd = (modifiedAd) => {
+/*const modifyAd = (modifiedAd) => {
   const indexToModify = adsData.findIndex((ad) => ad.id === modifiedAd.id);
 
   if (indexToModify !== -1) {
-    // Elimina l'annuncio esistente
     deleteAdById(modifiedAd.id);
-
-    // Aggiungi il nuovo annuncio
     adsData.push(modifiedAd);
-    return true; // Indica che la modifica è avvenuta con successo
+    return true;
   }
 
-  return false; // Indica che l'annuncio con l'id specificato non è stato trovato
+  return false;
+};*/
+
+const modifyAd = async (modifiedAd, image) => {
+  try {
+    const formData = new FormData();
+    for (let key in modifiedAd) {
+      formData.append(key, modifiedAd[key]);
+    }
+    if (image !== undefined || image !== null) formData.append("image", image);
+    else formData.append("image", null);
+
+    console.log(formData);
+    const response = await axios.post(
+      "http://localhost:4000/api/annuncio/modifica-annuncio",
+      formData,
+      {
+        headers: {
+          Authorization: Cookies.get("token"),
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    console.log(response);
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di registrazione:",
+      error.message
+    );
+  }
 };
 
 export {

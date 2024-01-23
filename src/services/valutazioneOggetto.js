@@ -1,4 +1,5 @@
-const objectValutationData = [
+import Cookies from "js-cookie";
+/*const objectValutationData = [
   {
     id: 1,
     voto: 8,
@@ -48,23 +49,33 @@ const objectValutationData = [
     idValutatore: 1,
     idAnnuncio: 7,
   },
-];
+];*/
 
-const getAllObjectValutations = () => {
-  return objectValutationData;
-};
-
-const getObjectValutationsById = (id) => {
-  return objectValutationData.find((valutation) => valutation.id === id);
-};
-
-const getObjectValutationsByAnnuncioId = (idAnnuncio) => {
+/*const getObjectValutationsByAnnuncioId = (idAnnuncio) => {
   return objectValutationData.filter(
     (valutation) => valutation.idAnnuncio === idAnnuncio
   );
+}; */
+
+const getObjectValutationsByAnnuncioId = async (idAnnuncio) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/valutazione/visualizza-valutazioni-annuncio?id=${idAnnuncio}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta delle valutazioni degli oggetti: ",
+      error.message
+    );
+  }
 };
 
-const addObjectValutations = (newValutationData) => {
+/*const addObjectValutations = (newValutationData) => {
   const newValutationId = objectValutationData.length + 1;
 
   const newValutation = {
@@ -75,11 +86,27 @@ const addObjectValutations = (newValutationData) => {
   objectValutationData.push(newValutation);
 
   return newValutation;
+};*/
+
+const addObjectValutations = async (newValutationData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/valutazione/aggiungi-valutazione-oggetto",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(newValutationData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di valutazione:", error.message);
+    return "Errore durante la richiesta di valutazione";
+  }
 };
 
-export {
-  getAllObjectValutations,
-  getObjectValutationsById,
-  getObjectValutationsByAnnuncioId,
-  addObjectValutations,
-};
+export { getObjectValutationsByAnnuncioId, addObjectValutations };

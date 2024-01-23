@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,14 +10,50 @@ import image2 from "../image/ondinaprova2.svg";
 import image3 from "../image/onda2nuovo1.svg";
 import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const Home = () => {
   const navigate = useNavigate();
-  const annunci = getPremiumAds();
+  const [annunci, setAnnunci] = useState();
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState();
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
+    getPremiumAds().then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          setAnnunci(ad);
+        });
+      } else {
+        response.json().then((result) => {
+          handleAlert("error", result.message);
+        });
+      }
+    });
+  }, []);
 
   const nextSlide = () => {
     setCurrentSlide1((prevSlide) => (prevSlide + 1) % annunci.length);
@@ -40,6 +76,23 @@ const Home = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="sezioneh">
         <img className="imaget" src={image4} alt="Immagine decorativa" />
         <div className="intestazione">
@@ -83,28 +136,37 @@ const Home = () => {
             <button onClick={prevSlide}>
               <ArrowBackIosIcon />
             </button>
-            <div className="listaAnnunciHome">
-              {annunci.map((ad, index) => (
-                <div
-                  key={index}
-                  className={`card ${index === currentSlide1 ? "primo" : ""} ${
-                    index === currentSlide2 ? "secondo" : ""
-                  } ${index === currentSlide3 ? "terzo" : ""} ${
-                    index !== currentSlide1 &&
-                    index !== currentSlide2 &&
-                    index !== currentSlide3
-                      ? "inactive"
-                      : ""
-                  }`}
-                >
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
-                  <div className="card-description">
-                    <p>{ad.titolo}</p>
-                    <h6>€ {ad.prezzo}/giorno</h6>
-                  </div>
-                </div>
-              ))}
-            </div>
+            {annunci && (
+              <div className="listaAnnunciHome">
+                {annunci.map((ad, index) => (
+                  <Link
+                    className={`${index === currentSlide1 ? "primo" : ""} ${
+                      index === currentSlide2 ? "secondo" : ""
+                    } ${index === currentSlide3 ? "terzo" : ""} ${
+                      index !== currentSlide1 &&
+                      index !== currentSlide2 &&
+                      index !== currentSlide3
+                        ? "inactive"
+                        : ""
+                    }`}
+                    to={`/dettagli/${ad.id}`}
+                    key={ad.id}
+                  >
+                    <div key={ad.id} className={`card`}>
+                      <img
+                        src={ad.immagine}
+                        alt="Immgagine annuncio"
+                        loading="lazy"
+                      />
+                      <div className="card-description">
+                        <p>{ad.nome}</p>
+                        <h6>€ {ad.prezzo}/giorno</h6>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
             <button onClick={nextSlide}>
               <ArrowForwardIosIcon />
             </button>

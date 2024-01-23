@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 const usersData = [
   {
     id: 1,
@@ -81,20 +82,51 @@ const getPremiumUsers = () => {
   return usersData.filter((user) => user.premium === true);
 };
 
-const getUserByUsernameAndPassword = (username, password) => {
-  return usersData.find(
-    (user) => user.username === username && user.password === password
-  );
-};
-
-const getUserByEmailAndPassword = (email, password) => {
+/*const getUserByEmailAndPassword = (email, password) => {
   return usersData.find(
     (user) => user.email === email && user.password === password
   );
+};*/
+
+const getUserByEmailAndPassword = async (email, password) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/autenticazione/login",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Credenziali non valide";
+  }
 };
 
-const getUserById = (id) => {
+/*const getUserById = (id) => {
   return usersData.find((user) => user.id === id);
+};*/
+
+const getUserById = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/area-personale/profilo-utente?id=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta del profilo utente:",
+      error.message
+    );
+  }
 };
 
 const getUserByUsername = (username) => {
@@ -105,7 +137,7 @@ const getUserByEmail = (email) => {
   return usersData.find((user) => user.email === email);
 };
 
-const addUser = (newUserData) => {
+/*const addUser = (newUserData) => {
   const userExists = usersData.some(
     (user) =>
       user.email === newUserData.email || user.username === newUserData.username
@@ -125,6 +157,29 @@ const addUser = (newUserData) => {
   } else {
     return null;
   }
+};*/
+
+const addUser = async (newUserData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/autenticazione/signup",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUserData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di registrazione:",
+      error.message
+    );
+    return "Credenziali non valide";
+  }
 };
 
 const deleteUserById = (idDeleteUser) => {
@@ -134,7 +189,7 @@ const deleteUserById = (idDeleteUser) => {
   }
 };
 
-const modifyUser = (newUserData) => {
+/*const modifyUser = (newUserData) => {
   const duplicateUsers = usersData.filter(
     (user) =>
       user.id !== newUserData.id &&
@@ -150,12 +205,35 @@ const modifyUser = (newUserData) => {
   } else {
     return false;
   }
+};*/
+
+const modifyUser = async (newUserData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/area-personale/modifica-dati-utente",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(newUserData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di modifica dell'utente:",
+      error.message
+    );
+    return "Modifica non riuscita";
+  }
 };
 
 export {
   getAllUsers,
   getPremiumUsers,
-  getUserByUsernameAndPassword,
   getUserByEmailAndPassword,
   getUserById,
   getUserByUsername,

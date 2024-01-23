@@ -1,4 +1,5 @@
-const messagesData = [
+import Cookies from "js-cookie";
+/*const messagesData = [
   {
     id: 1,
     testo: "Ciao, come stai?",
@@ -14,17 +15,9 @@ const messagesData = [
     idUtente2: 1,
   },
   // Aggiungi altri messaggi secondo necessità
-];
+];*/
 
-const getAllMessages = () => {
-  return messagesData;
-};
-
-const getMessageById = (messageId) => {
-  return messagesData.find((message) => message.id === messageId);
-};
-
-const addMessage = (newMessageData) => {
+/*const addMessage = (newMessageData) => {
   const newMessageId = messagesData.length + 1;
 
   const newMessage = {
@@ -35,31 +28,62 @@ const addMessage = (newMessageData) => {
   messagesData.push(newMessage);
 
   return newMessage;
-};
+};*/
 
-const deleteMessageById = (messageId) => {
-  const index = messagesData.findIndex((message) => message.id === messageId);
-  if (index !== -1) {
-    messagesData.splice(index, 1);
+const addMessage = async (newMessageData) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/chat/aggiungi-messaggio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(newMessageData),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante l'invio del messaggio:", error.message);
+    return "Errore durante l'invio del messaggio";
   }
 };
 
-const getMessagesByUserId = (userId) => {
+/*const getMessagesByUsersId = (userId1, userId2) => {
   return messagesData.filter(
-    (message) => message.idUtente1 === userId || message.idUtente2 === userId
+    (message) =>
+      (message.idUtente1 === userId1 && message.idUtente2 === userId2) ||
+      (message.idUtente2 === userId1 && message.idUtente1 === userId2)
   );
+};*/
+
+const getMessagesByUsersId = async (userId1, userId2) => {
+  try {
+    const data = {
+      id: 0,
+      descrizione: "",
+      orarioInvio: "",
+      mittente: userId1,
+      destinatario: userId2,
+    };
+    const response = await fetch(
+      `http://localhost:4000/api/chat/visualizza-chat`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(data),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Errore nella richiesta degli annunci";
+  }
 };
 
-const modifyMessage = (modifiedMessage) => {
-  deleteMessageById(modifiedMessage.id);
-  messagesData.push(modifiedMessage);
-};
-
-export {
-  getAllMessages,
-  getMessageById,
-  addMessage,
-  deleteMessageById,
-  getMessagesByUserId,
-  modifyMessage,
-};
+export { addMessage, getMessagesByUsersId };

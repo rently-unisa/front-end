@@ -7,8 +7,8 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState("");
+  const [daltonico, setDaltonico] = useState(false);
 
-  // Verifica la presenza di un cookie di autenticazione al caricamento della pagina
   useEffect(() => {
     const savedUsername = Cookies.get("username");
     if (savedUsername) {
@@ -20,23 +20,26 @@ export const AuthProvider = ({ children }) => {
   const login = (user) => {
     setIsLoggedIn(true);
     setUsername(user.username);
-
-    // Salva il nome utente nel cookie di autenticazione
     Cookies.set("username", user.username);
+    Cookies.set("id", user.id);
+    Cookies.set("token", user.token);
   };
 
   const logout = () => {
     setIsLoggedIn(false);
     setUsername("");
 
-    // Rimuovi il cookie di autenticazione al logout
     Cookies.remove("username");
+    Cookies.remove("id");
+    Cookies.remove("token");
   };
 
-  const contextValue = useMemo(
-    () => ({ isLoggedIn, username, login, logout }),
-    [isLoggedIn, username]
-  );
+  const contextValue = useMemo(() => {
+    const toggleDaltonico = () => {
+      setDaltonico(!daltonico);
+    };
+    return { isLoggedIn, username, daltonico, login, logout, toggleDaltonico };
+  }, [isLoggedIn, username, daltonico]);
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

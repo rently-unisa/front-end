@@ -92,7 +92,7 @@
   font-family: var(--font), sans-serif;
   font-size: 1.5rem;
   font-style: normal;
-  line-height: 1.75rem; /* 116.667% */
+  line-height: 1.75rem;
   font-weight: normal;
 }
 
@@ -101,7 +101,7 @@
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 100;
-  line-height: 1.75rem; /* 116.667% */
+  line-height: 1.75rem;
 }
 
 .titolo4 {
@@ -109,7 +109,7 @@
   font-family: var(--font), sans-serif;
   font-size: 1.25rem;
   font-style: normal;
-  line-height: 1.75rem; /* 140% */
+  line-height: 1.75rem; 
   font-weight: normal;
   margin: 0;
 }
@@ -179,4 +179,39 @@
   width: 80%;
   border-radius: 0.625rem;
   border: 1px solid var(--nero);
+}
+
+@media only screen and (max-width: 768px) {
+  .container {
+    display: flex;
+  }
+  
+  .areaPersonaleContainer {
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+    gap: 5rem;
+  }
+
+  .linkContainer {
+    width: 100%;
+    padding: 0;
+    padding-bottom: 2rem;
+  }
+
+  .dati {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    
+  }
+
+  .parametriContainer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .parametri {
+    width: 100%;
+  }
 }

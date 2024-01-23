@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
-import dayjs from "dayjs";
+//import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { getAllAds, getPremiumAds } from "../services/annunciNoleggio";
 import { getObjectValutationsByAnnuncioId } from "../services/valutazioneOggetto";
-import { getRentalsByAnnuncioId } from "../services/noleggi";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+//import { getRentalsByAnnuncioId } from "../services/noleggi";
+//import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+//import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+//import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+//import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import StarIcon from "@mui/icons-material/Star";
@@ -18,15 +18,16 @@ import "../style/Catalogo.css";
 const Catalogo = () => {
   const [premiumAds, setPremiumAds] = useState([]);
   const [allAds, setAllAds] = useState([]);
+  const [ratings, setRatings] = useState([]);
   const [isCategoriaOpen, setIsCategoriaOpen] = useState(false);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
-  const [isDateOpen, setIsDateOpen] = useState(false);
+  //const [isDateOpen, setIsDateOpen] = useState(false);
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedRating, setSelectedRating] = useState([]);
   const [selectedOrder, setSelectedOrder] = useState();
-  const [start, setStart] = useState(null);
-  const [end, setEnd] = useState(null);
+  //const [start, setStart] = useState(null);
+  //const [end, setEnd] = useState(null);
   const termineRicerca = useParams().search;
   const [searchTerm, setSearchTerm] = useState("");
   const [searchTerm1, setSearchTerm1] = useState(
@@ -40,34 +41,76 @@ const Catalogo = () => {
     "Giardino e giardinaggio",
     "Arte e musica",
     "Casa e cucina",
-    "Auto e moto",
     "Oggettistica professionale",
     "Sport",
   ];
 
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      ELETTRONICA: "Elettronica",
+      LIBRI: "Libri",
+      ELETTRODOMESTICI: "Elettrodomestici",
+      GIARDINO: "Giardino e giardinaggio",
+      ARTE: "Arte e musica",
+      CASAECUCINA: "Casa e cucina",
+      OGGETTISTICAPROFESSIONALE: "Oggettistica professionale",
+      SPORT: "Sport",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
+
   const orderOptions = [
-    "Default",
     "Prezzo crescente",
     "Prezzo decrescente",
     "Nome A-Z",
     "Nome Z-A",
   ];
 
+  const getRatingAverage = async (id) => {
+    try {
+      const response = await getObjectValutationsByAnnuncioId(id);
+      if (response.ok) {
+        const rentals = await response.json();
+        const rental =
+          rentals.reduce((sum, rating) => sum + rating.voto, 0) /
+          rentals.length;
+        return { id, media: rental };
+      } else {
+        return { id, media: 0 };
+      }
+    } catch (error) {
+      console.error("Error fetching average:", error);
+      return { id, media: 0 };
+    }
+  };
+
   useEffect(() => {
-    const fetchPremiumAds = async () => {
-      const premiumData = await getPremiumAds();
-      setPremiumAds(premiumData);
-    };
+    getPremiumAds().then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          setPremiumAds(ad);
+        });
+      }
+    });
 
-    const fetchAllAds = async () => {
-      const allData = await getAllAds();
-      setAllAds(allData);
-    };
+    getAllAds().then((response) => {
+      if (response.ok) {
+        response.json().then(async (ads) => {
+          const rentalPromises = ads.map((ad) => getRatingAverage(ad.id));
+          const rentalsData = await Promise.all(rentalPromises);
 
-    fetchPremiumAds();
-    fetchAllAds();
-    if (termineRicerca) console.log(termineRicerca);
-  }, [termineRicerca]);
+          const newRentalsMapping = {};
+          rentalsData.forEach((rentalData) => {
+            newRentalsMapping[rentalData.id] = rentalData.media;
+          });
+
+          setAllAds(ads);
+          setRatings(newRentalsMapping);
+        });
+      }
+    });
+  }, []);
 
   const catalogItems = [
     ...premiumAds,
@@ -77,10 +120,10 @@ const Catalogo = () => {
   ];
 
   const autocompleteItems = catalogItems
-    .filter((ad) => ad.titolo.toLowerCase().includes(searchTerm.toLowerCase()))
+    .filter((ad) => ad.nome.toLowerCase().includes(searchTerm.toLowerCase()))
     .map((ad) => (
-      <div key={ad.id} onClick={() => setSearchTerm(ad.titolo)}>
-        {ad.titolo}
+      <div key={ad.id} onClick={() => setSearchTerm(ad.nome)}>
+        {ad.nome}
       </div>
     ));
 
@@ -92,9 +135,9 @@ const Catalogo = () => {
     isRatingOpen ? setIsRatingOpen(false) : setIsRatingOpen(true);
   };
 
-  const handleDate = () => {
+  /*const handleDate = () => {
     isDateOpen ? setIsDateOpen(false) : setIsDateOpen(true);
-  };
+  };*/
 
   const handleOrder = () => {
     isOrderOpen ? setIsOrderOpen(false) : setIsOrderOpen(true);
@@ -142,7 +185,7 @@ const Catalogo = () => {
   const isCategorySelected = (ad) => {
     return (
       selectedCategories.length === 0 ||
-      selectedCategories.includes(ad.categoria)
+      selectedCategories.includes(mapCategoriaToValue(ad.categoria))
     );
   };
 
@@ -223,23 +266,13 @@ const Catalogo = () => {
   );
 
   const isRatingSelected = (ad) => {
-    const adRatings = getObjectValutationsByAnnuncioId(ad.id);
-
     if (selectedRating.length === 0) {
       return true;
     }
 
-    if (adRatings.length === 0) {
-      return false;
-    }
-
-    const averageRating =
-      adRatings.reduce((sum, rating) => sum + rating.voto, 0) /
-      adRatings.length;
-
     return (
       selectedRating.reduce((min, rating) => (min <= rating ? min : rating)) <=
-      averageRating
+      ratings[ad.id]
     );
   };
 
@@ -291,19 +324,15 @@ const Catalogo = () => {
       case "Prezzo decrescente":
         return [...catalogItems].sort((a, b) => b.prezzo - a.prezzo);
       case "Nome A-Z":
-        return [...catalogItems].sort((a, b) =>
-          a.titolo.localeCompare(b.titolo)
-        );
+        return [...catalogItems].sort((a, b) => a.nome.localeCompare(b.nome));
       case "Nome Z-A":
-        return [...catalogItems].sort((a, b) =>
-          b.titolo.localeCompare(a.titolo)
-        );
+        return [...catalogItems].sort((a, b) => b.nome.localeCompare(a.nome));
       default:
         return catalogItems;
     }
   };
 
-  const Datebox = isDateOpen ? (
+  /*const Datebox = isDateOpen ? (
     <div className="CheckboxContainer">
       <button className="checkboxButton" onClick={handleDate}>
         Date
@@ -379,10 +408,10 @@ const Catalogo = () => {
     } else {
       return true;
     }
-  };
+  };*/
 
   const filteredCatalogItems = orderedCatalogItems().filter((ad) => {
-    const title = ad.titolo.toLowerCase();
+    const title = ad.nome.toLowerCase();
     const searchTermLower = searchTerm1.toLowerCase();
     return title.includes(searchTermLower);
   });
@@ -390,73 +419,79 @@ const Catalogo = () => {
   return (
     <div className="Page">
       <Navbar />
-      <div className="vertical">
-        <h2>Annunci</h2>
-        <div className="catalogInside">
-          <div className="cercaFiltra">
-            <div className="Ricerca">
-              <input
-                type="text"
-                placeholder="Cerca articolo"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-              <button
-                className="ricercaButton"
-                onClick={() => setSearchTerm1(searchTerm)}
-              >
-                Cerca
-              </button>
-              {autocompleteItems.length > 0 &&
-                searchTerm !== "" &&
-                !(
-                  autocompleteItems.length === 1 &&
-                  autocompleteItems.map((item) => {
-                    return item.props.children === searchTerm;
-                  })
-                ) && (
-                  <div className="dropdown-content1">
-                    <div className="dropdown-style1">
-                      {autocompleteItems.slice(0, 5).map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setSearchTerm(item.props.children)}
-                        >
-                          {item.props.children}
-                        </button>
-                      ))}
+      {filteredCatalogItems && (
+        <div className="vertical">
+          <h2>Annunci</h2>
+          <div className="catalogInside">
+            <div className="cercaFiltra">
+              <div className="Ricerca">
+                <input
+                  type="text"
+                  placeholder="Cerca articolo"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <button
+                  className="ricercaButton"
+                  onClick={() => setSearchTerm1(searchTerm)}
+                >
+                  Cerca
+                </button>
+                {autocompleteItems.length > 0 &&
+                  searchTerm !== "" &&
+                  !(
+                    autocompleteItems.length === 1 &&
+                    autocompleteItems.map((item) => {
+                      return item.props.children === searchTerm;
+                    })
+                  ) && (
+                    <div className="dropdown-content1">
+                      <div className="dropdown-style1">
+                        {autocompleteItems.slice(0, 5).map((item) => (
+                          <button
+                            key={item.key}
+                            onClick={() => setSearchTerm(item.props.children)}
+                          >
+                            {item.props.children}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+              </div>
+              <div className="Filtra">
+                {Categoriabox}
+                {/*{Datebox}*/}
+                {Ratingbox}
+                {Orderbox}
+              </div>
+            </div>
+            <div className="listaAnnunciCatalogo">
+              {filteredCatalogItems.map((ad) => (
+                <Link
+                  className={`${isCategorySelected(ad) ? "" : "inactive"} ${
+                    isRatingSelected(ad) ? "" : "inactive"
+                  }`} //${isDateSelected(ad) ? "" : "inactive"}}
+                  to={`/dettagli/${ad.id}`}
+                  key={ad.id}
+                >
+                  <div className="card">
+                    <img
+                      src={ad.immagine}
+                      alt="Immgagine annuncio"
+                      loading="lazy"
+                    />
+                    <div className="card-description">
+                      <p>{ad.nome}</p>
+                      <h6>€ {ad.prezzo}/giorno</h6>
                     </div>
                   </div>
-                )}
+                </Link>
+              ))}
             </div>
-            <div className="Filtra">
-              {Categoriabox}
-              {Datebox}
-              {Ratingbox}
-              {Orderbox}
-            </div>
-          </div>
-          <div className="listaAnnunciCatalogo">
-            {filteredCatalogItems.map((ad) => (
-              <Link to={`/dettagli/${ad.id}`} key={ad.id}>
-                <div
-                  className={`card ${
-                    isCategorySelected(ad) ? "" : "inactive"
-                  } ${isRatingSelected(ad) ? "" : "inactive"} ${
-                    isDateSelected(ad) ? "" : "inactive"
-                  }`}
-                >
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
-                  <div className="card-description">
-                    <p>{ad.titolo}</p>
-                    <h6>€ {ad.prezzo}/giorno</h6>
-                  </div>
-                </div>
-              </Link>
-            ))}
           </div>
         </div>
-      </div>
+      )}
       <Footer />
     </div>
   );

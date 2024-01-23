@@ -134,3 +134,23 @@
 .opzioni a {
   color: var(--nero);
 }
+
+@media screen and (max-width: 768px) {
+  .box {
+    width: 100%;
+    position: fixed;
+    height: 40rem;
+  }
+  .parametro {
+    width: 90%;
+  }
+  .parametro input {
+    width: 90%;
+  }
+  .top {
+    display: none;
+  }
+  .bottom {
+    display: none;
+  }
+}

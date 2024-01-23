@@ -1,52 +1,140 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import "../style/ProfiloUtente.css";
 import { Link, useParams } from "react-router-dom";
 import { getUserById } from "../services/utenti";
 import { getAdsByUserId } from "../services/annunciNoleggio";
 import { getUserValutationsByValutatoId } from "../services/valutazioneUtente";
 import Loader from "./Loader";
-import { Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import Slider from "@mui/material/Slider";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import Chat from "./Chat";
+import Cookies from "js-cookie";
+import { useAuth } from "../AuthContext";
+import { getMessagesByUsersId } from "../services/messaggi";
 
 const ProfiloUtente = () => {
+  const { isLoggedIn } = useAuth();
   const userId = parseInt(useParams().id, 10);
   const [User, setUser] = useState();
   const [userAds, setUserAds] = useState();
   const [ratings, setRatings] = useState();
-  const [usernames, setUsernames] = useState();
+  const [usernames, setUsernames] = useState({});
+  const [chatParams, setChatParams] = useState({
+    idEmittente: null,
+    idRicevente: null,
+  });
+  const [chatVisibility, setChatVisibility] = useState(false);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
+
+  const handleOpenChat = (idEmittente, idRicevente) => {
+    getMessagesByUsersId(idEmittente, idRicevente).then((response) => {
+      if (response.ok) {
+        response.json().then((messages) => {
+          setChatParams({ idEmittente, idRicevente, messages });
+        });
+      }
+    });
+    setChatVisibility(true);
+  };
+
+  const getRatingUsername = async (id) => {
+    try {
+      const response = await getUserById(id);
+      if (response.ok) {
+        const user = await response.json();
+        return { id, username: user.username };
+      } else {
+        return { id, username: "Utente sconosciuto" };
+      }
+    } catch (error) {
+      return { id, username: "Utente sconosciuto" };
+    }
+  };
 
   useEffect(() => {
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
     const fetchUser = async () => {
-      const userData = await getUserById(userId);
-      await new Promise((resolve) => setTimeout(resolve, 2000)); //non serve
-      setUser(userData);
-      fetchUserAds(userData.id);
-      fetchRating(userData.id);
+      getUserById(userId).then((response) => {
+        if (response.ok) {
+          response.json().then((userData) => {
+            fetchUserAds(userData.id);
+            fetchRating(userData.id);
+            setUser(userData);
+          });
+        } else {
+          response.json().then((result) => {
+            handleAlert("error", result.message);
+          });
+        }
+      });
     };
 
     const fetchUserAds = async (id) => {
-      const ads = await getAdsByUserId(id);
-      setUserAds(ads);
+      await getAdsByUserId(id).then((response) => {
+        if (response.ok) {
+          response.json().then((ads) => {
+            setUserAds(ads);
+          });
+        } else {
+          response.json().then((result) => {
+            handleAlert("error", result.message);
+          });
+        }
+      });
     };
 
     const fetchRating = async (id) => {
-      const userRatings = await getUserValutationsByValutatoId(id);
-      setRatings(userRatings);
-      const names = await Promise.all(
-        userRatings.map(async (rating) => {
-          const username = await fetchUsername(rating.idValutatore);
-          return username;
-        })
-      );
-      setUsernames(names);
-    };
+      getUserValutationsByValutatoId(id).then((response) => {
+        if (response.ok) {
+          response.json().then(async (adRatings) => {
+            const userPromises = adRatings.map((rating) =>
+              getRatingUsername(rating.valutatore)
+            );
+            const usersData = await Promise.all(userPromises);
 
-    const fetchUsername = async (id) => {
-      const name = await getUserById(id);
-      return name;
+            const newUsernameMapping = {};
+            usersData.forEach((userData) => {
+              newUsernameMapping[userData.id] = userData.username;
+            });
+
+            setRatings(adRatings);
+            setUsernames(newUsernameMapping);
+          });
+        } else {
+          response.json().then((result) => {
+            handleAlert("error", result.message);
+          });
+        }
+      });
     };
 
     fetchUser();
@@ -55,27 +143,69 @@ const ProfiloUtente = () => {
   return (
     <div className="Page">
       <Navbar />
-      {User ? (
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
+      {User && userAds && ratings ? (
         <div className="container">
           <h1>Profilo utente</h1>
-          <div className="contact">
-            <div className="contactUser">
+          <div className="topSection">
+            <div className="contactUserArea">
               <AccountCircleIcon fontSize="large" className="contactIcon" />
               <p>{User.username}</p>
               <p>{User.nome}</p>
               <p>{User.cognome}</p>
             </div>
-            <div className="contactButton">
-              <button>Contatta</button>
+            <div>
+              <div>
+                <button
+                  className="contactUserButton"
+                  onClick={() =>
+                    isLoggedIn
+                      ? handleOpenChat(Cookies.get("id"), userId)
+                      : handleAlert(
+                          "error",
+                          "Fare l'accesso per poter fare una richiesta"
+                        )
+                  }
+                >
+                  Contatta
+                </button>
+                <Chat
+                  trigger={chatVisibility}
+                  setTrigger={setChatVisibility}
+                  idEmittente={chatParams.idEmittente}
+                  idRicevente={chatParams.idRicevente}
+                  messages={chatParams.messages}
+                />
+              </div>
             </div>
           </div>
-          <div className="listaAnnunciCatalogo">
+          <div className="listaAnnunciProfilo">
             {userAds.map((ad) => (
               <Link to={`/dettagli/${ad.id}`} key={ad.id}>
                 <div className={`card `}>
-                  <img src={ad.immagine} alt="Immgagine annuncio" />
+                  <img
+                    src={ad.immagine}
+                    alt="Immgagine annuncio"
+                    loading="lazy"
+                  />
                   <div className="card-description">
-                    <p>{ad.titolo}</p>
+                    <p>{ad.nome}</p>
                     <h6>€ {ad.prezzo}/giorno</h6>
                   </div>
                 </div>
@@ -98,8 +228,13 @@ const ProfiloUtente = () => {
                       (ratings.length * 2) ===
                     0
                       ? "Nessuna recensione"
-                      : ratings.reduce((sum, rating) => sum + rating.voto, 0) /
-                        (ratings.length * 2)}
+                      : (
+                          ratings.reduce(
+                            (sum, rating) => sum + rating.voto,
+                            0
+                          ) /
+                          (ratings.length * 2)
+                        ).toFixed(2)}
                   </div>
                   <div className="ratingStars">
                     <Rating
@@ -237,11 +372,7 @@ const ProfiloUtente = () => {
                 {ratings.map((rating) => (
                   <div key={rating.id} className="containerUserReviews">
                     <div className="usernameUserReviews">
-                      {
-                        usernames.find(
-                          (user) => user.id === rating.idValutatore
-                        )?.username
-                      }
+                      {usernames[rating.valutatore]}
                     </div>
                     <div className="iconsUserReviews">
                       <Rating

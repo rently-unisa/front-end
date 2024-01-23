@@ -90,6 +90,7 @@
 }
 
 .popupButton button {
+  width: 100%;
   color: var(--bianco);
   font-size: var(--font-size);
   font-family: var(--font), sans-serif;

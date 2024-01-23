@@ -1,5 +1,6 @@
-import React from "react";
-import logo from "../image/Logo.png";
+import React, { useEffect, useState } from "react";
+import logoNonDaltonici from "../image/Logo.png";
+import logoDaltonici from "../image/RentlyFinaleDaltonici.png";
 import insta from "../image/Instagram.png";
 import "../style/Footer.css";
 import "../style/App.css";
@@ -7,7 +8,8 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
 const Footer = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, toggleDaltonico, daltonico } = useAuth();
+  const [logo, setLogo] = useState(logoNonDaltonici);
 
   const userLink = isLoggedIn ? (
     <Link to="/profilo">
@@ -27,7 +29,12 @@ const Footer = () => {
   const handleColorChange = () => {
     const body = document.body;
     body.classList.toggle("blue");
+    toggleDaltonico();
   };
+
+  useEffect(() => {
+    setLogo(daltonico ? logoDaltonici : logoNonDaltonici);
+  }, [daltonico]);
 
   return (
     <div className="footer">

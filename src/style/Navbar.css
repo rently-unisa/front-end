@@ -135,9 +135,9 @@
   align-items: flex-start;
   gap: 1.0625rem;
   border-radius: 0.625rem;
-  border-top: 2px solid #528f5f;
-  border-left: 2px solid #528f5f;
-  background: #17643b;
+  border-top: 2px solid var(--medio);
+  border-left: 2px solid var(--medio);
+  background: var(--scuro);
 }
 
 .dropdown-content a,
@@ -173,12 +173,15 @@
   display: block;
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1000px) {
   .navbar {
     height: auto;
     padding: 1rem;
+    flex-direction: column;
   }
+}
 
+@media screen and (max-width: 768px) {
   .logo-container {
     width: 100%;
     justify-content: center;
@@ -186,7 +189,7 @@
   }
 
   .logo {
-    width: 3rem;
+    width: 4.4rem;
   }
 
   .brand-name {
@@ -195,24 +198,21 @@
   }
 
   .menu {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
     gap: 1rem;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
   }
 
   .search-bar {
-    width: 100%;
-    order: -1;
+    width: 60%;
   }
 
   .menu-item {
     font-size: 1.25rem;
     line-height: 1.75rem;
     margin-bottom: 0.5rem;
-  }
-
-  .user-menu {
-    margin-top: 1rem;
   }
 
   .dropdown-content {

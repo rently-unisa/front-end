@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useAuth } from "../AuthContext";
-import { getUserByUsername } from "../services/utenti";
 import { getAdById, modifyAd } from "../services/annunciNoleggio";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -12,69 +10,150 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import "../style/FormAnnunci.css";
+import Cookies from "js-cookie";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 const ModificaAnnuncio = () => {
-  const { username } = useAuth();
-  const user = getUserByUsername(username);
-  const idUtente = user.id;
+  const idUtente = Cookies.get("id");
+  const navigate = useNavigate();
   const idAnnuncio = parseInt(useParams().id, 10);
   const [titolo, setTitolo] = useState();
   const [descrizione, setDescrizione] = useState();
   const [prezzo, setPrezzo] = useState();
   const [strada, setStrada] = useState();
-  const [civico, setCivico] = useState();
-  const [città, setCittà] = useState();
+  const [citta, setCitta] = useState();
   const [cap, setCap] = useState();
   const [immagine, setImmagine] = useState();
   const [dataFine, setDataFine] = useState();
   const [categoria, setCategoria] = useState();
-  const [condizioni, setCondizioni] = useState();
+  const [condizione, setCondizioni] = useState();
+  const [immaginiCaricate, setImmaginiCaricate] = useState([]);
+  const [alertState, setAlertState] = useState("error");
+  const [alertMessage, setAlertMessage] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const mapCategoriaToValue = (selectedCategoria) => {
+    const categoriaMappings = {
+      Elettronica: "ELETTRONICA",
+      Libri: "LIBRI",
+      Elettrodomestici: "ELETTRODOMESTICI",
+      "Giardino e giardinaggio": "GIARDINO",
+      "Arte e musica": "ARTE",
+      "Casa e cucina": "CASAECUCINA",
+      "Oggettistica professionale": "OGGETTISTICAPROFESSIONALE",
+      Sport: "SPORT",
+    };
+
+    return categoriaMappings[selectedCategoria];
+  };
+
+  const mapCondizioneToValue = (selectedCondizione) => {
+    const condizioneMappings = {
+      Buona: "BUONA",
+      Ottima: "OTTIMA",
+      Discreta: "DISCRETA",
+    };
+
+    return condizioneMappings[selectedCondizione];
+  };
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const handleAlert = (state, message) => {
+    setAlertState(state);
+    setAlertMessage(message);
+    handleClick({ vertical: "top", horizontal: "center" });
+  };
 
   useEffect(() => {
-    const fetchAd = async () => {
-      const adData = await getAdById(idAnnuncio);
-      setTitolo(adData.titolo);
-      setDescrizione(adData.descrizione);
-      setPrezzo(adData.prezzo);
-      setStrada(adData.strada);
-      setCivico(adData.civico);
-      setCittà(adData.città);
-      setCap(adData.cap);
-      setImmagine(adData.immagine);
-      setDataFine(adData.dataFine);
-      setCategoria(adData.categoria);
-      setCondizioni(adData.condizioni);
+    if (Cookies.get("id") === undefined) navigate("/forbidden");
 
-      if (
-        dataFine &&
-        dayjs(dataFine).isValid() &&
-        dayjs(dataFine).isBefore(dayjs(), "day")
-      ) {
-        // Se la data è precedente alla data attuale, reimposta a null
-        setDataFine(null);
-      }
+    const handleAlert = (state, message) => {
+      setAlertState(state);
+      setAlertMessage(message);
+      handleClick({ vertical: "top", horizontal: "center" });
+    };
+
+    const fetchAd = async () => {
+      await getAdById(idAnnuncio).then((response) => {
+        if (response.ok) {
+          response.json().then((ad) => {
+            if (ad.idUtente === Cookies.get("id")) {
+              setTitolo(ad.nome);
+              setDescrizione(ad.descrizione);
+              setPrezzo(ad.prezzo);
+              setStrada(ad.strada);
+              setCitta(ad.citta);
+              setCap(ad.cap);
+              setImmagine(ad.immagine);
+              setDataFine(ad.dataFine);
+              setCategoria(ad.categoria);
+              setCondizioni(ad.condizione);
+            } else navigate("/forbidden");
+          });
+        } else {
+          handleAlert("error", "problemi a recuperare l'annuncio");
+        }
+      });
     };
     fetchAd();
-  }, [idAnnuncio, dataFine]);
+  }, [idAnnuncio, navigate]);
 
   const handleModify = () => {
-    const modifiedAd = {
-      idUtente,
-      titolo,
-      strada,
-      civico,
-      città,
-      cap,
-      descrizione,
-      immagine,
-      prezzo,
-      categoria,
-      dataFine,
-      condizioni,
-    };
-    modifyAd(modifiedAd);
+    if (/.*\s.*\s.*./.test(strada)) {
+      if (
+        titolo !== "" &&
+        strada !== "" &&
+        titolo !== "" &&
+        citta !== "" &&
+        cap !== "" &&
+        descrizione !== "" &&
+        prezzo !== "" &&
+        categoria !== undefined &&
+        dataFine !== undefined &&
+        condizione !== undefined
+      ) {
+        const modifiedAd = {
+          id: idAnnuncio,
+          idUtente,
+          nome: titolo,
+          strada,
+          citta,
+          cap,
+          descrizione,
+          prezzo: parseFloat(prezzo).toFixed(2),
+          categoria: mapCategoriaToValue(categoria),
+          dataFine: dayjs(dataFine).format("YYYY-MM-DD"),
+          condizione: mapCondizioneToValue(condizione),
+        };
+        modifyAd(modifiedAd, immaginiCaricate).then((response) => {
+          if (!response || response.status !== 201) {
+            handleAlert("error", "Problemi nella modifica dell'annuncio");
+          } else {
+            navigate("/annunci");
+          }
+        });
+      } else {
+        handleAlert(
+          "error",
+          "Non è possibile creare un annuncio senza riempire tutti i parametri"
+        );
+      }
+    } else {
+      handleAlert("error", "Inserire l'indirizzo correttamente");
+    }
   };
 
   const handleCondizioneChange = (e) => {
@@ -87,6 +166,7 @@ const ModificaAnnuncio = () => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
+    setImmaginiCaricate(file);
     if (file) {
       // Leggi il file come array di byte
       const reader = new FileReader();
@@ -140,7 +220,7 @@ const ModificaAnnuncio = () => {
   const buttonStyle = {
     backgroundColor: "#282A28",
     fontFamily: "Fredoka",
-    textTransform: "capitalize",
+    textTransform: "initial",
     fontSize: "1rem",
     "&:hover": {
       backgroundColor: "#FFFDF8",
@@ -165,6 +245,23 @@ const ModificaAnnuncio = () => {
   return (
     <div className="Page">
       <Navbar />
+      <Box sx={{ width: 500 }}>
+        <Snackbar
+          anchorOrigin={{ vertical: "top", horizontal: "center" }}
+          open={open}
+          autoHideDuration={4000}
+          onClose={handleClose}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={alertState}
+            variant="filled"
+            sx={{ width: "100%" }}
+          >
+            {alertMessage}
+          </Alert>
+        </Snackbar>
+      </Box>
       <div className="annunciBody">
         <h1>Modifica il tuo annuncio</h1>
         <div className="annunciContainer">
@@ -206,13 +303,13 @@ const ModificaAnnuncio = () => {
                   <input
                     className="input"
                     type="text"
-                    value={città}
+                    value={citta}
                     placeholder="Inserisci la città"
-                    onChange={(e) => setCittà(e.target.value)}
+                    onChange={(e) => setCitta(e.target.value)}
                   />
                 </div>
                 <div className="annunciFields">
-                Descrizione
+                  Descrizione
                   <textarea
                     className="input"
                     value={descrizione}
@@ -231,6 +328,118 @@ const ModificaAnnuncio = () => {
                   />
                 </div>
               </div>
+              <div className="containerSezione2">
+                <div className="fields">
+                  Seleziona una categoria
+                  <div className="annunciRadioButton">
+                    <label>
+                      <input
+                        type="radio"
+                        value="Elettronica"
+                        checked={categoria === "Elettronica"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Elettronica
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Libri"
+                        checked={categoria === "Libri"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Libri
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Elettrodomestici"
+                        checked={categoria === "Elettrodomestici"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Elettrodomestici
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Giardino e giardinaggio"
+                        checked={categoria === "Giardino e giardinaggio"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Giardino e giardinaggio
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Arte e musica"
+                        checked={categoria === "Arte e musica"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Arte e musica
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Casa e cucina"
+                        checked={categoria === "Casa e cucina"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Casa e cucina
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Oggettistica professionale"
+                        checked={categoria === "Oggettistica professionale"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Oggettistica professionale
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Sport"
+                        checked={categoria === "Sport"}
+                        onChange={handleCategoriaChange}
+                      />
+                      Sport
+                    </label>
+                  </div>
+                </div>
+                <div className="fields">
+                  Seleziona una condizione
+                  <div className="annunciRadioButton">
+                    <label>
+                      <input
+                        type="radio"
+                        value="Discreta"
+                        checked={condizione === "Discreta"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Discreta
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Buona"
+                        checked={condizione === "Buona"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Buona
+                    </label>
+                    <label>
+                      <input
+                        type="radio"
+                        value="Ottima"
+                        checked={condizione === "Ottima"}
+                        onChange={handleCondizioneChange}
+                      />
+                      Ottima
+                    </label>
+                  </div>
+                </div>
+                {Databox}
+              </div>
             </div>
             <div className="rightAnnunciContainer">
               <div className="imageAnnunciContainer">
@@ -239,124 +448,14 @@ const ModificaAnnuncio = () => {
               {Imagebox}
             </div>
           </div>
-          <div className="containerSezione2">
-            <div className="fields">
-              Seleziona una categoria
-              <div className="annunciRadioButton">
-                <label>
-                  <input
-                    type="radio"
-                    value="Elettronica"
-                    checked={categoria === 'Elettronica'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Elettronica
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Libri"
-                    checked={categoria === 'Libri'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Libri
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Elettrodomestici"
-                    checked={categoria === 'Elettrodomestici'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Elettrodomestici
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Giardino e giardinaggio"
-                    checked={categoria === 'Giardino e giardinaggio'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Giardino e giardinaggio
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Arte e musica"
-                    checked={categoria === 'Arte e musica'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Arte e musica
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Casa e cucina"
-                    checked={categoria === 'Casa e cucina'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Casa e cucina
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Oggettistica professionale"
-                    checked={categoria === 'Oggettistica professionale'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Oggettistica professionale
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Sport"
-                    checked={condizioni === 'Sport'}
-                    onChange={handleCategoriaChange}
-                  />
-                  Sport
-                </label>
-              </div>
-            </div>
-            <div className="fields">
-              Seleziona una condizione
-              <div className="annunciRadioButton">
-                <label>
-                  <input
-                    type="radio"
-                    value="Discreta"
-                    checked={condizioni === 'Discreta'}
-                    onChange={handleCondizioneChange}
-                  />
-                  Discreta
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Buona"
-                    checked={condizioni === 'Buona'}
-                    onChange={handleCondizioneChange}
-                  />
-                  Buona
-                </label>
-                <label>
-                  <input
-                    type="radio"
-                    value="Ottima"
-                    checked={condizioni === 'Ottima'}
-                    onChange={handleCondizioneChange}
-                  />
-                  Ottima
-                </label>
-              </div>
-            </div>
-            {Databox}
-          </div>
-          <button className="creaAnnuncioButton" onClick={handleModify}>Conferma</button>
+          <button className="creaAnnuncioButton" onClick={handleModify}>
+            Conferma
+          </button>
         </div>
       </div>
       <Footer />
     </div>
   );
 };
-// cambiare pulsante handleModify e titolo Modifica il tuo annuncio
+
 export default ModificaAnnuncio;

@@ -47,10 +47,11 @@ body.blue {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   z-index: 0;
   flex: 1;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -107,6 +108,10 @@ p {
   margin: 0rem;
 }
 
+a {
+  color: var(--nero);
+}
+
 .pulsante {
   width: 10rem;
   padding: 0.75rem;
@@ -118,6 +123,11 @@ p {
   font-size: var(--font-size);
   font-weight: 500;
   line-height: 1.5rem;
+}
+
+.pulsante a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .pulsante:hover {
@@ -156,4 +166,3 @@ p {
 .link:hover::after:not(p) {
   width: 100%;
 }
-

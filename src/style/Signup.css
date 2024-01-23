@@ -43,7 +43,7 @@
   gap: 0.6875rem;
 }
 
-.parametri {
+.params {
   display: flex;
   padding: 0.75rem 0.5625rem;
   justify-content: space-around;
@@ -53,7 +53,7 @@
   flex-wrap: wrap;
 }
 
-.parametro1 {
+.param {
   display: flex;
   width: 23.3125rem;
   flex-direction: column;
@@ -62,12 +62,12 @@
   gap: 0.25rem;
 }
 
-.parametro1 p {
+.param p {
   margin: 0rem;
 }
 
-.parametro1 input,
-.parametro1 ::placeholder {
+.param input,
+.param ::placeholder {
   overflow: hidden;
   white-space: nowrap;
   font-family: var(--font), sans-serif;
@@ -76,9 +76,36 @@
   line-height: 1.25rem;
 }
 
-.parametro1 input {
+.param input {
   width: 22.9375rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 768px) {
+  .topr {
+    display: none;
+  }
+  .bottoml {
+    display: none;
+  }
+  .box1 {
+    width: 90%;
+    height: 55rem;
+    position: relative;
+    top: 0;
+  }
+  .param {
+    align-items: center;
+  }
+
+  .param p {
+    width: 92.5%;
+    text-align: left;
+  }
+
+  .param input {
+    width: 90%;
+  }
 }

@@ -1,14 +1,22 @@
-import React, { useState } from "react";
-import logo from "../image/Logo.png";
+import React, { useEffect, useState } from "react";
+import logoNonDaltonici from "../image/Logo.png";
+import logoDaltonici from "../image/RentlyFinaleDaltonici.png";
 import search from "../image/search.svg";
 import "../style/Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import Cookies from "js-cookie";
 
 const Navbar = () => {
-  const { isLoggedIn, username, logout } = useAuth();
+  const { isLoggedIn, logout, daltonico } = useAuth();
+  const username = Cookies.get("username");
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
+  const [logo, setLogo] = useState(logoNonDaltonici);
+
+  useEffect(() => {
+    setLogo(daltonico ? logoDaltonici : logoNonDaltonici);
+  }, [daltonico]);
 
   const handleLogout = () => {
     logout();

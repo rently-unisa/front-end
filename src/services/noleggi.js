@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 const rentalsData = [
   {
     id: 1,
@@ -9,9 +10,9 @@ const rentalsData = [
     stato: "RICHIESTA",
     prezzoTotale: 150.5,
     idAnnuncio: 1,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 2,
@@ -23,9 +24,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 200.75,
     idAnnuncio: 2,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 3,
@@ -37,9 +38,9 @@ const rentalsData = [
     stato: "CONCLUSIONE",
     prezzoTotale: 300.2,
     idAnnuncio: 3,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 4,
@@ -51,9 +52,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 180.9,
     idAnnuncio: 4,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 5,
@@ -65,9 +66,9 @@ const rentalsData = [
     stato: "INIZIO",
     prezzoTotale: 250.0,
     idAnnuncio: 5,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 6,
@@ -79,9 +80,9 @@ const rentalsData = [
     stato: "RICHIESTA",
     prezzoTotale: 210.6,
     idAnnuncio: 6,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 7,
@@ -93,9 +94,9 @@ const rentalsData = [
     stato: "ACCETTATA",
     prezzoTotale: 180.0,
     idAnnuncio: 7,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 8,
@@ -107,9 +108,9 @@ const rentalsData = [
     stato: "CONCLUSIONE",
     prezzoTotale: 320.75,
     idAnnuncio: 3,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 9,
@@ -121,9 +122,9 @@ const rentalsData = [
     stato: "INIZIO",
     prezzoTotale: 190.3,
     idAnnuncio: 2,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 10,
@@ -135,9 +136,9 @@ const rentalsData = [
     stato: "FINE",
     prezzoTotale: 280.5,
     idAnnuncio: 1,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 11,
@@ -149,9 +150,9 @@ const rentalsData = [
     stato: "RIFIUTATA",
     prezzoTotale: 280.5,
     idAnnuncio: 2,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 12,
@@ -163,9 +164,9 @@ const rentalsData = [
     stato: "RIFIUTATA",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 13,
@@ -177,9 +178,9 @@ const rentalsData = [
     stato: "IN CORSO",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 14,
@@ -191,9 +192,9 @@ const rentalsData = [
     stato: "IN CORSO",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
-    valutazioneNoleggiante: false,
+    valutazioneAlNoleggiante: false,
     valutazioneAnnuncio: false,
-    valutazioneNoleggiatore: false,
+    valutazioneAlNoleggiatore: false,
   },
   {
     id: 15,
@@ -205,9 +206,9 @@ const rentalsData = [
     stato: "CONCLUSOCONVALUTAZIONE",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
-    valutazioneNoleggiante: true,
+    valutazioneAlNoleggiante: true,
     valutazioneAnnuncio: true,
-    valutazioneNoleggiatore: true,
+    valutazioneAlNoleggiatore: true,
   },
   {
     id: 16,
@@ -219,28 +220,207 @@ const rentalsData = [
     stato: "CONCLUSOCONVALUTAZIONE",
     prezzoTotale: 280.5,
     idAnnuncio: 3,
-    valutazioneNoleggiante: true,
+    valutazioneAlNoleggiante: true,
     valutazioneAnnuncio: true,
-    valutazioneNoleggiatore: true,
+    valutazioneAlNoleggiatore: true,
   },
 ];
 
-const getAllRentals = () => {
-  return rentalsData;
-};
-
-const getRentalById = (rentalId) => {
+/*const getRentalById = (rentalId) => {
   return rentalsData.find((rental) => rental.id === rentalId);
+};*/
+
+const getRentalById = async (rentalId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/visualizza-noleggio?idNoleggio=${rentalId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta del profilo utente:",
+      error.message
+    );
+  }
 };
 
-const addRental = (newRentalData) => {
-  const newRentalId = rentalsData.length + 1;
-  const newRental = {
-    id: newRentalId,
-    ...newRentalData,
-  };
+//Manca il backend
 
+/*const getRentalsByNoleggiante = (noleggianteId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiante === noleggianteId &&
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
+  );
+};*/
+
+const getRentalsByNoleggiante = async (noleggianteId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/noleggiante?idUtente=${noleggianteId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsByNoleggiatore = (noleggiatoreId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiatore === noleggiatoreId &&
+      [
+        "INIZIO",
+        "IN CORSO",
+        "FINE",
+        "CONCLUSIONE",
+        "CONCLUSOCONVALUTAZIONE",
+      ].includes(rental.stato)
+  );
+};*/
+
+const getRentalsByNoleggiatore = async (noleggiatoreId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/noleggiatore?idUtente=${noleggiatoreId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsRequestsByNoleggiante = (noleggianteId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiante === noleggianteId &&
+      ["ACCETTATA", "RICHIESTA", "RIFIUTATA"].includes(rental.stato)
+  );
+};*/
+
+const getRentalsRequestsByNoleggiante = async (noleggianteId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/richieste/noleggiante?idUtente=${noleggianteId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const getRentalsRequestsByNoleggiatore = (noleggiatoreId) => {
+  return rentalsData.filter(
+    (rental) =>
+      rental.noleggiatore === noleggiatoreId &&
+      ["ACCETTATA", "RICHIESTA"].includes(rental.stato)
+  );
+};*/
+
+const getRentalsRequestsByNoleggiatore = async (noleggiatoreId) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/noleggio/richieste/noleggiatore?idUtente=${noleggiatoreId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: Cookies.get("token"),
+        },
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Noleggi non recuperati";
+  }
+};
+
+/*const addRental = (newRental) => {
   rentalsData.push(newRental);
+};*/
+
+const addRental = async (newRental) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/noleggio/aggiungi-noleggio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(newRental),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Errore durante la richiesta di noleggio:", error.message);
+    return "Errore durante la richiesta di noleggio";
+  }
+};
+
+/*const modifyRental = (modifiedRental) => {
+  deleteRentalById(modifiedRental.id);
+  rentalsData.push(modifiedRental);
+};*/
+
+const modifyRental = async (modifiedRental) => {
+  try {
+    const response = await fetch(
+      "http://localhost:4000/api/noleggio/salva-noleggio",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: Cookies.get("token"),
+        },
+        body: JSON.stringify(modifiedRental),
+      }
+    );
+
+    return response;
+  } catch (error) {
+    console.error(
+      "Errore durante la richiesta di modifica del noleggio:",
+      error.message
+    );
+    return "Errore durante la richiesta di modifica del noleggio";
+  }
 };
 
 const deleteRentalById = (rentalId) => {
@@ -252,83 +432,13 @@ const deleteRentalById = (rentalId) => {
   console.log(rentalsData);
 };
 
-const getRentalsByAnnuncioId = (annuncioId) => {
-  return rentalsData.filter((rental) => rental.idAnnuncio === annuncioId);
-};
-
-const getRentalsByStato = (stato) => {
-  return rentalsData.filter((rental) => rental.stato === stato);
-};
-
-const getRentalsByDataInizio = (dataInizio) => {
-  return rentalsData.filter((rental) => rental.dataInizio === dataInizio);
-};
-
-const getRentalsByDataFine = (dataFine) => {
-  return rentalsData.filter((rental) => rental.dataFine === dataFine);
-};
-
-const getRentalsByNoleggiante = (noleggianteId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiante === noleggianteId &&
-      [
-        "INIZIO",
-        "IN CORSO",
-        "FINE",
-        "CONCLUSIONE",
-        "CONCLUSOCONVALUTAZIONE",
-      ].includes(rental.stato)
-  );
-};
-
-const getRentalsByNoleggiatore = (noleggiatoreId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiatore === noleggiatoreId &&
-      [
-        "INIZIO",
-        "IN CORSO",
-        "FINE",
-        "CONCLUSIONE",
-        "CONCLUSOCONVALUTAZIONE",
-      ].includes(rental.stato)
-  );
-};
-
-const getRentalsRequestsByNoleggiante = (noleggianteId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiante === noleggianteId &&
-      ["ACCETTATA", "RICHIESTA", "RIFIUTATA"].includes(rental.stato)
-  );
-};
-
-const getRentalsRequestsByNoleggiatore = (noleggiatoreId) => {
-  return rentalsData.filter(
-    (rental) =>
-      rental.noleggiatore === noleggiatoreId &&
-      ["ACCETTATA", "RICHIESTA"].includes(rental.stato)
-  );
-};
-
-const modifyRental = (modifiedRental) => {
-  deleteRentalById(modifiedRental.id);
-  rentalsData.push(modifiedRental);
-};
-
 export {
-  getAllRentals,
-  getRentalsByDataFine,
-  getRentalsByDataInizio,
   getRentalById,
-  getRentalsByStato,
-  getRentalsByAnnuncioId,
   getRentalsByNoleggiante,
   getRentalsByNoleggiatore,
   getRentalsRequestsByNoleggiante,
   getRentalsRequestsByNoleggiatore,
-  deleteRentalById,
   addRental,
   modifyRental,
+  deleteRentalById,
 };

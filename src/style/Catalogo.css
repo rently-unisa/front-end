@@ -104,6 +104,7 @@
   align-items: center;
   border-radius: 0.625rem;
   font-size: var(--font-size);
+  font-family: var(--font), sans-serif;
   border: 1px solid var(--nero);
 }
 
@@ -117,16 +118,18 @@
   display: flex;
   flex-direction: row;
   width: 75%;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   align-content: space-between;
   align-self: stretch;
-  gap: 5%;
   flex-wrap: wrap;
+  margin-right: 2.5%;
+  gap: 1%;
 }
 
-.card {
-  margin: 5px;
+.listaAnnunciCatalogo a {
+  text-decoration: none;
+  color: var(--nero);
 }
 
 .dropdown-content1 {
@@ -181,4 +184,17 @@
 
 .Ricerca .dropdown-content1 {
   display: block;
+}
+
+@media only screen and (max-width: 768px) {
+  .catalogInside {
+    flex-direction: column;
+  }
+  .cercaFiltra {
+    width: auto;
+  }
+  .listaAnnunciCatalogo {
+    padding-left: 1rem;
+    align-self: center;
+  }
 }

@@ -74,7 +74,7 @@ const ModificaAnnuncio = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   useEffect(() => {
@@ -83,7 +83,7 @@ const ModificaAnnuncio = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const fetchAd = async () => {
@@ -112,7 +112,7 @@ const ModificaAnnuncio = () => {
   }, [idAnnuncio, navigate]);
 
   const handleModify = () => {
-    if (/.*\s.*\s.*./.test(strada)) {
+    if (/\s\S*\s/.test(strada)) {
       if (
         titolo !== "" &&
         strada !== "" &&

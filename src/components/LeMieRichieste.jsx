@@ -10,7 +10,6 @@ import {
   getRentalsRequestsByNoleggiatore,
   getRentalById,
   modifyRental,
-  deleteRentalById,
 } from "../services/noleggi";
 import { getAdById } from "../services/annunciNoleggio";
 import "../style/ListPage.css";
@@ -59,7 +58,7 @@ const LeMieRichieste = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const [checked, setChecked] = useState(
@@ -114,7 +113,7 @@ const LeMieRichieste = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const fetchData = () => {
@@ -250,26 +249,6 @@ const LeMieRichieste = () => {
     handleAlert("success", "Pagamento effettuato con successo");
   };
 
-  const handleDelete = (id) => {
-    deleteRentalById(id).then((response) => {
-      if (response.ok) {
-        getRentalsRequestsByNoleggiante(idUser).then((response) => {
-          if (response.ok) {
-            response.json().then((rental) => {
-              setNoleggianteRentalsRequest(rental);
-            });
-          } else {
-            response.json().then((result) => {
-              handleAlert("error", result.message);
-            });
-          }
-        });
-      } else {
-        handleAlert("error", "Errore");
-      }
-    });
-  };
-
   const renderRentals = (
     <div>
       <div className="rentalTitleContainer">
@@ -283,7 +262,7 @@ const LeMieRichieste = () => {
       {noleggianteRentalsRequests && (
         <div className="rentalList">
           {noleggianteRentalsRequests.map((r) => (
-            <div className="rental">
+            <div className="rental" key={r.id}>
               <div className="rentalItem">
                 <img
                   src={noleggianteAds[r.annuncio]?.immagine}
@@ -339,14 +318,6 @@ const LeMieRichieste = () => {
                 {r.stato === "RICHIESTA" && <p>In attesa...</p>}
 
                 {r.stato === "RIFIUTATA" && <p>Rifiutata</p>}
-                {r.stato === "RIFIUTATA" && (
-                  <button
-                    className="pulsante"
-                    onClick={() => handleDelete(r.id)}
-                  >
-                    Elimina
-                  </button>
-                )}
               </div>
             </div>
           ))}
@@ -368,7 +339,7 @@ const LeMieRichieste = () => {
       {noleggiatoreRentalsRequests && (
         <div className="rentalList">
           {noleggiatoreRentalsRequests.map((r) => (
-            <div className="rental">
+            <div className="rental" key={r.id}>
               <div className="rentalItem">
                 <img
                   src={noleggiatoreAds[r.annuncio]?.immagine}

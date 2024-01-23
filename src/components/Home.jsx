@@ -39,7 +39,7 @@ const Home = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     getPremiumAds().then((response) => {
@@ -155,7 +155,7 @@ const Home = () => {
                     <div key={ad.id} className={`card`}>
                       <img
                         src={ad.immagine}
-                        alt="Immgagine annuncio"
+                        alt="Immagine annuncio"
                         loading="lazy"
                       />
                       <div className="card-description">

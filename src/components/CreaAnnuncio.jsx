@@ -39,7 +39,7 @@ const CreaAnnuncio = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   useEffect(() => {
@@ -84,7 +84,7 @@ const CreaAnnuncio = () => {
   };
 
   const handleCreation = () => {
-    if (/.*\s.*\s.*/.test(strada)) {
+    if (/\s\S*\s/.test(strada)) {
       if (
         titolo !== "" &&
         strada !== "" &&

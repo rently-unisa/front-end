@@ -63,7 +63,7 @@ const IMieiNoleggi = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const [selectedStati, setSelectedStati] = useState([]);
@@ -429,6 +429,7 @@ const IMieiNoleggi = () => {
               <div className="rentalList">
                 {noleggianteRentals.map((r) => (
                   <div
+                    key={r.id}
                     className={`rental ${isStateSelected(r) ? "" : "inactive"}`}
                   >
                     <div className="rentalItem">
@@ -606,7 +607,7 @@ const IMieiNoleggi = () => {
             {noleggiatoreRentals && (
               <div className="rentalList">
                 {noleggiatoreRentals.map((r) => (
-                  <div className="rental">
+                  <div className="rental" key={r.id}>
                     <div className="rentalItem">
                       <img
                         src={noleggiatoreAds[r.annuncio]?.immagine}

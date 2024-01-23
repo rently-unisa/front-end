@@ -1,15 +1,4 @@
 import Cookies from "js-cookie";
-//const segnalazioni = [];
-
-/*const addSegnalazione = (newSegnalazione) => {
-  const newID = segnalazioni.length + 1;
-  newSegnalazione = {
-    id: newID,
-    ...newSegnalazione
-  }
-  segnalazioni.push(newSegnalazione);
-  console.log(newSegnalazione);
-}*/
 
 const addSegnalazione = async (newSegnalazione) => {
   try {

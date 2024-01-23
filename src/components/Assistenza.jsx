@@ -50,7 +50,7 @@ const Assistenza = () => {
           response.json().then((result) => {
             setAlertState("error");
             setAlertMessage(result.message);
-            handleClick({ vertical: "top", horizontal: "center" });
+            handleClick();
           });
         }
       }
@@ -62,7 +62,7 @@ const Assistenza = () => {
     setAlertMessage(
       "Effettuare l'accesso per poter effettuare una segnalazione"
     );
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const handleSubmit = () => {
@@ -78,7 +78,7 @@ const Assistenza = () => {
             if (response.ok) {
               setAlertState("success");
               setAlertMessage("La segnalazione è stata inviata correttamente");
-              handleClick({ vertical: "top", horizontal: "center" });
+              handleClick();
               navigate("/");
             } else {
               setAlertState("error");
@@ -86,25 +86,25 @@ const Assistenza = () => {
                 "Errore durante la richiesta di segnalazione: ",
                 response.text()
               );
-              handleClick({ vertical: "top", horizontal: "center" });
+              handleClick();
             }
           });
         } else {
           setAlertState("error");
           setAlertMessage("Il messaggio non può essere vuoto");
-          handleClick({ vertical: "top", horizontal: "center" });
+          handleClick();
         }
       } else {
         setAlertState("error");
         setAlertMessage("Inserisci un tipo di segnalazione");
-        handleClick({ vertical: "top", horizontal: "center" });
+        handleClick();
       }
     } else {
       setAlertState("error");
       setAlertMessage(
         "Non è possibie segnalare problemi senza aver mai effettuato un noleggio"
       );
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     }
   };
 

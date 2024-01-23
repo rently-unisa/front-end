@@ -36,7 +36,7 @@ const Login = () => {
   const hendleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   useEffect(() => {

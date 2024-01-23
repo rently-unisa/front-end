@@ -1,6 +1,3 @@
-/*
-import image3 from "../image/onda2nuovo1.svg";
-import image4 from "../image/onda2nuovo2.svg";*/
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 import Navbar from "./Navbar";
@@ -65,7 +62,7 @@ const AreaPersonale = () => {
           });
         } else {
           if (response.status === 403) navigate("/forbidden");
-          else handleClick({ vertical: "top", horizontal: "center" });
+          else handleClick();
         }
       });
     };
@@ -88,7 +85,7 @@ const AreaPersonale = () => {
             setUsernames(newUsernameMapping);
           });
         } else {
-          handleClick({ vertical: "top", horizontal: "center" });
+          handleClick();
         }
       });
     };
@@ -126,7 +123,7 @@ const AreaPersonale = () => {
         response.json().then((utente) => setUser(utente));
       } else {
         response.json().then(() => {
-          handleClick({ vertical: "top", horizontal: "center" });
+          handleClick();
         });
       }
     });

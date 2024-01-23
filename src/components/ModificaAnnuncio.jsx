@@ -74,7 +74,7 @@ const ModificaAnnuncio = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   useEffect(() => {
@@ -83,14 +83,14 @@ const ModificaAnnuncio = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const fetchAd = async () => {
       await getAdById(idAnnuncio).then((response) => {
         if (response.ok) {
           response.json().then((ad) => {
-            if (ad.idUtente === Cookies.get("id")) {
+            if (ad.idUtente.toString() === Cookies.get("id")) {
               setTitolo(ad.nome);
               setDescrizione(ad.descrizione);
               setPrezzo(ad.prezzo);
@@ -101,7 +101,9 @@ const ModificaAnnuncio = () => {
               setDataFine(ad.dataFine);
               setCategoria(ad.categoria);
               setCondizioni(ad.condizione);
-            } else navigate("/forbidden");
+            } else {
+              alert("fcbgaeugfcaiuh");
+            }
           });
         } else {
           handleAlert("error", "problemi a recuperare l'annuncio");
@@ -112,7 +114,7 @@ const ModificaAnnuncio = () => {
   }, [idAnnuncio, navigate]);
 
   const handleModify = () => {
-    if (/.*\s.*\s.*./.test(strada)) {
+    if (/\s\S*\s/.test(strada)) {
       if (
         titolo !== "" &&
         strada !== "" &&

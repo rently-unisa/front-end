@@ -27,7 +27,7 @@ function ValutazioneUtente(props) {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const handleRatingChange = (event, newRating) => {

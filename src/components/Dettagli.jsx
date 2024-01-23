@@ -50,7 +50,7 @@ const Dettagli = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const handleOpenChat = (idEmittente, idRicevente) => {
@@ -82,7 +82,7 @@ const Dettagli = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const fetchAd = async () => {

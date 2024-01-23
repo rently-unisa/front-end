@@ -478,7 +478,7 @@ const Catalogo = () => {
                   <div className="card">
                     <img
                       src={ad.immagine}
-                      alt="Immgagine annuncio"
+                      alt="Immagine annuncio"
                       loading="lazy"
                     />
                     <div className="card-description">

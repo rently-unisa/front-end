@@ -47,7 +47,7 @@ const ProfiloUtente = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const handleOpenChat = (idEmittente, idRicevente) => {
@@ -79,7 +79,7 @@ const ProfiloUtente = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const fetchUser = async () => {
@@ -201,7 +201,7 @@ const ProfiloUtente = () => {
                 <div className={`card `}>
                   <img
                     src={ad.immagine}
-                    alt="Immgagine annuncio"
+                    alt="Immagine annuncio"
                     loading="lazy"
                   />
                   <div className="card-description">

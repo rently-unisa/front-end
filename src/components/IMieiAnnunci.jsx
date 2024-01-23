@@ -34,7 +34,7 @@ const IMieiAnnunci = () => {
   const handleAlert = (state, message) => {
     setAlertState(state);
     setAlertMessage(message);
-    handleClick({ vertical: "top", horizontal: "center" });
+    handleClick();
   };
 
   const mapCategoriaToValue = (selectedCategoria) => {
@@ -80,7 +80,7 @@ const IMieiAnnunci = () => {
     const handleAlert = (state, message) => {
       setAlertState(state);
       setAlertMessage(message);
-      handleClick({ vertical: "top", horizontal: "center" });
+      handleClick();
     };
 
     const getAnnunciUtente = (id) => {

@@ -17,3 +17,20 @@ const addForm = async (id, newForm) => {
     return "Errore durante la richiesta di noleggio";
   }
 };
+
+const getCategoriesAds = async (id) => {
+  try {
+    const response = await fetch(
+      `http://localhost:4000/api/FIA/annunciCategoria?idUtente=${id}`,
+      {
+        method: "GET",
+      }
+    );
+
+    return response;
+  } catch (error) {
+    return "Errore nella richiesta degli annunci";
+  }
+};
+
+export { addForm, getCategoriesAds };

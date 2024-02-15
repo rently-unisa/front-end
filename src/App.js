@@ -17,6 +17,7 @@ import IMieiAnnunci from "./components/IMieiAnnunci";
 import CreaAnnuncio from "./components/CreaAnnuncio";
 import ModificaAnnuncio from "./components/ModificaAnnuncio";
 import ProfiloUtente from "./components/ProfiloUtente";
+import Form from "./components/FormPredizione";
 import PaginaErrore from "./components/PaginaErrore";
 import "./style/App.css";
 
@@ -42,6 +43,7 @@ const App = () => {
           <Route path="/creaUnAnnuncio" element={<CreaAnnuncio />} />
           <Route path="/modificaAnnuncio/:id" element={<ModificaAnnuncio />} />
           <Route path="/utente/:id" element={<ProfiloUtente />} />
+          <Route path="/form" element={<Form />} />
           <Route path="/forbidden" element={<PaginaErrore errorCode={403} />} />
           <Route path="*" element={<PaginaErrore errorCode={404} />} />
         </Routes>

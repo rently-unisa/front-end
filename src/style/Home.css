@@ -209,8 +209,8 @@
 }
 
 .card img {
-  width: 14.75rem;
-  height: 19.75rem;
+  width: 20.375rem;
+  max-height: 19.75rem;
 }
 
 .card-description {
@@ -225,15 +225,19 @@
 }
 
 .primo {
-  position: relative;
+  position: absolute;
+  left: 0;
 }
 
 .secondo {
-  position: relative;
+  position: absolute;
+  right: 50%;
+  transform: translateX(50%);
 }
 
 .terzo {
-  position: relative;
+  position: absolute;
+  right: 0;
 }
 
 .inactive {
@@ -261,6 +265,11 @@
 @media screen and (max-width: 1534px) {
   .listaAnnunciHome {
     justify-content: center;
+  }
+
+  .secondo {
+    right: 0;
+    transform: translateX(0%);
   }
 
   .terzo {
@@ -295,6 +304,11 @@
     border: 1px solid rgba(0, 0, 0, 0.1);
     overflow: hidden;
     margin-bottom: 2%;
+  }
+
+  .card img {
+    width: 20.375rem;
+    max-height: 18rem;
   }
 
   .secondo {

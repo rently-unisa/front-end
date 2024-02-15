@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { Link, useNavigate } from "react-router-dom";
 import { getPremiumAds } from "../services/annunciNoleggio";
+import { getCategoriesAds } from "../services/ModuloFIA";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import image1 from "../image/ondinaprova1.svg";
@@ -11,13 +12,18 @@ import image3 from "../image/onda2nuovo1.svg";
 import image4 from "../image/onda2nuovo2.svg";
 import "../style/Home.css";
 import { Alert, Box, Snackbar } from "@mui/material";
+import Cookies from "js-cookie";
 
 const Home = () => {
   const navigate = useNavigate();
   const [annunci, setAnnunci] = useState();
+  const [consigliati, setConsigliati] = useState();
   const [currentSlide1, setCurrentSlide1] = useState(0);
   const [currentSlide2, setCurrentSlide2] = useState(1);
   const [currentSlide3, setCurrentSlide3] = useState(2);
+  const [currentSlide4, setCurrentSlide4] = useState(0);
+  const [currentSlide5, setCurrentSlide5] = useState(1);
+  const [currentSlide6, setCurrentSlide6] = useState(2);
   const [searchTerm, setSearchTerm] = useState();
   const [alertState, setAlertState] = useState("error");
   const [alertMessage, setAlertMessage] = useState("");
@@ -53,6 +59,14 @@ const Home = () => {
         });
       }
     });
+
+    getCategoriesAds(Cookies.get("id")).then((response) => {
+      if (response.ok) {
+        response.json().then((ad) => {
+          setConsigliati(ad);
+        });
+      }
+    });
   }, []);
 
   const nextSlide = () => {
@@ -70,6 +84,24 @@ const Home = () => {
     );
     setCurrentSlide3(
       (prevSlide) => (prevSlide - 1 + annunci.length) % annunci.length
+    );
+  };
+
+  const nextSlide2 = () => {
+    setCurrentSlide4((prevSlide) => (prevSlide + 1) % consigliati.length);
+    setCurrentSlide5((prevSlide) => (prevSlide + 1) % consigliati.length);
+    setCurrentSlide6((prevSlide) => (prevSlide + 1) % consigliati.length);
+  };
+
+  const prevSlide2 = () => {
+    setCurrentSlide4(
+      (prevSlide) => (prevSlide - 1 + consigliati.length) % consigliati.length
+    );
+    setCurrentSlide5(
+      (prevSlide) => (prevSlide - 1 + consigliati.length) % consigliati.length
+    );
+    setCurrentSlide6(
+      (prevSlide) => (prevSlide - 1 + consigliati.length) % consigliati.length
     );
   };
 
@@ -131,7 +163,7 @@ const Home = () => {
           </div>
         </div>
         <div className="annunciHome">
-          <p>Annunci</p>
+          <p>Annunci Premium</p>
           <div className="slider">
             <button onClick={prevSlide}>
               <ArrowBackIosIcon />
@@ -171,6 +203,56 @@ const Home = () => {
               <ArrowForwardIosIcon />
             </button>
           </div>
+          {Cookies.get("id") && consigliati && (
+            <div style={{ width: "100%" }}>
+              <p>Consigliati</p>
+              <div className="slider">
+                <button onClick={prevSlide2}>
+                  <ArrowBackIosIcon />
+                </button>
+                <div className="listaAnnunciHome">
+                  {consigliati.map((ad, index) => (
+                    <Link
+                      className={`${index === currentSlide4 ? "primo" : ""} ${
+                        index === currentSlide5 &&
+                        index !== currentSlide4 &&
+                        index !== currentSlide6
+                          ? "secondo"
+                          : ""
+                      } ${
+                        index === currentSlide6 && index !== currentSlide4
+                          ? "terzo"
+                          : ""
+                      } ${
+                        index !== currentSlide4 &&
+                        index !== currentSlide5 &&
+                        index !== currentSlide6
+                          ? "inactive"
+                          : ""
+                      }`}
+                      to={`/dettagli/${ad.id}`}
+                      key={ad.id}
+                    >
+                      <div key={ad.id} className={`card`}>
+                        <img
+                          src={ad.immagine}
+                          alt="Immagine annuncio"
+                          loading="lazy"
+                        />
+                        <div className="card-description">
+                          <p>{ad.nome}</p>
+                          <h6>€ {ad.prezzo}/giorno</h6>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <button onClick={nextSlide2}>
+                  <ArrowForwardIosIcon />
+                </button>
+              </div>
+            </div>
+          )}
           <Link className="scopri" to="/catalogo">
             Scopri altri annunci
           </Link>

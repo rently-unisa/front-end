@@ -9,6 +9,8 @@ import image2 from "../image/onda3.svg";
 import image3 from "../image/onda4.svg";
 import "../style/Signup.css";
 import { Alert, Box, Snackbar } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 const Signup = () => {
   const [nome, setNome] = useState("");
@@ -23,6 +25,16 @@ const Signup = () => {
   const [alertState, setAlertState] = useState("error");
   const [alertMessage, setAlertMessage] = useState("");
   const [open, setOpen] = useState(false);
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const [isPasswordVisible2, setIsPasswordVisible2] = useState(false);
+
+  const handleVisibilityToggle = () => {
+    setIsPasswordVisible((visibility) => !visibility);
+  };
+
+  const handleVisibilityToggle2 = () => {
+    setIsPasswordVisible2((visibility) => !visibility);
+  };
 
   const handleClick = () => {
     setOpen(true);
@@ -57,33 +69,44 @@ const Signup = () => {
     ) {
       handleAlert("error", "Inserire tutti i campi");
     } else {
-      if (password === confPassword) {
-        const newUser = {
-          nome,
-          cognome,
-          email,
-          username,
-          password,
-          premium: false,
-        };
-        addUser(newUser).then((response) => {
-          if (response.ok) {
-            response.json().then((newUser) => {
-              if (newUser) {
-                login(newUser);
-                navigate("/");
-              } else {
-                handleAlert("error", "Credenziali non valide");
-              }
-            });
-          } else {
-            response.json().then((errorMessage) => {
-              handleAlert("error", errorMessage.message);
-            });
-          }
-        });
+      if (
+        /(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}/.test(
+          password
+        )
+      ) {
+        if (password === confPassword) {
+          const newUser = {
+            nome,
+            cognome,
+            email,
+            username,
+            password,
+            premium: false,
+          };
+          addUser(newUser).then((response) => {
+            if (response.ok) {
+              response.json().then((newUser) => {
+                if (newUser) {
+                  login(newUser);
+                  navigate("/form");
+                } else {
+                  handleAlert("error", "Credenziali non valide");
+                }
+              });
+            } else {
+              response.json().then((errorMessage) => {
+                handleAlert("error", errorMessage.message);
+              });
+            }
+          });
+        } else {
+          handleAlert("error", "Password non coincidenti");
+        }
       } else {
-        handleAlert("error", "Password non coincidenti");
+        handleAlert(
+          "error",
+          "La password deve contenere almeno 8 caratteri di cui: una maiuscola, una minuscola, un numero ed un simbolo"
+        );
       }
     }
   };
@@ -174,23 +197,43 @@ const Signup = () => {
           </div>
           <div className="param">
             <p>Password</p>
-            <input
-              type="password"
-              value={password}
-              placeholder="Inserisci la tua password"
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div style={{ display: "flex" }}>
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                value={password}
+                placeholder="Inserisci la tua password"
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <button
+                onClick={handleVisibilityToggle}
+                style={{ backgroundColor: "rgb(0, 0, 0, 0)", border: "none" }}
+              >
+                {isPasswordVisible ? <VisibilityOffIcon /> : <VisibilityIcon />}
+              </button>
+            </div>
           </div>
           <div className="param">
             <p>Conferma Password</p>
-            <input
-              type="password"
-              value={confPassword}
-              placeholder="Conferma la tua password"
-              onChange={(e) => setConfPassword(e.target.value)}
-              required
-            />
+            <div style={{ display: "flex" }}>
+              <input
+                type={isPasswordVisible2 ? "text" : "password"}
+                value={confPassword}
+                placeholder="Conferma la tua password"
+                onChange={(e) => setConfPassword(e.target.value)}
+                required
+              />
+              <button
+                onClick={handleVisibilityToggle2}
+                style={{ backgroundColor: "rgb(0, 0, 0, 0)", border: "none" }}
+              >
+                {isPasswordVisible2 ? (
+                  <VisibilityOffIcon />
+                ) : (
+                  <VisibilityIcon />
+                )}
+              </button>
+            </div>
           </div>
         </div>
         <button className="pulsante" onClick={handleSignup}>

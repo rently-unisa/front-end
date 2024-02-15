@@ -67,6 +67,7 @@
 }
 
 .param input,
+.param select,
 .param ::placeholder {
   overflow: hidden;
   white-space: nowrap;
@@ -76,14 +77,19 @@
   line-height: 1.25rem;
 }
 
-.param input {
+.param input,
+.param select {
   width: 22.9375rem;
   padding: 0.5rem 0.75rem;
   border-radius: 0.625rem;
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-@media screen and (max-width: 768px) {
+.param select {
+  width: 24.5rem;
+}
+
+@media screen and (max-width: 1000px) {
   .topr {
     display: none;
   }
@@ -107,5 +113,9 @@
 
   .param input {
     width: 90%;
+  }
+
+  .param select {
+    width: 96%;
   }
 }

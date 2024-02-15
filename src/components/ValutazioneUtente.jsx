@@ -55,6 +55,7 @@ function ValutazioneUtente(props) {
             "success",
             "La valutazione è stata inviata correttamente"
           );
+          props.ricarica();
           props.setTrigger(false);
         }
       });

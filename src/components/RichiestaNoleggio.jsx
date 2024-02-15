@@ -101,6 +101,14 @@ const RichiestaNoleggio = ({
             "Errore sconosciuto durante la richiesta di noleggio"
           );
         } else {
+          response.json().then((noleggio) => {
+            fetch(
+              `http://localhost:4000/api/avvisi/notifica-arrivo-richiesta-noleggio?idNoleggio=${noleggio.id}`,
+              {
+                method: "GET",
+              }
+            );
+          });
           handleAlert("success", "Richiesta creata con successo");
           onClose();
         }

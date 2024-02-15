@@ -181,6 +181,10 @@ const Dettagli = () => {
                       <span>Condizioni: </span>
                       {Annuncio.condizione}
                     </p>
+                    <p style={{ textAlign: "left" }}>
+                      <span>Strada: </span>
+                      {Annuncio.strada} ({Annuncio.citta})
+                    </p>
                   </label>
                 </div>
                 <div className="actionButtons">
@@ -468,6 +472,9 @@ const Dettagli = () => {
                   </p>
                   <p style={{ textAlign: "left" }}>
                     <span>Condizioni: </span>
+                  </p>
+                  <p style={{ textAlign: "left" }}>
+                    <span>Strada: </span>
                   </p>
                 </label>
               </div>

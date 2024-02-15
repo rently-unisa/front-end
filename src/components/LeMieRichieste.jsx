@@ -187,9 +187,7 @@ const LeMieRichieste = () => {
             setNoleggiatoreUsernames(newUsersMapping);
           });
         } else {
-          noleggiatoreResponse.json().then((result) => {
-            handleAlert("error", result.message);
-          });
+          handleAlert("error", "Nessuna richiesta disponibile");
         }
       });
     };
@@ -232,6 +230,33 @@ const LeMieRichieste = () => {
                   });
                 }
               });
+              if (stato === "ACCETTATA")
+                response.json().then(() => {
+                  fetch(
+                    `http://localhost:4000/api/avvisi/notifica-richiesta-noleggio-accettata?idNoleggio=${id}`,
+                    {
+                      method: "GET",
+                    }
+                  );
+                });
+              else if (stato === "RIFIUTATA")
+                response.json().then(() => {
+                  fetch(
+                    `http://localhost:4000/api/avvisi/notifica-richiesta-noleggio-rifiutata?idNoleggio=${id}`,
+                    {
+                      method: "GET",
+                    }
+                  );
+                });
+              else
+                response.json().then(() => {
+                  fetch(
+                    `http://localhost:4000/api/avvisi/notifica-inizio-noleggio?idNoleggio=${id}`,
+                    {
+                      method: "GET",
+                    }
+                  );
+                });
             }
           });
         });
@@ -361,7 +386,7 @@ const LeMieRichieste = () => {
                   <button
                     className="pulsante"
                     onClick={() =>
-                      handleOpenChat(r.noleggiante, r.noleggiatore)
+                      handleOpenChat(r.noleggiatore, r.noleggiante)
                     }
                   >
                     Contatta

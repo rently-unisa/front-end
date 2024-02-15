@@ -305,7 +305,6 @@ const IMieiNoleggi = () => {
                 });
               }
             });
-
             getRentalsByNoleggiatore(idUser).then((response) => {
               if (response.ok) {
                 response.json().then((rental) => {
@@ -317,6 +316,13 @@ const IMieiNoleggi = () => {
                 });
               }
             });
+            if (stato === "CONCLUSO")
+              fetch(
+                `http://localhost:4000/api/avvisi/notifica-fine-noleggio?idNoleggio=${id}`,
+                {
+                  method: "GET",
+                }
+              );
           });
         });
       } else {
@@ -513,6 +519,12 @@ const IMieiNoleggi = () => {
                                 valutazioneUtenteParams.idValutatore
                               }
                               idNoleggio={valutazioneUtenteParams.idNoleggio}
+                              ricarica={() =>
+                                handleModifyState(
+                                  valutazioneUtenteParams.idNoleggio,
+                                  "CONCLUSO"
+                                )
+                              }
                             ></ValutazioneUtente>
                           </div>
                         )}
@@ -539,6 +551,12 @@ const IMieiNoleggi = () => {
                                 valutazioneOggettoParams.idValutatore
                               }
                               idNoleggio={valutazioneOggettoParams.idNoleggio}
+                              ricarica={() =>
+                                handleModifyState(
+                                  valutazioneUtenteParams.idNoleggio,
+                                  "CONCLUSO"
+                                )
+                              }
                             ></ValutazioneOggetto>
                           </div>
                         )}
@@ -639,7 +657,7 @@ const IMieiNoleggi = () => {
                         <button
                           className="pulsante"
                           onClick={() =>
-                            handleOpenChat(r.noleggiante, r.noleggiatore)
+                            handleOpenChat(r.noleggiatore, r.noleggiante)
                           }
                         >
                           Contatta
@@ -695,6 +713,12 @@ const IMieiNoleggi = () => {
                                 valutazioneUtenteParams.idValutatore
                               }
                               idNoleggio={valutazioneUtenteParams.idNoleggio}
+                              ricarica={() =>
+                                handleModifyState(
+                                  valutazioneUtenteParams.idNoleggio,
+                                  "CONCLUSO"
+                                )
+                              }
                             ></ValutazioneUtente>
                           </div>
                         )}

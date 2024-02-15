@@ -19,6 +19,7 @@
 
 .listPageContainer {
   width: 90%;
+  min-height: 34.4rem;
 }
 
 .switchDescriptionContainer {
